@@ -1015,6 +1015,11 @@ Andhra Pradesh, India</textarea></label>
 (function(){
   if(!window.supabaseClient) return;
   const sb=window.supabaseClient;
+  async function requireUser(){
+    const {data}=await sb.auth.getUser();
+    if(!data?.user) throw new Error('Please sign in as an administrator.');
+    return data.user;
+  }
   const STORE_KEY='vedaMaathaFullSiteCMSV1';
   const managed={gallery:'.real-gallery-grid',videos:'#publicVideoGrid',temples:'#publicTempleGrid'};
   const targets=[
