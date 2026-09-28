@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta name="google-site-verification" content="pZ-B5lFZLAwLXAOI-dcHvObVxI2wvQ23f4h1g4wb5xQ" />
+<meta name="google-site-verification" content="pZ-B5lFZLAwLXAOI-dcHvObVxI2wvQ23f4h1g4wb5xQ" />
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Veda Maatha Gayatri Devi Temple | Rega Village</title>
@@ -89,7 +89,7 @@ window.supabaseClient = window.supabase.createClient(
 </head>
 <body>
 <nav><a class="logo" href="#home">ॐ GAYATRI DEVI</a><div class="links">
-<a href="#home">HOME</a><a href="#about">ABOUT</a><a href="#gayatri">GAYATRI</a><a href="#mantra">MANTRA</a><a href="#panchamukha">PANCHAMUKHA</a><a href="#visit">VISIT</a><a href="#reach">REACH</a><a href="#gallery">GALLERY</a><a href="#videos">VIDEOS</a><a href="#contact">CONTACT</a></div></nav>
+<a href="#home">HOME</a><a href="#about">ABOUT</a><a href="#gayatri">GAYATRI</a><a href="#mantra">MANTRA</a><a href="#panchamukha">PANCHAMUKHA</a><a href="#visit">VISIT</a><a href="#reach">REACH</a><a href="#gallery">GALLERY</a><a href="#videos">VIDEOS</a><a href="#contact">CONTACT</a><span id="customNavLinks" style="display:contents"></span></div></nav>
 
 <header class="hero" id="home"><div>
 <div class="om">ॐ</div><div class="eyebrow">VEDA MAATHA · GAYATRI DEVI TEMPLE</div>
@@ -101,8 +101,8 @@ window.supabaseClient = window.supabase.createClient(
 <section id="about"><div class="eyebrow">ABOUT THE TEMPLE</div><h2>A Sacred Centre of Devotion</h2>
 <p class="lead">The Veda Maatha Gayatri Devi Temple stands in <b>Rega Village, Lakkavarapukota Mandal, Vizianagaram District, Andhra Pradesh</b>. Dedicated to Goddess Gayatri, the temple is particularly distinguished by the worship of her <b>Panchamukha form</b>. The peaceful surroundings create a setting for devotion, silence and spiritual contemplation.</p></section>
 
-<section id="gayatri"><div class="eyebrow">THE DIVINE PRESENCE</div><h2>Veda Maatha — The Mother of the Vedas</h2>
-<p class="lead">Goddess Gayatri is traditionally worshipped as <b>Veda Maatha</b>, the Mother of the Vedas, and as the divine embodiment of the sacred Gayatri Mantra.</p>
+<section id="gayatri"><div class="eyebrow">THE DIVINE PRESENCE</div><h2>Veda Mata — The Mother of the Vedas</h2>
+<p class="lead">Goddess Gayatri is traditionally worshipped as <b>Veda Mata</b>, the Mother of the Vedas, and as the divine embodiment of the sacred Gayatri Mantra.</p>
 <div class="grid"><div class="card"><h3>Vedic Heritage</h3><p>Timeless spiritual heritage associated with Goddess Gayatri and the Gayatri Mantra.</p></div><div class="card"><h3>Divine Worship</h3><p>Traditional devotional practices, prayers, archana, abhishekam and sacred observances.</p></div><div class="card"><h3>Peaceful Surroundings</h3><p>A serene rural setting conducive to contemplation and reflection.</p></div><div class="card"><h3>Inner Reflection</h3><p>A quiet space to pause, pray and reconnect with deeper dimensions of spiritual life.</p></div></div></section>
 
 <section id="mantra"><div class="eyebrow">THE SACRED GAYATRI MANTRA</div><h2>The Prayer of Divine Illumination</h2>
@@ -358,7 +358,7 @@ window.supabaseClient = window.supabase.createClient(
 <p><b>Temple Main Priest Contact:</b> <a href="tel:+919666102452" style="color:#9a651b;font-weight:700;text-decoration:none;">+91 9666102452</a> &nbsp; | &nbsp; <b>Email:</b> Coming Soon</p></section>
 
 <footer><h2>VEDA MAATHA GAYATRI DEVI TEMPLE</h2><p>Rega Village · Lakkavarapukota Mandal · Vizianagaram District · Andhra Pradesh</p>
-<p><a href="#home">Home</a><a href="#about">About</a><a href="#gayatri">Gayatri</a><a href="#visit">Visit</a><a href="#reach">How to Reach</a><a href="#gallery">Gallery</a><a href="#videos">Videos</a><a href="#temples-rega">Temples In Rega</a><a href="#contact">Contact</a></p>
+<p><a href="#home">Home</a><a href="#about">About</a><a href="#gayatri">Gayatri</a><a href="#visit">Visit</a><a href="#reach">How to Reach</a><a href="#gallery">Gallery</a><a href="#videos">Videos</a><a href="#temples-rega">Temples In Rega</a><a href="#contact">Contact</a><span id="customFooterLinks"></span></p>
 <div style="font-size:24px;color:#efc45f">ॐ भूर्भुवः स्वः</div><p>May the Divine Light Illuminate Every Heart.</p><p>© 2026 Veda Maatha Gayatri Devi Temple · Website developed by Ravada Srinivasa Rao</p></footer>
 
 <!-- ADMIN EDITOR -->
@@ -387,6 +387,7 @@ window.supabaseClient = window.supabase.createClient(
   <div id="adminEditor" class="admin-editor" hidden>
     <div class="admin-tabs">
       <button class="admin-tab active" data-tab="content">Content</button>
+      <button class="admin-tab" data-tab="fullsite">🛠️ Full Site</button>
       <button class="admin-tab" data-tab="gallery">Gallery</button>
       <button class="admin-tab" data-tab="videos">Videos</button>
       <button class="admin-tab" data-tab="temples">Temples in Rega</button>
@@ -496,6 +497,31 @@ Andhra Pradesh, India</textarea></label>
       </div>
     </div>
 
+    <div id="adminFullSiteTab" class="admin-tab-content" hidden>
+      <div class="admin-section">
+        <h3>🛠️ Full Website Editor</h3>
+        <p class="admin-help"><b>Full admin access:</b> edit every section, create/delete unlimited sections, manage images, photo galleries, YouTube videos, buttons/links and navigation directly from the Admin Dashboard.</p>
+        <div class="admin-actions">
+          <button id="refreshFullSite" class="admin-btn" type="button">↻ Load Current Website</button>
+          <button id="saveFullSite" class="admin-btn primary" type="button">💾 Publish All Website Changes</button>
+          <button id="addCustomSection" class="admin-btn" type="button">＋ Add New Section</button>
+        </div>
+        <p id="fullSiteMsg" class="admin-msg"></p>
+        <div id="fullSiteList"></div>
+
+        <div class="cms-manager-box">
+          <h3>🧭 Navigation Menu Manager</h3>
+          <p class="admin-help">Edit menu labels, hide menu items, delete menu items, change order, or add a custom link. Changes affect the public navigation.</p>
+          <div id="navManagerList"></div>
+          <div class="admin-actions">
+            <button id="addNavItem" class="admin-btn" type="button">＋ Add Navigation Item</button>
+            <button id="saveNavMenu" class="admin-btn primary" type="button">💾 Save Navigation</button>
+          </div>
+          <p id="navMsg" class="admin-msg"></p>
+        </div>
+      </div>
+    </div>
+
     <div id="adminToolsTab" class="admin-tab-content" hidden>
       <div class="admin-section">
         <h3>Website Tools</h3>
@@ -514,6 +540,34 @@ Andhra Pradesh, India</textarea></label>
 .admin-panel.open{display:block}.admin-panel *{box-sizing:border-box}.admin-panel h2,.admin-panel h3{font-family:Cinzel,serif}.admin-head,.admin-section{max-width:900px;margin:auto}.admin-head{display:flex;justify-content:space-between;color:#fff8e9}.admin-head h2{color:#efc45f;margin:5px 0}.admin-head p{color:#ddcbb2}.admin-eyebrow{font-size:11px;letter-spacing:2px;color:#efc45f;font-weight:700}.admin-close{width:42px;height:42px;border-radius:50%;font-size:28px;border:1px solid #d6a33a;background:#35140e;color:#fff;cursor:pointer}
 .admin-login,.admin-editor{max-width:900px;margin:20px auto;background:#fffaf0;border-radius:20px;padding:28px}.admin-login h3,.admin-editor h3{color:#35140e}.admin-login input,.admin-editor input,.admin-editor textarea{width:100%;padding:12px;border:1px solid #d9c49d;border-radius:10px;background:white;margin:7px 0 15px;font:inherit}.admin-editor textarea{min-height:95px;resize:vertical}.admin-editor label{display:block;font-weight:700;color:#5a2115;margin:13px 0}.admin-two{display:grid;grid-template-columns:1fr 1fr;gap:15px}.admin-btn{border:1px solid #c9942e;border-radius:10px;background:#fff3cf;color:#35140e;padding:11px 16px;font-weight:700;cursor:pointer;margin:4px}.admin-btn.primary{background:#d6a33a}.admin-btn.danger{background:#8d3020;color:white;border-color:#8d3020}.admin-actions{margin-top:18px}.admin-msg{font-weight:700;color:#8b5b15}.admin-tabs{display:flex;gap:8px;margin-bottom:20px}.admin-tab{padding:10px 18px;border:1px solid #d6a33a;background:#fff3cf;border-radius:10px;cursor:pointer}.admin-tab.active{background:#35140e;color:#efc45f}.gallery-admin-row{display:grid;grid-template-columns:1fr 1fr 1fr auto;gap:8px;padding:12px;background:#fff;border:1px solid #e2d2b2;border-radius:12px;margin:8px 0}.gallery-admin-row input{margin:0}.gallery-admin-row button{border:0;background:#8d3020;color:white;border-radius:8px;cursor:pointer}.import-label{display:block;margin-top:20px}.import-label input{padding:8px;background:#fff}.admin-help{font-size:13px}.admin-editor small{color:#6d5b51}
 @media(max-width:700px){.admin-panel{padding:15px}.admin-two,.gallery-admin-row{grid-template-columns:1fr}.admin-login,.admin-editor{padding:20px}}
+.full-site-row{background:#fff;border:1px solid #dec99e;border-radius:16px;margin:12px 0;padding:16px}
+.full-site-head{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.full-site-head h4{margin:0;color:#35140e;font-family:Cinzel,serif}
+.full-site-meta{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.full-site-meta input[type=text]{max-width:280px;margin:0}
+.full-site-row textarea{min-height:180px;font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:12px}
+.full-site-toolbar{display:flex;gap:6px;flex-wrap:wrap;margin:8px 0}
+.full-site-toolbar button{border:1px solid #d6a33a;background:#fff3cf;color:#35140e;border-radius:8px;padding:7px 10px;cursor:pointer;font-weight:700}
+.full-site-row .section-html{min-height:220px;background:#fffdf7}
+.full-site-preview{border:1px dashed #d6a33a;padding:10px;border-radius:10px;margin-top:8px;max-height:220px;overflow:auto;background:#fffaf0}
+.full-site-note{font-size:12px;color:#6d5b51}
+.custom-badge{background:#35140e;color:#efc45f;padding:4px 8px;border-radius:999px;font-size:10px;font-weight:700}
+@media(max-width:700px){.full-site-row{padding:12px}.full-site-head{align-items:flex-start}}
+
+
+
+.cms-manager-box{margin-top:28px;padding:20px;background:#fffaf0;border:1px solid #d6a33a66;border-radius:18px}
+.cms-manager-box h3{margin-top:0}
+.nav-admin-row,.media-admin-row,.cms-button-row{display:grid;grid-template-columns:1.1fr 1.3fr 1fr auto;gap:8px;align-items:center;padding:10px;background:#fff;border:1px solid #e2d2b2;border-radius:12px;margin:8px 0}
+.nav-admin-row input,.nav-admin-row select,.media-admin-row input,.cms-button-row input{margin:0!important}
+.nav-admin-row .drag-label{font-size:11px;color:#806b59}
+.custom-tools-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:14px}
+.custom-media-box{background:#fffaf0;border:1px solid #ead8b6;border-radius:14px;padding:14px;margin-top:14px}
+.custom-media-box h5{margin:0 0 8px;color:#5a2115;font-size:15px}
+.media-admin-row{grid-template-columns:90px 1fr auto}
+.media-admin-row img{width:80px;height:60px;object-fit:cover;border-radius:8px}
+.cms-button-row{grid-template-columns:1fr 1.3fr auto}
+@media(max-width:700px){.custom-tools-grid{grid-template-columns:1fr}.nav-admin-row,.media-admin-row,.cms-button-row{grid-template-columns:1fr}.media-admin-row img{width:100%;height:120px}}
 
 .temple-public-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:28px}.temple-public-card{background:linear-gradient(145deg,#fffdf7,#fff5df);border:1px solid #d6a33a66;border-radius:22px;overflow:hidden;box-shadow:0 18px 45px #4a1f0512}.temple-public-card .temple-body{padding:24px}.temple-public-card h3{font-family:Cinzel,serif;color:#6f2a13;font-size:25px;margin:0 0 7px}.temple-subtitle{color:#9a651b;font-weight:700;font-size:13px}.temple-text{line-height:1.75;color:#5f4a40;white-space:pre-wrap}.temple-block{margin-top:15px}.temple-block b{color:#7a351b}.temple-photo-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding:12px}.temple-photo-grid img{width:100%;height:115px;object-fit:cover;border-radius:10px;cursor:pointer}.temple-public-card iframe{width:100%;aspect-ratio:16/9;border:0}.temple-admin-row{display:grid;grid-template-columns:1fr auto;gap:12px;padding:14px;background:#fff;border:1px solid #e2d2b2;border-radius:12px;margin:10px 0}.temple-admin-row .actions{display:flex;gap:6px;align-items:start}.temple-photo-preview{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin:8px 0}.temple-photo-preview img{width:100%;height:70px;object-fit:cover;border-radius:8px}.temple-editing{outline:2px solid #d6a33a}.temple-public-empty{grid-column:1/-1;text-align:center}.temple-map-btn{display:inline-block;margin-top:12px}.temple-video-frame{width:100%;aspect-ratio:16/9;border:0}@media(max-width:800px){.temple-public-grid{grid-template-columns:1fr}}@media(max-width:700px){.temple-photo-preview{grid-template-columns:repeat(2,1fr)}.temple-admin-row{grid-template-columns:1fr}.temple-photo-grid{grid-template-columns:repeat(2,1fr)}}
 </style>
@@ -592,10 +646,12 @@ Andhra Pradesh, India</textarea></label>
   document.querySelectorAll(".admin-tab").forEach(tab=>tab.addEventListener("click",function(){
     document.querySelectorAll(".admin-tab").forEach(t=>t.classList.remove("active")); this.classList.add("active");
     $("adminContentTab").hidden=this.dataset.tab!=="content";
+    $("adminFullSiteTab").hidden=this.dataset.tab!=="fullsite";
     $("adminGalleryTab").hidden=this.dataset.tab!=="gallery";
     $("adminVideosTab").hidden=this.dataset.tab!=="videos";
     $("adminTemplesTab").hidden=this.dataset.tab!=="temples";
     $("adminToolsTab").hidden=this.dataset.tab!=="tools";
+    if(this.dataset.tab==="fullsite" && window.fullSiteCMS) window.fullSiteCMS.render();
   }));
 
   function renderGalleryAdmin(){
@@ -954,4 +1010,86 @@ Andhra Pradesh, India</textarea></label>
   window.templeCloudTemplesRefresh=refresh;
 })();
 </script>
+\n<script>
+/* FULL WEBSITE CMS: uses the existing temple_content JSON row. */
+(function(){
+  if(!window.supabaseClient) return;
+  const sb=window.supabaseClient;
+  const STORE_KEY='vedaMaathaFullSiteCMSV1';
+  const managed={gallery:'.real-gallery-grid',videos:'#publicVideoGrid',temples:'#publicTempleGrid'};
+  const targets=[
+    {id:'home',label:'🏠 Home / Hero',selector:'#home'},
+    {id:'about',label:'🛕 About the Temple',selector:'#about'},
+    {id:'gayatri',label:'🌺 Gayatri Devi',selector:'#gayatri'},
+    {id:'mantra',label:'🕉️ Gayatri Mantra',selector:'#mantra'},
+    {id:'panchamukha',label:'🔱 Panchamukha Gayatri',selector:'#panchamukha'},
+    {id:'visit',label:'🪔 Daily Pooja & Timings',selector:'#visit'},
+    {id:'reach',label:'🗺️ How to Reach',selector:'#reach'},
+    {id:'festivals',label:'📅 Festivals & Celebrations',selector:'#festivals'},
+    {id:'gallery',label:'🖼️ Gallery — Heading & Introduction',selector:'#gallery',managed:managed.gallery},
+    {id:'videos',label:'🎥 Videos — Heading & Introduction',selector:'#videos',managed:managed.videos},
+    {id:'temples-rega',label:'🛕 Temples in Rega — Heading & Introduction',selector:'#temples-rega',managed:managed.temples},
+    {id:'contact',label:'📞 Contact',selector:'#contact'},
+    {id:'footer',label:'🔻 Footer',selector:'footer'}
+  ];
+  let state={sections:{},customSections:[]};
+  function cloneEditable(el,managedSelector){const c=el.cloneNode(true);if(managedSelector){const x=c.querySelector(managedSelector);if(x)x.remove();}return c.innerHTML;}
+  function currentState(){const sections={};targets.forEach(t=>{const el=document.querySelector(t.selector);if(el)sections[t.id]={html:cloneEditable(el,t.managed),visible:el.style.display!=='none'};});return {...state,sections};}
+  function sanitizeHtml(html){const tpl=document.createElement('template');tpl.innerHTML=html;tpl.content.querySelectorAll('script,object,embed,form,input,textarea,button').forEach(x=>x.remove());tpl.content.querySelectorAll('*').forEach(el=>{[...el.attributes].forEach(a=>{if(/^on/i.test(a.name))el.removeAttribute(a.name);if((a.name==='href'||a.name==='src')&&/^javascript:/i.test(a.value))el.removeAttribute(a.name);});});return tpl.innerHTML;}
+  function applySection(id,data){const t=targets.find(x=>x.id===id);if(!t)return;const el=document.querySelector(t.selector);if(!el||!data)return;const managedNode=t.managed?el.querySelector(t.managed):null;el.innerHTML=sanitizeHtml(data.html||'');if(managedNode)el.appendChild(managedNode);el.style.display=data.visible===false?'none':'';}
+  function escapeText(s){return String(s??'').replace(/[&<>\"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]));}
+  function renderCustom(){
+    let host=document.getElementById('customCmsSections');
+    if(!host){host=document.createElement('div');host.id='customCmsSections';const gallery=document.getElementById('gallery');if(gallery)gallery.before(host);}
+    host.innerHTML='';
+    const nav=document.getElementById('customNavLinks');if(nav)nav.innerHTML='';
+    const foot=document.getElementById('customFooterLinks');if(foot)foot.innerHTML='';
+    (state.customSections||[]).filter(x=>x.visible!==false).sort((a,b)=>(a.order||0)-(b.order||0)).forEach(x=>{
+      const sid=x.id||('custom-'+Date.now());
+      const sec=document.createElement('section');sec.id=sid;sec.dataset.customCms='true';sec.innerHTML='<div class="eyebrow">'+escapeText(x.eyebrow||'CUSTOM SECTION')+'</div><h2>'+escapeText(x.title||'New Section')+'</h2>'+sanitizeHtml(x.html||'');host.appendChild(sec);
+      if(foot){const a=document.createElement('a');a.href='#'+sid;a.textContent=x.title||'New Section';foot.appendChild(a);}
+    });
+  }
+  async function load(){try{const {data,error}=await sb.from('temple_content').select('content').eq('id',1).maybeSingle();if(error)throw error;if(data?.content?.fullCms){state={sections:data.content.fullCms.sections||{},customSections:data.content.fullCms.customSections||[]};}targets.forEach(t=>{if(state.sections[t.id])applySection(t.id,state.sections[t.id]);});renderCustom();localStorage.setItem(STORE_KEY,JSON.stringify(state));}catch(e){console.warn('Full CMS load:',e.message);}}
+  async function save(){const {data:userData}=await sb.auth.getUser();if(!userData?.user)throw new Error('Please sign in as an administrator.');const next=currentState();const {data:row}=await sb.from('temple_content').select('content').eq('id',1).maybeSingle();const content={...(row?.content||{}),fullCms:next};const {error}=await sb.from('temple_content').upsert({id:1,content,updated_at:new Date().toISOString(),updated_by:userData.user.id});if(error)throw error;state=next;localStorage.setItem(STORE_KEY,JSON.stringify(state));return true;}
+  function insertAtCursor(el,html){el.focus();document.execCommand('insertHTML',false,html);}
+  function ytId(u){try{const x=new URL(u);if(x.hostname.includes('youtu.be'))return x.pathname.slice(1);if(x.hostname.includes('youtube.com'))return x.searchParams.get('v')||((x.pathname.match(/\/(?:shorts|embed)\/([^/]+)/)||[])[1]);}catch(e){}return null;}
+  function wrapBlock(inner,attrs=''){return '<div class="cms-admin-block cms-media-block" data-cms-block="1" '+attrs+'>'+inner+'</div>';}
+  function insertAtCursor(el,html){el.focus();document.execCommand('insertHTML',false,html);refreshDeleteControls(el);}
+  function toolbar(el){const bar=document.createElement('div');bar.className='full-site-toolbar';const btn=(label,fn)=>{const b=document.createElement('button');b.type='button';b.textContent=label;b.onclick=fn;bar.appendChild(b);};btn('Bold',()=>document.execCommand('bold'));btn('Italic',()=>document.execCommand('italic'));btn('H2',()=>document.execCommand('formatBlock',false,'h2'));btn('H3',()=>document.execCommand('formatBlock',false,'h3'));btn('Paragraph',()=>document.execCommand('formatBlock',false,'p'));btn('🔗 Link',()=>{const u=prompt('Enter link URL');const t=prompt('Enter link text','Open Link');if(u&&t)insertAtCursor(el,wrapBlock('<a href="'+escapeText(u)+'" target="_blank" rel="noopener">'+escapeText(t)+'</a>'));});btn('🔘 Button',()=>{const u=prompt('Enter button URL');const t=prompt('Button text','Learn More');if(u&&t)insertAtCursor(el,wrapBlock('<a class="cms-action-button" href="'+escapeText(u)+'" target="_blank" rel="noopener">'+escapeText(t)+'</a>'));});btn('↔ Divider',()=>insertAtCursor(el,'<hr style="border:0;border-top:1px solid #d6a33a66;margin:24px 0;">'));return bar;}
+  function refreshDeleteControls(ed){if(!ed)return;ed.querySelectorAll('.cms-admin-block').forEach(block=>{if(!block.querySelector('.cms-delete-block')){const b=document.createElement('button');b.type='button';b.className='cms-delete-block';b.textContent='✕ Delete Block';b.onclick=async()=>{const paths=[...block.querySelectorAll('[data-storage-path]')].map(x=>x.getAttribute('data-storage-path')).filter(Boolean);block.remove();if(paths.length){try{await requireUser();await sb.storage.from('temple-gallery').remove(paths);}catch(e){console.warn('Storage cleanup:',e.message);}}};block.prepend(b);}});ed.querySelectorAll('.cms-gallery-item').forEach(item=>{if(item.querySelector('.cms-delete-image')){const b=item.querySelector('.cms-delete-image');if(b.dataset.bound)return;b.dataset.bound='1';b.onclick=async()=>{const path=item.getAttribute('data-storage-path');item.remove();if(path){try{await requireUser();await sb.storage.from('temple-gallery').remove([path]);}catch(e){console.warn('Image cleanup:',e.message);}}};}});}
+  async function uploadCmsFiles(files){const user=await requireUser();const out=[];for(const f of files){const safeName=f.name.toLowerCase().replace(/[^a-z0-9._-]+/g,'-');const path=user.id+'/cms-sections/'+Date.now()+'-'+Math.random().toString(36).slice(2,8)+'-'+safeName;const {error}=await sb.storage.from('temple-gallery').upload(path,f,{upsert:false,contentType:f.type});if(error)throw error;const {data}=sb.storage.from('temple-gallery').getPublicUrl(path);out.push({url:data.publicUrl,path});}return out;}
+  function addMediaTools(row,ed){const box=document.createElement('div');box.className='cms-media-tools';box.innerHTML='<label>Image files<input type="file" class="cms-image-files" accept="image/*" multiple></label><label>Image URL<input type="url" class="cms-image-url" placeholder="https://..."></label><label>YouTube URL<input type="url" class="cms-video-url" placeholder="https://youtube.com/watch?v=..."></label><button type="button" class="admin-btn">🖼️ Add Image</button><button type="button" class="admin-btn">🎥 Add Video</button><button type="button" class="admin-btn">🖼️🖼️ Add Photo Gallery</button></div>';
+    const [imgBtn,vidBtn,galBtn]=box.querySelectorAll('button');
+    imgBtn.onclick=async()=>{try{const fileInput=box.querySelector('.cms-image-files');const url=box.querySelector('.cms-image-url').value.trim();let items=[];if(fileInput.files.length)items=await uploadCmsFiles([...fileInput.files]);else if(url)items=[{url,path:''}];else throw new Error('Choose an image or enter an image URL.');items.forEach(x=>insertAtCursor(ed,wrapBlock('<img src="'+escapeText(x.url)+'" alt="Temple image" style="max-width:100%;border-radius:16px;margin:4px 0;"/>','data-storage-path="'+escapeText(x.path||'')+'"')));fileInput.value='';box.querySelector('.cms-image-url').value='';}catch(e){alert('Image add failed: '+e.message)}};
+    vidBtn.onclick=()=>{const u=box.querySelector('.cms-video-url').value.trim();const id=ytId(u);if(!id){alert('Please enter a valid YouTube URL.');return;}insertAtCursor(ed,wrapBlock('<div style="position:relative;padding-top:56.25%;"><iframe src="https://www.youtube.com/embed/'+id+'" title="YouTube video" style="position:absolute;inset:0;width:100%;height:100%;border:0;border-radius:16px;" loading="lazy" allowfullscreen></iframe></div>'));box.querySelector('.cms-video-url').value='';};
+    galBtn.onclick=async()=>{try{const fileInput=box.querySelector('.cms-image-files');const url=box.querySelector('.cms-image-url').value.trim();let items=[];if(fileInput.files.length)items=await uploadCmsFiles([...fileInput.files]);else if(url)items=[{url,path:''}];else throw new Error('Choose multiple images or enter an image URL.');const html='<div class="cms-photo-gallery">'+items.map(x=>'<div class="cms-gallery-item" data-storage-path="'+escapeText(x.path||'')+'"><img src="'+escapeText(x.url)+'" alt="Temple gallery image"><button type="button" class="cms-delete-image">✕</button></div>').join('')+'</div>';insertAtCursor(ed,wrapBlock(html));fileInput.value='';box.querySelector('.cms-image-url').value='';}catch(e){alert('Gallery add failed: '+e.message)}};
+    row.appendChild(box);
+  }
+  function render(){const list=document.getElementById('fullSiteList');if(!list)return;list.innerHTML='';const data=currentState();targets.forEach(t=>{const d=data.sections[t.id]||{html:document.querySelector(t.selector)?.innerHTML||'',visible:true};const row=document.createElement('div');row.className='full-site-row';row.dataset.sectionId=t.id;const head=document.createElement('div');head.className='full-site-head';head.innerHTML='<h4>'+t.label+'</h4><div class="full-site-meta"><label style="margin:0;font-weight:600"><input type="checkbox" class="sec-visible" '+(d.visible!==false?'checked':'')+'> Visible</label></div>';row.appendChild(head);const note=document.createElement('div');note.className='full-site-note';note.innerHTML=t.managed?'Use the dedicated '+(t.id==='gallery'?'Gallery':t.id==='videos'?'Videos':'Temples in Rega')+' Manager below to manage its items. This editor controls the section heading and introductory content.':'Click inside the editor to change text and content. Use the toolbar to insert links, images or YouTube videos.';row.appendChild(note);const ed=document.createElement('div');ed.className='section-html';ed.contentEditable='true';ed.spellcheck=true;ed.innerHTML=d.html||'';if(!t.managed)row.appendChild(toolbar(ed));row.appendChild(ed);const saveOne=document.createElement('button');saveOne.type='button';saveOne.className='admin-btn';saveOne.textContent='Save this section';saveOne.onclick=async()=>{state.sections[t.id]={html:sanitizeHtml(ed.innerHTML),visible:row.querySelector('.sec-visible').checked};applySection(t.id,state.sections[t.id]);renderCustom();await save();document.getElementById('fullSiteMsg').textContent='✓ '+t.label+' published.';render();};row.appendChild(saveOne);list.appendChild(row);});(state.customSections||[]).forEach((x,i)=>renderCustomEditor(list,x,i));}
+  function renderCustomEditor(list,x,i){const row=document.createElement('div');row.className='full-site-row';row.dataset.customIndex=String(i);row.innerHTML='<div class="full-site-head"><h4>✨ Custom Section '+(i+1)+'</h4><span class="custom-badge">CUSTOM</span></div>';const ey=document.createElement('input');ey.type='text';ey.value=x.eyebrow||'CUSTOM SECTION';ey.placeholder='Eyebrow';row.appendChild(ey);const ti=document.createElement('input');ti.type='text';ti.value=x.title||'New Section';ti.placeholder='Section title';row.appendChild(ti);const ed=document.createElement('div');ed.className='section-html';ed.contentEditable='true';ed.innerHTML=x.html||'<p>Write your content here.</p>';row.appendChild(toolbar(ed));addMediaTools(row,ed);row.appendChild(ed);refreshDeleteControls(ed);const vis=document.createElement('label');vis.innerHTML='<input type="checkbox" '+(x.visible!==false?'checked':'')+'> Visible';row.appendChild(vis);const actions=document.createElement('div');actions.className='admin-actions';const saveBtn=document.createElement('button');saveBtn.className='admin-btn primary';saveBtn.textContent='Save Custom Section';saveBtn.onclick=async()=>{x.eyebrow=ey.value;x.title=ti.value;x.html=sanitizeHtml(ed.innerHTML);x.visible=vis.querySelector('input').checked;x.order=i+1;state.customSections[i]=x;renderCustom();await save();document.getElementById('fullSiteMsg').textContent='✓ Custom section published.';render();};actions.appendChild(saveBtn);const del=document.createElement('button');del.className='admin-btn danger';del.textContent='Delete Section';del.onclick=async()=>{if(!confirm('Delete this custom section permanently?'))return;state.customSections.splice(i,1);renderCustom();await save();render();};actions.appendChild(del);row.appendChild(actions);list.appendChild(row);}
+  document.getElementById('saveFullSite')?.addEventListener('click',async()=>{const m=document.getElementById('fullSiteMsg');m.textContent='Publishing all website sections…';try{document.querySelectorAll('#fullSiteList .full-site-row[data-section-id]').forEach(row=>{const id=row.dataset.sectionId;const ed=row.querySelector('.section-html');const cb=row.querySelector('.sec-visible');if(id&&ed)state.sections[id]={html:sanitizeHtml(ed.innerHTML),visible:cb?cb.checked:true};});document.querySelectorAll('#fullSiteList .full-site-row[data-custom-index]').forEach(row=>{const i=Number(row.dataset.customIndex);const inputs=row.querySelectorAll('input[type=text]');const ed=row.querySelector('.section-html');const cb=row.querySelector('input[type=checkbox]');if(state.customSections[i]){state.customSections[i].eyebrow=inputs[0]?.value||state.customSections[i].eyebrow;state.customSections[i].title=inputs[1]?.value||state.customSections[i].title;state.customSections[i].html=sanitizeHtml(ed?.innerHTML||'');state.customSections[i].visible=cb?cb.checked:true;}});await save();targets.forEach(t=>{if(state.sections[t.id])applySection(t.id,state.sections[t.id]);});renderCustom();m.textContent='✓ All main website content published to Supabase.';render();}catch(e){m.textContent='Save failed: '+e.message;}});
+  document.getElementById('refreshFullSite')?.addEventListener('click',()=>{load().then(()=>{render();document.getElementById('fullSiteMsg').textContent='✓ Current cloud content loaded.';});});
+  document.getElementById('addCustomSection')?.addEventListener('click',()=>{state.customSections=state.customSections||[];state.customSections.push({id:'custom-'+Date.now(),eyebrow:'NEW SECTION',title:'New Section',html:'<p>Add your text, image or YouTube video using the editor toolbar.</p>',visible:true,order:state.customSections.length+1});renderCustom();render();document.getElementById('fullSiteMsg').textContent='New section created. Edit it and click Save Custom Section.';});
+
+  const defaultNav=[
+    {label:'HOME',href:'#home',visible:true,locked:true},{label:'ABOUT',href:'#about',visible:true,locked:false},{label:'GAYATRI',href:'#gayatri',visible:true,locked:false},{label:'MANTRA',href:'#mantra',visible:true,locked:false},{label:'PANCHAMUKHA',href:'#panchamukha',visible:true,locked:false},{label:'VISIT',href:'#visit',visible:true,locked:false},{label:'REACH',href:'#reach',visible:true,locked:false},{label:'GALLERY',href:'#gallery',visible:true,locked:false},{label:'VIDEOS',href:'#videos',visible:true,locked:false},{label:'TEMPLES IN REGA',href:'#temples-rega',visible:true,locked:false},{label:'CONTACT',href:'#contact',visible:true,locked:false}
+  ];
+  function navState(){return state.navMenu?.length?state.navMenu:defaultNav.map(x=>({...x}));}
+  function applyNav(){const box=document.querySelector('.links');if(!box)return;box.innerHTML='';navState().filter(x=>x.visible!==false).forEach(x=>{const a=document.createElement('a');a.href=x.href||'#';a.textContent=x.label||'LINK';if(/^https?:/i.test(a.href)){a.target='_blank';a.rel='noopener';}box.appendChild(a);});}
+  function renderNavManager(){const l=document.getElementById('navManagerList');if(!l)return;l.innerHTML='';navState().forEach((x,i)=>{const r=document.createElement('div');r.className='nav-admin-row';r.innerHTML='<input data-k="label" value="'+escapeText(x.label||'')+'" placeholder="Label"><input data-k="href" value="'+escapeText(x.href||'')+'" placeholder="#section or https://..."><label style="margin:0"><input data-k="visible" type="checkbox" '+(x.visible!==false?'checked':'')+'> Show</label><div class="nav-actions"><button type="button" class="admin-btn" data-up>↑</button><button type="button" class="admin-btn" data-down>↓</button></div><button type="button" class="admin-btn danger" data-del>Delete</button>';r.querySelector('[data-up]').onclick=()=>{if(i>0){const a=navState();[a[i-1],a[i]]=[a[i],a[i-1]];state.navMenu=a;renderNavManager();}};r.querySelector('[data-down]').onclick=()=>{const a=navState();if(i<a.length-1){[a[i+1],a[i]]=[a[i],a[i+1]];state.navMenu=a;renderNavManager();}};r.querySelector('[data-del]').onclick=()=>{if(confirm('Delete this navigation item?')){const a=navState();a.splice(i,1);state.navMenu=a;renderNavManager();}};l.appendChild(r);});}
+  async function saveNav(){const user=await requireUser();const rows=[...document.querySelectorAll('#navManagerList .nav-admin-row')];state.navMenu=rows.map(r=>({label:r.querySelector('[data-k="label"]').value.trim(),href:r.querySelector('[data-k="href"]').value.trim(),visible:r.querySelector('[data-k="visible"]').checked})).filter(x=>x.label&&x.href);const {data:row}=await sb.from('temple_content').select('content').eq('id',1).maybeSingle();const content={...(row?.content||{}),fullCms:{...state,navMenu:state.navMenu}};const {error}=await sb.from('temple_content').upsert({id:1,content,updated_at:new Date().toISOString(),updated_by:user.id});if(error)throw error;applyNav();document.getElementById('navMsg').textContent='✓ Navigation menu published.';}
+  document.getElementById('addNavItem')?.addEventListener('click',()=>{const a=navState();a.push({label:'NEW ITEM',href:'#home',visible:true});state.navMenu=a;renderNavManager();});
+  document.getElementById('saveNavMenu')?.addEventListener('click',async()=>{try{await saveNav()}catch(e){document.getElementById('navMsg').textContent='Save failed: '+e.message;}});
+  const oldLoad=load; load=async function(){await oldLoad();applyNav();renderNavManager();};
+  applyNav();renderNavManager();
+  window.fullSiteCMS={render,load,save};load();
+
+})();
+</script>\n
+
+<style>
+.cms-photo-gallery{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin:18px 0}.cms-photo-gallery img{width:100%;height:180px;object-fit:cover;border-radius:14px;border:1px solid #d6a33a55}.cms-gallery-item{position:relative}.cms-gallery-item .cms-delete-image{position:absolute;top:5px;right:5px;border:0;border-radius:999px;background:#8d3020;color:#fff;padding:4px 7px;cursor:pointer;z-index:5}.cms-media-block{margin:18px 0}.cms-media-block img{max-width:100%;border-radius:16px;display:block}.cms-media-block iframe{width:100%;aspect-ratio:16/9;border:0;border-radius:16px;display:block}.cms-action-button{display:inline-block;padding:11px 18px;border-radius:999px;background:#d6a33a;color:#35140e;text-decoration:none;font-weight:700;margin:8px 6px 8px 0}.cms-admin-block{position:relative;border:2px dashed #d6a33a88;border-radius:14px;padding:8px;margin:12px 0}.cms-delete-block{position:absolute;top:6px;right:6px;border:0;border-radius:999px;background:#8d3020;color:#fff;padding:5px 9px;cursor:pointer;z-index:5}.cms-media-tools{display:flex;gap:8px;flex-wrap:wrap;align-items:end;background:#fff3cf;border:1px solid #d6a33a66;border-radius:12px;padding:12px;margin:12px 0}.cms-media-tools label{margin:0!important;flex:1;min-width:180px}.cms-media-tools input{margin:4px 0!important}.nav-admin-row{display:grid;grid-template-columns:1.2fr 1.5fr auto auto auto;gap:8px;align-items:center;background:#fff;border:1px solid #e2d2b2;border-radius:12px;padding:10px;margin:8px 0}.nav-admin-row input{margin:0!important}.nav-admin-row button{margin:0}.nav-admin-row .nav-actions{display:flex;gap:4px;flex-wrap:wrap}@media(max-width:760px){.nav-admin-row{grid-template-columns:1fr}.cms-media-tools{display:block}}
+</style>
+
 </body></html>
