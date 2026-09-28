@@ -11,7 +11,7 @@
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap');
 :root{--maroon:#35140e;--brown:#5a2115;--gold:#d6a33a;--cream:#fff8e9;--paper:#fffdf7;--ink:#34231c;--muted:#756158}
-*{box-sizing:border-box;scroll-behavior:smooth}body{margin:0;background:#f8ecd5;color:var(--ink);font-family:Inter,Arial,sans-serif;line-height:1.7}
+*{box-sizing:border-box;scroll-behavior:smooth}html{scroll-padding-top:105px}body{margin:0;background:#f8ecd5;color:var(--ink);font-family:Inter,Arial,sans-serif;line-height:1.7}section[id],header[id],footer[id]{scroll-margin-top:105px}
 nav{position:sticky;top:0;z-index:99;background:rgba(53,20,14,.97);padding:14px 5%;display:flex;justify-content:space-between;align-items:center;gap:20px;box-shadow:0 8px 30px #0003}
 .logo{font-family:Cinzel,serif;color:#f2cb71;text-decoration:none;font-weight:700;letter-spacing:1px;white-space:nowrap}.links{display:flex;gap:16px;flex-wrap:wrap;justify-content:flex-end}.links a{color:#fff7e5;text-decoration:none;font-size:11px}.links a:hover{color:#f2cb71}
 .hero{min-height:92vh;display:grid;place-items:center;text-align:center;padding:80px 6%;background:radial-gradient(circle at center,#b7772540,transparent 32%),linear-gradient(135deg,#24100b,#642515,#28100b);color:#fff8e9;position:relative;overflow:hidden}
@@ -1088,6 +1088,23 @@ Andhra Pradesh, India</textarea></label>
   document.getElementById('saveNavMenu')?.addEventListener('click',async()=>{try{await saveNav()}catch(e){document.getElementById('navMsg').textContent='Save failed: '+e.message;}});
   const oldLoad=load; load=async function(){await oldLoad();applyNav();renderNavManager();};
   applyNav();renderNavManager();
+
+  // Reliable same-page navigation for the sticky navigation bar.
+  document.addEventListener('click',function(e){
+    const link=e.target.closest('a[href^="#"]');
+    if(!link) return;
+    const hash=link.getAttribute('href');
+    if(!hash || hash==="#") return;
+    const target=document.getElementById(hash.slice(1));
+    if(!target) return;
+    e.preventDefault();
+    const nav=document.querySelector('nav');
+    const offset=(nav?.getBoundingClientRect().height||90)+12;
+    const y=target.getBoundingClientRect().top+window.pageYOffset-offset;
+    history.pushState(null,'',hash);
+    window.scrollTo({top:Math.max(0,y),behavior:'smooth'});
+  });
+
   window.fullSiteCMS={render,load,save};load();
 
 })();
@@ -1096,5 +1113,23 @@ Andhra Pradesh, India</textarea></label>
 <style>
 .cms-photo-gallery{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin:18px 0}.cms-photo-gallery img{width:100%;height:180px;object-fit:cover;border-radius:14px;border:1px solid #d6a33a55}.cms-gallery-item{position:relative}.cms-gallery-item .cms-delete-image{position:absolute;top:5px;right:5px;border:0;border-radius:999px;background:#8d3020;color:#fff;padding:4px 7px;cursor:pointer;z-index:5}.cms-media-block{margin:18px 0}.cms-media-block img{max-width:100%;border-radius:16px;display:block}.cms-media-block iframe{width:100%;aspect-ratio:16/9;border:0;border-radius:16px;display:block}.cms-action-button{display:inline-block;padding:11px 18px;border-radius:999px;background:#d6a33a;color:#35140e;text-decoration:none;font-weight:700;margin:8px 6px 8px 0}.cms-admin-block{position:relative;border:2px dashed #d6a33a88;border-radius:14px;padding:8px;margin:12px 0}.cms-delete-block{position:absolute;top:6px;right:6px;border:0;border-radius:999px;background:#8d3020;color:#fff;padding:5px 9px;cursor:pointer;z-index:5}.cms-media-tools{display:flex;gap:8px;flex-wrap:wrap;align-items:end;background:#fff3cf;border:1px solid #d6a33a66;border-radius:12px;padding:12px;margin:12px 0}.cms-media-tools label{margin:0!important;flex:1;min-width:180px}.cms-media-tools input{margin:4px 0!important}.nav-admin-row{display:grid;grid-template-columns:1.2fr 1.5fr auto auto auto;gap:8px;align-items:center;background:#fff;border:1px solid #e2d2b2;border-radius:12px;padding:10px;margin:8px 0}.nav-admin-row input{margin:0!important}.nav-admin-row button{margin:0}.nav-admin-row .nav-actions{display:flex;gap:4px;flex-wrap:wrap}@media(max-width:760px){.nav-admin-row{grid-template-columns:1fr}.cms-media-tools{display:block}}
 </style>
+
+<script>
+/* Precision navigation for the sticky header */
+document.addEventListener("click", function(e) {
+  const link = e.target.closest("nav a[href^='#']");
+  if (!link) return;
+  const hash = link.getAttribute("href");
+  if (!hash || hash === "#") return;
+  const target = document.getElementById(hash.slice(1));
+  if (!target) return;
+  e.preventDefault();
+  const nav = document.querySelector("nav");
+  const offset = (nav ? nav.getBoundingClientRect().height : 0) + 12;
+  const top = target.getBoundingClientRect().top + window.pageYOffset - offset;
+  window.scrollTo({ top: top, behavior: "smooth" });
+  history.replaceState(null, "", hash);
+});
+</script>
 
 </body></html>
