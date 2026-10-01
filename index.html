@@ -293,16 +293,6 @@ window.supabaseClient = window.supabase.createClient(
       </figcaption>
     </figure>
     <figure class="real-gallery-card" data-category="Festivals">
-      <a href="https://avhcpkrh.manus.space/images/gallery/Gayatri%20devi%20deepam%20pooja.jpg" target="_blank" rel="noopener">
-        <img src="https://avhcpkrh.manus.space/images/gallery/Gayatri%20devi%20deepam%20pooja.jpg" alt="Gayatri Devi — Deepa Pooja" loading="lazy" decoding="async">
-        <span class="gallery-overlay">View Photo ↗</span>
-      </a>
-      <figcaption>
-        <span class="gallery-category">Festivals</span>
-        <strong>Gayatri Devi — Deepa Pooja</strong>
-      </figcaption>
-    </figure>
-    <figure class="real-gallery-card" data-category="Festivals">
       <a href="https://avhcpkrh.manus.space/images/gallery/Gayatri%20temple%20deeparathana%201.jpg" target="_blank" rel="noopener">
         <img src="https://avhcpkrh.manus.space/images/gallery/Gayatri%20temple%20deeparathana%201.jpg" alt="Gayatri Temple — Deeparadhana" loading="lazy" decoding="async">
         <span class="gallery-overlay">View Photo ↗</span>
@@ -1019,7 +1009,8 @@ footer.section-opening::before{
   function staticGalleryCards(){return [...document.querySelectorAll('.real-gallery-grid .real-gallery-card')].map(card=>({card,url:card.querySelector('a')?.getAttribute('href')||card.querySelector('img')?.getAttribute('src')||'',title:card.querySelector('figcaption strong')?.textContent||'Website Photo',category:card.dataset.category||'Temple'})).filter(x=>x.url);}
   function normalizeGalleryUrl(url){try{const u=new URL(url,window.location.href);u.hash="";return decodeURIComponent(u.href).replace(/\\/+$/,"").toLowerCase();}catch(e){return String(url||"").trim().toLowerCase();}}
   function galleryDuplicateKey(item){return normalizeGalleryUrl(item?.image_url||item?.url||"");}
-  window.templeCloudGalleryLoad = async function(){try{const grid=document.querySelector(".real-gallery-grid");const deleted=await galleryDeletedUrls();const staticItems=staticGalleryCards();const seen=new Set(staticItems.map(x=>normalizeGalleryUrl(x.url)).filter(Boolean));if(grid)staticItems.forEach(x=>x.card.style.display=deleted.includes(x.url)?'none':'');const rows=await window.templeCloud.cloudGallery();const uniqueRows=[];for(const x of rows){const key=galleryDuplicateKey(x);if(!key||seen.has(key))continue;seen.add(key);uniqueRows.push(x);}if(grid){grid.querySelectorAll('.cloud-gallery-card').forEach(x=>x.remove());uniqueRows.forEach(x=>{const fig=document.createElement('figure');fig.className='real-gallery-card cloud-gallery-card';fig.dataset.category=x.category||'Temple';fig.innerHTML=`<a href="${safe(x.image_url)}" target="_blank" rel="noopener"><img src="${safe(x.image_url)}" alt="${safe(x.title||"Temple Photo")}" loading="lazy" decoding="async"><span class="gallery-overlay">View Photo ↗</span></a><figcaption><span class="gallery-category">${safe(x.category||"Temple")}</span><strong>${safe(x.title||"Temple Photo")}</strong>${x.description?`<p style="margin:7px 0 0;color:#6d5148;font-size:12px;line-height:1.5">${safe(x.description)}</p>`:""}</figcaption></figure>`;grid.appendChild(fig);});bindGalleryFilters();}renderCloudGalleryAdmin(uniqueRows,deleted);}catch(e){console.warn("Gallery cloud load:",e.message);}};
+  const permanentlyHiddenGalleryUrls=["https://avhcpkrh.manus.space/images/gallery/Gayatri%20devi%20deepam%20pooja.jpg"];
+  window.templeCloudGalleryLoad = async function(){try{const grid=document.querySelector(".real-gallery-grid");const deleted=[...(await galleryDeletedUrls()),...permanentlyHiddenGalleryUrls];const staticItems=staticGalleryCards();const seen=new Set(staticItems.map(x=>normalizeGalleryUrl(x.url)).filter(Boolean));if(grid)staticItems.forEach(x=>x.card.style.display=deleted.includes(x.url)?'none':'');const rows=await window.templeCloud.cloudGallery();const uniqueRows=[];for(const x of rows){const key=galleryDuplicateKey(x);if(!key||seen.has(key))continue;seen.add(key);uniqueRows.push(x);}if(grid){grid.querySelectorAll('.cloud-gallery-card').forEach(x=>x.remove());uniqueRows.forEach(x=>{const fig=document.createElement('figure');fig.className='real-gallery-card cloud-gallery-card';fig.dataset.category=x.category||'Temple';fig.innerHTML=`<a href="${safe(x.image_url)}" target="_blank" rel="noopener"><img src="${safe(x.image_url)}" alt="${safe(x.title||"Temple Photo")}" loading="lazy" decoding="async"><span class="gallery-overlay">View Photo ↗</span></a><figcaption><span class="gallery-category">${safe(x.category||"Temple")}</span><strong>${safe(x.title||"Temple Photo")}</strong>${x.description?`<p style="margin:7px 0 0;color:#6d5148;font-size:12px;line-height:1.5">${safe(x.description)}</p>`:""}</figcaption></figure>`;grid.appendChild(fig);});bindGalleryFilters();}renderCloudGalleryAdmin(uniqueRows,deleted);}catch(e){console.warn("Gallery cloud load:",e.message);}};
 
   function bindGalleryFilters(){
     document.querySelectorAll('.gallery-filter').forEach(b=>b.onclick=function(){
