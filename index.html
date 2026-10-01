@@ -33,7 +33,27 @@ section{max-width:1250px;margin:auto;padding:85px 7%}section:nth-of-type(even){b
 .address{background:var(--paper);border:1px solid #d6a33a55;padding:24px;border-radius:18px;display:inline-block}
 footer{background:#24100b;color:#d8c5a7;text-align:center;padding:55px 7%}footer h2{color:#efc45f;font-size:25px}footer a{color:#efc45f;text-decoration:none;margin:0 8px;font-size:12px}
 @media(max-width:760px){nav{align-items:flex-start}.links{gap:9px}.links a{font-size:9px}.hero{min-height:85vh}.om{font-size:48px}section{padding:65px 5%}.route{grid-template-columns:1fr}.distance{grid-template-columns:1fr}}
-.temple-photo-manager{margin:12px 0;padding:12px;border:1px solid #e2d2b2;border-radius:12px;background:#fffaf0}.temple-photo-admin-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px;margin-top:10px}.temple-photo-admin-item{display:flex;flex-direction:column;gap:6px;padding:7px;border:1px solid #e2d2b2;border-radius:10px;background:#fff}.temple-photo-admin-item img{width:100%;height:120px;object-fit:cover;border-radius:8px}.temple-photo-delete{font-size:12px;padding:6px 9px!important}.</style>
+.temple-photo-manager{margin:12px 0;padding:12px;border:1px solid #e2d2b2;border-radius:12px;background:#fffaf0}.temple-photo-admin-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px;margin-top:10px}.temple-photo-admin-item{display:flex;flex-direction:column;gap:6px;padding:7px;border:1px solid #e2d2b2;border-radius:10px;background:#fff}.temple-photo-admin-item img{width:100%;height:120px;object-fit:cover;border-radius:8px}.temple-photo-delete{font-size:12px;padding:6px 9px!important}./* Premium interactive divine temple symbols */
+.divine-temple-symbol{
+  width:88px;height:66px;margin:0 auto 13px;position:relative;
+  display:flex;align-items:center;justify-content:center;
+  opacity:.98;transform:translateZ(0);
+  filter:drop-shadow(0 0 7px rgba(214,163,58,.18));
+  transition:transform .45s ease,filter .45s ease;
+}
+.divine-temple-symbol svg{width:88px;height:66px;overflow:visible}
+.divine-temple-symbol span{
+  position:absolute;width:56px;height:10px;bottom:2px;border-radius:50%;
+  background:radial-gradient(ellipse,rgba(239,196,95,.34),rgba(239,196,95,0) 72%);
+  filter:blur(3px);animation:templeAura 2.8s ease-in-out infinite;
+}
+section:hover .divine-temple-symbol{transform:translateY(-3px) scale(1.045);filter:drop-shadow(0 0 13px rgba(239,196,95,.42))}
+.divine-temple-symbol svg{animation:templeSymbolFloat 4.8s ease-in-out infinite}
+@keyframes templeSymbolFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}
+@keyframes templeAura{0%,100%{opacity:.45;transform:scale(.88)}50%{opacity:.9;transform:scale(1.08)}}
+@media(max-width:700px){.divine-temple-symbol{width:72px;height:56px;margin-bottom:9px}.divine-temple-symbol svg{width:72px;height:56px}}
+@media(prefers-reduced-motion:reduce){.divine-temple-symbol svg,.divine-temple-symbol span{animation:none}}
+</style>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"Place","name":"Veda Maatha Gayatri Devi Temple","address":{"@type":"PostalAddress","addressLocality":"Rega Village","addressRegion":"Andhra Pradesh","addressCountry":"IN"},"geo":{"@type":"GeoCoordinates","latitude":"17.95217","longitude":"83.125995"}}
 </script>
@@ -106,19 +126,19 @@ window.supabaseClient = window.supabase.createClient(
 <div class="buttons"><a class="btn primary" href="#visit">Plan Your Visit</a><a class="btn" href="#mantra">Explore the Mantra</a></div>
 </div></header>
 
-<section id="about"><div class="eyebrow">ABOUT THE TEMPLE</div><h2>A Sacred Centre of Devotion</h2>
+<section id="about"><div class="divine-temple-symbol" aria-hidden="true"><svg viewBox="0 0 96 72" role="presentation"><defs><linearGradient id="templeGold" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff0a3"/><stop offset=".45" stop-color="#d6a33a"/><stop offset="1" stop-color="#8b5315"/></linearGradient></defs><path d="M10 61h76M16 55h64M21 55V35h54v20M27 35V25h42v10M33 25V17h30v8M40 17V10h16v7M48 5l4 5h-8z" fill="none" stroke="url(#templeGold)" stroke-width="3" stroke-linejoin="round"/><path d="M31 55V43h34v12M43 55V43h10v12" fill="none" stroke="#d6a33a" stroke-width="2"/><circle cx="48" cy="31" r="3.5" fill="#f8dc7b"/><path d="M48 28c-4-7-9 2 0 3 9-1 4-10 0-3z" fill="none" stroke="#efc45f" stroke-width="1.5"/></svg><span></span></div><div class="eyebrow">ABOUT THE TEMPLE</div><h2>A Sacred Centre of Devotion</h2>
 <p class="lead">The Veda Maatha Gayatri Devi Temple stands in <b>Rega Village, Lakkavarapukota Mandal, Vizianagaram District, Andhra Pradesh</b>. Dedicated to Goddess Gayatri, the temple is particularly distinguished by the worship of her <b>Panchamukha form</b>. The peaceful surroundings create a setting for devotion, silence and spiritual contemplation.</p></section>
 
-<section id="gayatri"><div class="eyebrow">THE DIVINE PRESENCE</div><h2>Veda Mata — The Mother of the Vedas</h2>
+<section id="gayatri"><div class="divine-temple-symbol" aria-hidden="true"><svg viewBox="0 0 96 72" role="presentation"><defs><linearGradient id="templeGold" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff0a3"/><stop offset=".45" stop-color="#d6a33a"/><stop offset="1" stop-color="#8b5315"/></linearGradient></defs><path d="M10 61h76M16 55h64M21 55V35h54v20M27 35V25h42v10M33 25V17h30v8M40 17V10h16v7M48 5l4 5h-8z" fill="none" stroke="url(#templeGold)" stroke-width="3" stroke-linejoin="round"/><path d="M31 55V43h34v12M43 55V43h10v12" fill="none" stroke="#d6a33a" stroke-width="2"/><circle cx="48" cy="31" r="3.5" fill="#f8dc7b"/><path d="M48 28c-4-7-9 2 0 3 9-1 4-10 0-3z" fill="none" stroke="#efc45f" stroke-width="1.5"/></svg><span></span></div><div class="eyebrow">THE DIVINE PRESENCE</div><h2>Veda Mata — The Mother of the Vedas</h2>
 <p class="lead">Goddess Gayatri is traditionally worshipped as <b>Veda Mata</b>, the Mother of the Vedas, and as the divine embodiment of the sacred Gayatri Mantra.</p>
 <div class="grid"><div class="card"><h3>Vedic Heritage</h3><p>Timeless spiritual heritage associated with Goddess Gayatri and the Gayatri Mantra.</p></div><div class="card"><h3>Divine Worship</h3><p>Traditional devotional practices, prayers, archana, abhishekam and sacred observances.</p></div><div class="card"><h3>Peaceful Surroundings</h3><p>A serene rural setting conducive to contemplation and reflection.</p></div><div class="card"><h3>Inner Reflection</h3><p>A quiet space to pause, pray and reconnect with deeper dimensions of spiritual life.</p></div></div></section>
 
-<section id="mantra"><div class="eyebrow">THE SACRED GAYATRI MANTRA</div><h2>The Prayer of Divine Illumination</h2>
+<section id="mantra"><div class="divine-temple-symbol" aria-hidden="true"><svg viewBox="0 0 96 72" role="presentation"><defs><linearGradient id="templeGold" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff0a3"/><stop offset=".45" stop-color="#d6a33a"/><stop offset="1" stop-color="#8b5315"/></linearGradient></defs><path d="M10 61h76M16 55h64M21 55V35h54v20M27 35V25h42v10M33 25V17h30v8M40 17V10h16v7M48 5l4 5h-8z" fill="none" stroke="url(#templeGold)" stroke-width="3" stroke-linejoin="round"/><path d="M31 55V43h34v12M43 55V43h10v12" fill="none" stroke="#d6a33a" stroke-width="2"/><circle cx="48" cy="31" r="3.5" fill="#f8dc7b"/><path d="M48 28c-4-7-9 2 0 3 9-1 4-10 0-3z" fill="none" stroke="#efc45f" stroke-width="1.5"/></svg><span></span></div><div class="eyebrow">THE SACRED GAYATRI MANTRA</div><h2>The Prayer of Divine Illumination</h2>
 <div class="mantra">ॐ भूर्भुवः स्वः<br>तत्सवितुर्वरेण्यं<br>भर्गो देवस्य धीमहि<br>धियो यो नः प्रचोदयात्॥</div>
 <p><b>Om Bhur Bhuvah Svah · Tat Savitur Varenyam · Bhargo Devasya Dhimahi · Dhiyo Yo Nah Prachodayat</b></p>
 <p>“We meditate upon the divine radiance of Savitur, the source of all creation. May that supreme light illuminate our intellect and guide us on the path of righteousness.”</p></section>
 
-<section id="panchamukha"><div class="eyebrow">PANCHAMUKHA GAYATRI DEVI</div><h2>The Five-Faced Divine Form</h2>
+<section id="panchamukha"><div class="divine-temple-symbol" aria-hidden="true"><svg viewBox="0 0 96 72" role="presentation"><defs><linearGradient id="templeGold" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff0a3"/><stop offset=".45" stop-color="#d6a33a"/><stop offset="1" stop-color="#8b5315"/></linearGradient></defs><path d="M10 61h76M16 55h64M21 55V35h54v20M27 35V25h42v10M33 25V17h30v8M40 17V10h16v7M48 5l4 5h-8z" fill="none" stroke="url(#templeGold)" stroke-width="3" stroke-linejoin="round"/><path d="M31 55V43h34v12M43 55V43h10v12" fill="none" stroke="#d6a33a" stroke-width="2"/><circle cx="48" cy="31" r="3.5" fill="#f8dc7b"/><path d="M48 28c-4-7-9 2 0 3 9-1 4-10 0-3z" fill="none" stroke="#efc45f" stroke-width="1.5"/></svg><span></span></div><div class="eyebrow">PANCHAMUKHA GAYATRI DEVI</div><h2>The Five-Faced Divine Form</h2>
 <p class="lead">The Panchamukha form of Gayatri Devi is traditionally understood through five sacred faces, each carrying profound symbolic associations.</p>
 <div class="grid">
 <div class="card"><div class="number">01</div><h3>Eastern Face</h3><h4>The Light of Awakening</h4><p>New beginnings · Awakening · Knowledge · Illumination</p><small>Traditionally associated with Brahma, the principle of creation.</small></div>
@@ -128,13 +148,13 @@ window.supabaseClient = window.supabase.createClient(
 <div class="card"><div class="number">05</div><h3>Upward Face</h3><h4>The Path to Transcendence</h4><p>Spiritual elevation · Transcendence · Divine consciousness · Ultimate reality</p><small>Traditionally associated with Ishvara, the Supreme Divine.</small></div>
 </div></section>
 
-<section id="visit"><div class="eyebrow">TEMPLE VISIT</div><h2>Temple Timings</h2>
+<section id="visit"><div class="divine-temple-symbol" aria-hidden="true"><svg viewBox="0 0 96 72" role="presentation"><defs><linearGradient id="templeGold" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff0a3"/><stop offset=".45" stop-color="#d6a33a"/><stop offset="1" stop-color="#8b5315"/></linearGradient></defs><path d="M10 61h76M16 55h64M21 55V35h54v20M27 35V25h42v10M33 25V17h30v8M40 17V10h16v7M48 5l4 5h-8z" fill="none" stroke="url(#templeGold)" stroke-width="3" stroke-linejoin="round"/><path d="M31 55V43h34v12M43 55V43h10v12" fill="none" stroke="#d6a33a" stroke-width="2"/><circle cx="48" cy="31" r="3.5" fill="#f8dc7b"/><path d="M48 28c-4-7-9 2 0 3 9-1 4-10 0-3z" fill="none" stroke="#efc45f" stroke-width="1.5"/></svg><span></span></div><div class="eyebrow">TEMPLE VISIT</div><h2>Temple Timings</h2>
 <div class="timings"><div class="time">Morning Darshan<b>6:00 AM – 12:00 PM</b></div><div class="time">Evening Darshan<b>4:00 PM – 8:30 PM</b></div></div>
 <div class="note"><b>Please Note:</b> Temple timings may vary during festivals, special ceremonies and other important occasions. Visitors are advised to confirm the timings before planning their visit.</div>
 <h2 style="margin-top:55px">Daily Worship</h2><div class="grid">
 <div class="card"><b>6:00 AM</b><p>Suprabhatam — Morning Prayer</p></div><div class="card"><b>7:00 AM</b><p>Abhishekam — Sacred Ritual Bath</p></div><div class="card"><b>8:00 AM</b><p>Alankaram — Divine Decoration</p></div><div class="card"><b>9:00 AM</b><p>Archana — Devotional Offering</p></div><div class="card"><b>12:00 PM</b><p>Madhyahnika Pooja — Midday Worship</p></div><div class="card"><b>6:00 PM</b><p>Sandhya Deepa Aradhana — Evening Lamp Worship</p></div><div class="card"><b>8:00 PM</b><p>Ekanta Seva — Final Prayer</p></div><div class="card deepam-card"><div class="deepam-animation" aria-label="Animated sacred oil lamp" role="img"><div class="deepam-glow"></div><div class="deepam-flame"><span></span></div><div class="deepam-wick"></div><div class="deepam-bowl"></div><div class="deepam-base"></div></div><p class="deepam-caption">Sacred Deepam</p></div></div></section>
 
-<section id="reach"><div class="eyebrow">HOW TO REACH</div><h2>Your Journey to the Divine Begins Here</h2>
+<section id="reach"><div class="divine-temple-symbol" aria-hidden="true"><svg viewBox="0 0 96 72" role="presentation"><defs><linearGradient id="templeGold" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff0a3"/><stop offset=".45" stop-color="#d6a33a"/><stop offset="1" stop-color="#8b5315"/></linearGradient></defs><path d="M10 61h76M16 55h64M21 55V35h54v20M27 35V25h42v10M33 25V17h30v8M40 17V10h16v7M48 5l4 5h-8z" fill="none" stroke="url(#templeGold)" stroke-width="3" stroke-linejoin="round"/><path d="M31 55V43h34v12M43 55V43h10v12" fill="none" stroke="#d6a33a" stroke-width="2"/><circle cx="48" cy="31" r="3.5" fill="#f8dc7b"/><path d="M48 28c-4-7-9 2 0 3 9-1 4-10 0-3z" fill="none" stroke="#efc45f" stroke-width="1.5"/></svg><span></span></div><div class="eyebrow">HOW TO REACH</div><h2>Your Journey to the Divine Begins Here</h2>
 <p class="lead">The Veda Maatha Gayatri Devi Temple is conveniently accessible from <b>Visakhapatnam, Vizianagaram, Kothavalasa and Musiram</b>. Whether your journey begins in a bustling city or a quiet village, the final stretch towards Rega leads into a peaceful rural landscape and towards the sacred presence of Gayatri Devi.</p>
 <div class="routes">
 <div class="route"><b>Visakhapatnam</b><span>Visakhapatnam → Kothavalasa → Devarapalli Road → Musiram → Rega Village → Temple</span></div>
@@ -153,7 +173,7 @@ window.supabaseClient = window.supabase.createClient(
 
 
 <section id="gallery">
-  <div class="eyebrow">GALLERY</div>
+  <div class="divine-temple-symbol" aria-hidden="true"><svg viewBox="0 0 96 72" role="presentation"><defs><linearGradient id="templeGold" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff0a3"/><stop offset=".45" stop-color="#d6a33a"/><stop offset="1" stop-color="#8b5315"/></linearGradient></defs><path d="M10 61h76M16 55h64M21 55V35h54v20M27 35V25h42v10M33 25V17h30v8M40 17V10h16v7M48 5l4 5h-8z" fill="none" stroke="url(#templeGold)" stroke-width="3" stroke-linejoin="round"/><path d="M31 55V43h34v12M43 55V43h10v12" fill="none" stroke="#d6a33a" stroke-width="2"/><circle cx="48" cy="31" r="3.5" fill="#f8dc7b"/><path d="M48 28c-4-7-9 2 0 3 9-1 4-10 0-3z" fill="none" stroke="#efc45f" stroke-width="1.5"/></svg><span></span></div><div class="eyebrow">GALLERY</div>
   <h2>Sacred Moments. Timeless Memories.</h2>
   <p class="lead">Explore the temple, the sacred deities, devotional observances and peaceful surroundings through photographs sourced from the existing Gayatri Temple gallery.</p>
 
@@ -351,17 +371,17 @@ window.supabaseClient = window.supabase.createClient(
 </section>
 
 <section id="videos">
-  <div class="section-title"><div class="eyebrow">VIDEOS</div><h2>Hear the Mantra. Feel the Devotion. Experience the Divine.</h2><p>Devotional presentations, sacred recitations and temple experiences.</p></div>
+  <div class="section-title"><div class="divine-temple-symbol" aria-hidden="true"><svg viewBox="0 0 96 72" role="presentation"><defs><linearGradient id="templeGold" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff0a3"/><stop offset=".45" stop-color="#d6a33a"/><stop offset="1" stop-color="#8b5315"/></linearGradient></defs><path d="M10 61h76M16 55h64M21 55V35h54v20M27 35V25h42v10M33 25V17h30v8M40 17V10h16v7M48 5l4 5h-8z" fill="none" stroke="url(#templeGold)" stroke-width="3" stroke-linejoin="round"/><path d="M31 55V43h34v12M43 55V43h10v12" fill="none" stroke="#d6a33a" stroke-width="2"/><circle cx="48" cy="31" r="3.5" fill="#f8dc7b"/><path d="M48 28c-4-7-9 2 0 3 9-1 4-10 0-3z" fill="none" stroke="#efc45f" stroke-width="1.5"/></svg><span></span></div><div class="eyebrow">VIDEOS</div><h2>Hear the Mantra. Feel the Devotion. Experience the Divine.</h2><p>Devotional presentations, sacred recitations and temple experiences.</p></div>
   <div id="publicVideoGrid" class="video-grid" aria-live="polite"></div>
 </section>
 
 
 <section id="temples-rega">
-  <div class="section-title"><div class="eyebrow">TEMPLES IN REGA</div><h2 id="templesSectionTitle">Temples In Rega</h2><p id="templesSectionIntro">Discover the spiritual and cultural places of worship in and around Rega Village.</p></div>
+  <div class="section-title"><div class="divine-temple-symbol" aria-hidden="true"><svg viewBox="0 0 96 72" role="presentation"><defs><linearGradient id="templeGold" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff0a3"/><stop offset=".45" stop-color="#d6a33a"/><stop offset="1" stop-color="#8b5315"/></linearGradient></defs><path d="M10 61h76M16 55h64M21 55V35h54v20M27 35V25h42v10M33 25V17h30v8M40 17V10h16v7M48 5l4 5h-8z" fill="none" stroke="url(#templeGold)" stroke-width="3" stroke-linejoin="round"/><path d="M31 55V43h34v12M43 55V43h10v12" fill="none" stroke="#d6a33a" stroke-width="2"/><circle cx="48" cy="31" r="3.5" fill="#f8dc7b"/><path d="M48 28c-4-7-9 2 0 3 9-1 4-10 0-3z" fill="none" stroke="#efc45f" stroke-width="1.5"/></svg><span></span></div><div class="eyebrow">TEMPLES IN REGA</div><h2 id="templesSectionTitle">Temples In Rega</h2><p id="templesSectionIntro">Discover the spiritual and cultural places of worship in and around Rega Village.</p></div>
   <div id="publicTempleGrid" class="temple-public-grid" aria-live="polite"></div>
 </section>
 
-<section id="contact"><div class="eyebrow">CONTACT</div><h2>Visit. Pray. Reflect.</h2><p class="lead"><b>May the Divine Light of Gayatri Guide Your Path.</b></p>
+<section id="contact"><div class="divine-temple-symbol" aria-hidden="true"><svg viewBox="0 0 96 72" role="presentation"><defs><linearGradient id="templeGold" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff0a3"/><stop offset=".45" stop-color="#d6a33a"/><stop offset="1" stop-color="#8b5315"/></linearGradient></defs><path d="M10 61h76M16 55h64M21 55V35h54v20M27 35V25h42v10M33 25V17h30v8M40 17V10h16v7M48 5l4 5h-8z" fill="none" stroke="url(#templeGold)" stroke-width="3" stroke-linejoin="round"/><path d="M31 55V43h34v12M43 55V43h10v12" fill="none" stroke="#d6a33a" stroke-width="2"/><circle cx="48" cy="31" r="3.5" fill="#f8dc7b"/><path d="M48 28c-4-7-9 2 0 3 9-1 4-10 0-3z" fill="none" stroke="#efc45f" stroke-width="1.5"/></svg><span></span></div><div class="eyebrow">CONTACT</div><h2>Visit. Pray. Reflect.</h2><p class="lead"><b>May the Divine Light of Gayatri Guide Your Path.</b></p>
 <div class="address"><b>Veda Maatha Gayatri Devi Temple</b><br>Rega Village<br>Lakkavarapukota Mandal<br>Vizianagaram District<br>Andhra Pradesh, India</div>
 <p><b>Temple Main Priest Contact:</b> <a href="tel:+919666102452" style="color:#9a651b;font-weight:700;text-decoration:none;">+91 9666102452</a> &nbsp; | &nbsp; <b>Email:</b> Coming Soon</p></section>
 
