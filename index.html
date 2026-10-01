@@ -636,141 +636,133 @@ Andhra Pradesh, India</textarea></label>
 </style>
 
 <style>
-/* premium-section-opening-animation */
-:root{--section-glow:rgba(214,163,58,.24);--section-glow-soft:rgba(214,163,58,.10)}
-main section,
-header.hero,
-footer{
-  --reveal-y:34px;
-  --reveal-scale:.985;
+/* premium-section-opening-animation — smooth full-section + text reveal */
+main section,header.hero,footer{
   position:relative;
   isolation:isolate;
+  will-change:opacity,transform;
 }
-main section::before,
-header.hero::before,
-footer::before{
-  content:"";
-  position:absolute;
-  left:50%;
-  top:0;
-  width:min(760px,88%);
-  height:1px;
-  transform:translateX(-50%) scaleX(0);
-  transform-origin:center;
-  background:linear-gradient(90deg,transparent,rgba(214,163,58,.55),rgba(255,244,203,.75),rgba(214,163,58,.55),transparent);
-  box-shadow:0 0 18px rgba(214,163,58,.22);
+main section.section-reveal-ready:not(.section-opening),
+header.hero.section-reveal-ready:not(.section-opening),
+footer.section-reveal-ready:not(.section-opening){
   opacity:0;
-  transition:transform 1.15s cubic-bezier(.22,1,.36,1),opacity .65s ease;
-  z-index:5;
-  pointer-events:none;
+  transform:translate3d(0,42px,0) scale(.985);
 }
 main section.section-opening,
 header.hero.section-opening,
 footer.section-opening{
-  --reveal-y:0px;
-  --reveal-scale:1;
+  opacity:1;
+  transform:none;
+  animation:fullSectionReveal 1.05s cubic-bezier(.22,1,.36,1) both;
 }
-main section:not(.section-opening) > .section-title,
-main section:not(.section-opening) > .card,
-main section:not(.section-opening) > .lead,
-main section:not(.section-opening) > .grid,
-main section:not(.section-opening) > .timings,
-main section:not(.section-opening) > .routes,
-main section:not(.section-opening) > .distance,
-main section:not(.section-opening) > .gallery-filters,
-main section:not(.section-opening) > .real-gallery-grid,
-main section:not(.section-opening) > .video-grid,
-main section:not(.section-opening) > .temple-public-grid,
-main section:not(.section-opening) > .address,
-main section:not(.section-opening) > .cms-audio-public,
-main section:not(.section-opening) > p,
-main section:not(.section-opening) > h2,
-main section:not(.section-opening) > h3{
-  opacity:0;
-  transform:translate3d(0,var(--reveal-y),0) scale(var(--reveal-scale));
+main section.section-opening::before,
+header.hero.section-opening::before,
+footer.section-opening::before{
+  content:"";
+  position:absolute;
+  left:50%;
+  top:0;
+  width:min(780px,88%);
+  height:1px;
+  transform:translateX(-50%) scaleX(0);
+  transform-origin:center;
+  background:linear-gradient(90deg,transparent,rgba(214,163,58,.45),rgba(255,244,203,.8),rgba(214,163,58,.45),transparent);
+  box-shadow:0 0 18px rgba(214,163,58,.2);
+  animation:sectionLineReveal 1.15s .08s cubic-bezier(.22,1,.36,1) forwards;
+  pointer-events:none;
+  z-index:5;
 }
-main section.section-opening > *,
-header.hero.section-opening > *,
-footer.section-opening > *{
-  animation:sectionContentOpen .9s cubic-bezier(.22,1,.36,1) both;
-}
-main section.section-opening > *:nth-child(2){animation-delay:.08s}
-main section.section-opening > *:nth-child(3){animation-delay:.16s}
-main section.section-opening > *:nth-child(4){animation-delay:.24s}
-main section.section-opening > *:nth-child(5){animation-delay:.32s}
-main section.section-opening > *:nth-child(6){animation-delay:.40s}
-main section.section-opening > *:nth-child(7){animation-delay:.48s}
 main section.section-opening::after,
 header.hero.section-opening::after,
 footer.section-opening::after{
   content:"";
   position:absolute;
-  width:180px;
-  height:180px;
   left:50%;
-  top:10%;
-  transform:translate(-50%,-50%) scale(.3);
+  top:16%;
+  width:220px;
+  height:220px;
+  transform:translate(-50%,-50%) scale(.35);
   border-radius:50%;
-  background:radial-gradient(circle,rgba(255,242,190,.16),rgba(214,163,58,.07) 32%,transparent 70%);
-  filter:blur(5px);
+  background:radial-gradient(circle,rgba(255,242,190,.14),rgba(214,163,58,.05) 35%,transparent 72%);
+  filter:blur(7px);
   opacity:0;
+  animation:sectionAuraReveal 1.15s ease-out forwards;
   pointer-events:none;
   z-index:0;
-  animation:sectionAura .95s ease-out both;
 }
-main section.section-opening::before,
-header.hero.section-opening::before,
-footer.section-opening::before{
-  transform:translateX(-50%) scaleX(1);
-  opacity:1;
+main section.section-opening > *,
+header.hero.section-opening > *,
+footer.section-opening > *{
+  animation:sectionTextReveal .82s cubic-bezier(.22,1,.36,1) both;
 }
+main section.section-opening > *:nth-child(1),
+header.hero.section-opening > *:nth-child(1),
+footer.section-opening > *:nth-child(1){animation-delay:.08s}
+main section.section-opening > *:nth-child(2),
+header.hero.section-opening > *:nth-child(2),
+footer.section-opening > *:nth-child(2){animation-delay:.16s}
+main section.section-opening > *:nth-child(3),
+header.hero.section-opening > *:nth-child(3),
+footer.section-opening > *:nth-child(3){animation-delay:.24s}
+main section.section-opening > *:nth-child(4),
+header.hero.section-opening > *:nth-child(4),
+footer.section-opening > *:nth-child(4){animation-delay:.32s}
+main section.section-opening > *:nth-child(5),
+header.hero.section-opening > *:nth-child(5),
+footer.section-opening > *:nth-child(5){animation-delay:.40s}
+main section.section-opening > *:nth-child(6),
+header.hero.section-opening > *:nth-child(6),
+footer.section-opening > *:nth-child(6){animation-delay:.48s}
 main section.section-opening .divine-temple-symbol{
-  animation:sectionSymbolOpen 1.05s cubic-bezier(.22,1,.36,1) both;
+  animation:sectionSymbolReveal 1s .12s cubic-bezier(.22,1,.36,1) both;
 }
 main section.section-opening .card{
   transition:transform .35s ease,box-shadow .35s ease;
 }
 main section.section-opening .card:hover{
-  transform:translateY(-6px) scale(1.012);
-  box-shadow:0 18px 42px rgba(53,20,14,.15),0 0 0 1px rgba(214,163,58,.12);
+  transform:translateY(-5px);
+  box-shadow:0 18px 42px rgba(53,20,14,.14),0 0 0 1px rgba(214,163,58,.12);
 }
-header.hero.section-opening > div{
-  animation:heroContentOpen 1.1s cubic-bezier(.16,1,.3,1) both;
-}
-footer.section-opening h2{
-  animation:footerTitleOpen 1s cubic-bezier(.22,1,.36,1) both;
-}
-@keyframes sectionContentOpen{
-  from{opacity:0;transform:translate3d(0,34px,0) scale(.985);filter:blur(3px)}
+@keyframes fullSectionReveal{
+  from{opacity:0;transform:translate3d(0,42px,0) scale(.985);filter:blur(2px)}
   to{opacity:1;transform:none;filter:blur(0)}
 }
-@keyframes sectionSymbolOpen{
-  0%{opacity:0;transform:translateY(22px) scale(.72) rotate(-7deg)}
-  65%{opacity:1;transform:translateY(-4px) scale(1.05) rotate(2deg)}
-  100%{opacity:1;transform:translateY(0) scale(1) rotate(0)}
-}
-@keyframes sectionAura{
-  0%{opacity:0;transform:translate(-50%,-50%) scale(.3)}
-  35%{opacity:.75}
-  100%{opacity:0;transform:translate(-50%,-50%) scale(1.8)}
-}
-@keyframes heroContentOpen{
-  from{opacity:0;transform:translateY(42px) scale(.97);filter:blur(6px)}
+@keyframes sectionTextReveal{
+  from{opacity:0;transform:translate3d(0,24px,0);filter:blur(4px)}
   to{opacity:1;transform:none;filter:blur(0)}
 }
-@keyframes footerTitleOpen{
-  from{opacity:0;transform:translateY(24px);letter-spacing:0}
-  to{opacity:1;transform:none;letter-spacing:normal}
+@keyframes sectionSymbolReveal{
+  0%{opacity:0;transform:translateY(20px) scale(.72) rotate(-6deg)}
+  65%{opacity:1;transform:translateY(-3px) scale(1.04) rotate(2deg)}
+  100%{opacity:1;transform:none}
+}
+@keyframes sectionLineReveal{
+  from{transform:translateX(-50%) scaleX(0);opacity:0}
+  to{transform:translateX(-50%) scaleX(1);opacity:1}
+}
+@keyframes sectionAuraReveal{
+  0%{opacity:0;transform:translate(-50%,-50%) scale(.35)}
+  35%{opacity:.7}
+  100%{opacity:0;transform:translate(-50%,-50%) scale(1.75)}
 }
 @media(prefers-reduced-motion:reduce){
-  main section:not(.section-opening) > *,
-  header.hero:not(.section-opening) > *,
-  footer:not(.section-opening) > *{opacity:1!important;transform:none!important;filter:none!important}
+  main section.section-reveal-ready,
+  header.hero.section-reveal-ready,
+  footer.section-reveal-ready,
+  main section.section-reveal-ready:not(.section-opening),
+  header.hero.section-reveal-ready:not(.section-opening),
+  footer.section-reveal-ready:not(.section-opening){
+    opacity:1!important;transform:none!important;filter:none!important;
+  }
   main section.section-opening > *,
   header.hero.section-opening > *,
   footer.section-opening > *{animation:none!important}
-  main section::before,header.hero::before,footer::before,
-  main section.section-opening::after,header.hero.section-opening::after,footer.section-opening::after{display:none}
+  main section.section-opening::before,
+  main section.section-opening::after,
+  header.hero.section-opening::before,
+  header.hero.section-opening::after,
+  footer.section-opening::before,
+  footer.section-opening::after{display:none}
 }
 </style>
 
@@ -1442,13 +1434,14 @@ section > *,footer > *, .hero > div{position:relative;z-index:6}
   function initSectionOpening(){
     const targets=ids.map(id=>document.getElementById(id)).filter(Boolean);
     if(!targets.length)return;
+    targets.forEach(el=>el.classList.add("section-reveal-ready"));
     if(!("IntersectionObserver" in window)){
       targets.forEach(el=>el.classList.add("section-opening"));
       return;
     }
     const observer=new IntersectionObserver((entries)=>{
       entries.forEach(entry=>{
-        if(entry.isIntersecting && entry.intersectionRatio>.08){
+        if(entry.isIntersecting && entry.intersectionRatio>.06){
           entry.target.classList.remove("section-opening");
           void entry.target.offsetWidth;
           entry.target.classList.add("section-opening");
@@ -1456,7 +1449,7 @@ section > *,footer > *, .hero > div{position:relative;z-index:6}
           entry.target.classList.remove("section-opening");
         }
       });
-    },{threshold:[.08],rootMargin:"-8% 0px -8% 0px"});
+    },{threshold:[.06],rootMargin:"-6% 0px -6% 0px"});
     targets.forEach(el=>observer.observe(el));
   }
   if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",initSectionOpening);
