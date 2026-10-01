@@ -1550,10 +1550,38 @@ section > *,footer > *, .hero > div{position:relative;z-index:6}
       if(el) targets.add(el);
     });
 
+    /* Header/footer hash links — including CMS-created links added later. */
     document.querySelectorAll("nav a[href^='#'], footer a[href^='#']").forEach(link=>{
       const id=(link.getAttribute("href")||"").slice(1);
       const el=id ? document.getElementById(id) : null;
       if(el) targets.add(el);
+    });
+
+    /* Robust support for CMS-created Vedic Library navigation/section. */
+    const vedicNodes=[...document.querySelectorAll("section,article,[role='region'],div")].filter(el=>{
+      const text=(el.textContent||"").replace(/\\s+/g," ").trim().toLowerCase();
+      return text.includes("vedic library") && text.length < 5000;
+    });
+    vedicNodes.forEach(el=>{
+      const heading=el.querySelector("h1,h2,h3,h4,.eyebrow,[class*='title']");
+      if(heading && /vedic library/i.test(heading.textContent||"")) targets.add(el);
+    });
+
+    /* If the CMS gives the library a generated ID, catch that too. */
+    document.querySelectorAll("[id*='vedic'][id*='library'],[id*='library'][id*='vedic']").forEach(el=>targets.add(el));
+
+    /* Footer links/buttons can be rendered by CMS without a hash href. */
+    document.querySelectorAll("footer a,footer button,[data-section-target],[data-target]").forEach(link=>{
+      const label=(link.textContent||"").trim();
+      if(!/vedic library/i.test(label)) return;
+      const raw=link.getAttribute("href")||link.getAttribute("data-section-target")||link.getAttribute("data-target")||"";
+      const id=raw.replace(/^#/,"").trim();
+      const target=id ? document.getElementById(id) : null;
+      if(target) targets.add(target);
+      else {
+        const semantic=vedicNodes.find(el=>el.matches("section,article,[role='region']"));
+        if(semantic) targets.add(semantic);
+      }
     });
 
     const footer=document.querySelector("footer");
