@@ -1125,6 +1125,60 @@ main section .gallery-filters { justify-content: center; }
 @keyframes deepamInner{from{transform:scale(.86,.92) translateY(2px)}to{transform:scale(1.05,1.08) translateY(-1px)}}
 @keyframes deepamGlow{0%,100%{transform:scale(.92);opacity:.72}50%{transform:scale(1.08);opacity:1}}
 @media(max-width:760px){.deepam-card{min-height:248px}}
+
+/* Ultra-premium animated divine wheel */
+.hero:before{
+  content:"";
+  position:absolute;
+  left:50%;
+  top:50%;
+  width:min(78vw,760px);
+  height:min(78vw,760px);
+  transform:translate(-50%,-50%);
+  border:1px solid rgba(238,191,76,.32);
+  border-radius:50%;
+  background:
+    radial-gradient(circle at center, transparent 0 31%, rgba(239,196,95,.12) 31.2% 31.6%, transparent 31.9% 48%, rgba(239,196,95,.16) 48.2% 48.6%, transparent 48.9%),
+    repeating-conic-gradient(from 0deg, rgba(239,196,95,.34) 0deg 1.2deg, transparent 1.2deg 15deg);
+  -webkit-mask:radial-gradient(circle, transparent 0 27%, #000 27.5% 82%, transparent 82.5%);
+  mask:radial-gradient(circle, transparent 0 27%, #000 27.5% 82%, transparent 82.5%);
+  box-shadow:0 0 45px rgba(239,196,95,.10), inset 0 0 35px rgba(239,196,95,.08);
+  animation:divineWheelSpin 34s linear infinite;
+  z-index:0;
+  pointer-events:none;
+}
+.hero:after{
+  content:"";
+  position:absolute;
+  left:50%;
+  top:50%;
+  width:min(55vw,535px);
+  height:min(55vw,535px);
+  transform:translate(-50%,-50%);
+  border:1px solid rgba(255,218,111,.28);
+  border-radius:50%;
+  background:
+    radial-gradient(circle, transparent 0 22%, rgba(255,222,123,.12) 22.2% 22.8%, transparent 23% 58%, rgba(255,222,123,.12) 58.2% 58.7%, transparent 59%),
+    repeating-conic-gradient(from 7deg, rgba(255,218,111,.28) 0deg 1deg, transparent 1deg 20deg);
+  -webkit-mask:radial-gradient(circle, transparent 0 19%, #000 19.5% 78%, transparent 78.5%);
+  mask:radial-gradient(circle, transparent 0 19%, #000 19.5% 78%, transparent 78.5%);
+  box-shadow:0 0 35px rgba(255,211,95,.09), inset 0 0 28px rgba(255,211,95,.06);
+  animation:divineWheelSpinReverse 22s linear infinite;
+  z-index:0;
+  pointer-events:none;
+}
+.hero > div{z-index:2}
+@keyframes divineWheelSpin{
+  from{transform:translate(-50%,-50%) rotate(0deg)}
+  to{transform:translate(-50%,-50%) rotate(360deg)}
+}
+@keyframes divineWheelSpinReverse{
+  from{transform:translate(-50%,-50%) rotate(360deg)}
+  to{transform:translate(-50%,-50%) rotate(0deg)}
+}
+@media(prefers-reduced-motion:reduce){
+  .hero:before,.hero:after{animation:none}
+}
 </style>
 
 <script>
