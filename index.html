@@ -636,24 +636,47 @@ Andhra Pradesh, India</textarea></label>
 </style>
 
 <style>
-/* premium-section-opening-animation — smooth full-section + text reveal */
+/* Smooth section reveal system */
 main section,header.hero,footer{
   position:relative;
   isolation:isolate;
-  will-change:opacity,transform;
 }
 main section.section-reveal-ready:not(.section-opening),
 header.hero.section-reveal-ready:not(.section-opening),
 footer.section-reveal-ready:not(.section-opening){
   opacity:0;
-  transform:translate3d(0,42px,0) scale(.985);
+  transform:translate3d(0,28px,0);
 }
 main section.section-opening,
 header.hero.section-opening,
 footer.section-opening{
-  opacity:1;
-  transform:none;
-  animation:fullSectionReveal 1.05s cubic-bezier(.22,1,.36,1) both;
+  animation:sectionSmoothReveal .75s cubic-bezier(.22,1,.36,1) both;
+}
+main section.section-opening > *,
+header.hero.section-opening > *,
+footer.section-opening > *{
+  animation:sectionItemReveal .62s cubic-bezier(.22,1,.36,1) both;
+}
+main section.section-opening > *:nth-child(1),
+header.hero.section-opening > *:nth-child(1),
+footer.section-opening > *:nth-child(1){animation-delay:.04s}
+main section.section-opening > *:nth-child(2),
+header.hero.section-opening > *:nth-child(2),
+footer.section-opening > *:nth-child(2){animation-delay:.10s}
+main section.section-opening > *:nth-child(3),
+header.hero.section-opening > *:nth-child(3),
+footer.section-opening > *:nth-child(3){animation-delay:.16s}
+main section.section-opening > *:nth-child(4),
+header.hero.section-opening > *:nth-child(4),
+footer.section-opening > *:nth-child(4){animation-delay:.22s}
+main section.section-opening > *:nth-child(5),
+header.hero.section-opening > *:nth-child(5),
+footer.section-opening > *:nth-child(5){animation-delay:.28s}
+main section.section-opening > *:nth-child(6),
+header.hero.section-opening > *:nth-child(6),
+footer.section-opening > *:nth-child(6){animation-delay:.34s}
+main section.section-opening .divine-temple-symbol{
+  animation:sectionSymbolSmooth .8s cubic-bezier(.22,1,.36,1) .08s both;
 }
 main section.section-opening::before,
 header.hero.section-opening::before,
@@ -662,107 +685,42 @@ footer.section-opening::before{
   position:absolute;
   left:50%;
   top:0;
-  width:min(780px,88%);
+  width:min(720px,82%);
   height:1px;
   transform:translateX(-50%) scaleX(0);
-  transform-origin:center;
-  background:linear-gradient(90deg,transparent,rgba(214,163,58,.45),rgba(255,244,203,.8),rgba(214,163,58,.45),transparent);
-  box-shadow:0 0 18px rgba(214,163,58,.2);
-  animation:sectionLineReveal 1.15s .08s cubic-bezier(.22,1,.36,1) forwards;
+  background:linear-gradient(90deg,transparent,rgba(214,163,58,.65),rgba(255,244,203,.8),rgba(214,163,58,.65),transparent);
+  animation:sectionLineSmooth .9s .05s ease-out both;
   pointer-events:none;
   z-index:5;
 }
-main section.section-opening::after,
-header.hero.section-opening::after,
-footer.section-opening::after{
-  content:"";
-  position:absolute;
-  left:50%;
-  top:16%;
-  width:220px;
-  height:220px;
-  transform:translate(-50%,-50%) scale(.35);
-  border-radius:50%;
-  background:radial-gradient(circle,rgba(255,242,190,.14),rgba(214,163,58,.05) 35%,transparent 72%);
-  filter:blur(7px);
-  opacity:0;
-  animation:sectionAuraReveal 1.15s ease-out forwards;
-  pointer-events:none;
-  z-index:0;
+@keyframes sectionSmoothReveal{
+  from{opacity:0;transform:translate3d(0,28px,0)}
+  to{opacity:1;transform:translate3d(0,0,0)}
 }
-main section.section-opening > *,
-header.hero.section-opening > *,
-footer.section-opening > *{
-  animation:sectionTextReveal .82s cubic-bezier(.22,1,.36,1) both;
-}
-main section.section-opening > *:nth-child(1),
-header.hero.section-opening > *:nth-child(1),
-footer.section-opening > *:nth-child(1){animation-delay:.08s}
-main section.section-opening > *:nth-child(2),
-header.hero.section-opening > *:nth-child(2),
-footer.section-opening > *:nth-child(2){animation-delay:.16s}
-main section.section-opening > *:nth-child(3),
-header.hero.section-opening > *:nth-child(3),
-footer.section-opening > *:nth-child(3){animation-delay:.24s}
-main section.section-opening > *:nth-child(4),
-header.hero.section-opening > *:nth-child(4),
-footer.section-opening > *:nth-child(4){animation-delay:.32s}
-main section.section-opening > *:nth-child(5),
-header.hero.section-opening > *:nth-child(5),
-footer.section-opening > *:nth-child(5){animation-delay:.40s}
-main section.section-opening > *:nth-child(6),
-header.hero.section-opening > *:nth-child(6),
-footer.section-opening > *:nth-child(6){animation-delay:.48s}
-main section.section-opening .divine-temple-symbol{
-  animation:sectionSymbolReveal 1s .12s cubic-bezier(.22,1,.36,1) both;
-}
-main section.section-opening .card{
-  transition:transform .35s ease,box-shadow .35s ease;
-}
-main section.section-opening .card:hover{
-  transform:translateY(-5px);
-  box-shadow:0 18px 42px rgba(53,20,14,.14),0 0 0 1px rgba(214,163,58,.12);
-}
-@keyframes fullSectionReveal{
-  from{opacity:0;transform:translate3d(0,42px,0) scale(.985);filter:blur(2px)}
+@keyframes sectionItemReveal{
+  from{opacity:0;transform:translate3d(0,18px,0);filter:blur(1.5px)}
   to{opacity:1;transform:none;filter:blur(0)}
 }
-@keyframes sectionTextReveal{
-  from{opacity:0;transform:translate3d(0,24px,0);filter:blur(4px)}
-  to{opacity:1;transform:none;filter:blur(0)}
+@keyframes sectionSymbolSmooth{
+  from{opacity:0;transform:translate3d(0,14px,0) scale(.88)}
+  to{opacity:1;transform:none}
 }
-@keyframes sectionSymbolReveal{
-  0%{opacity:0;transform:translateY(20px) scale(.72) rotate(-6deg)}
-  65%{opacity:1;transform:translateY(-3px) scale(1.04) rotate(2deg)}
-  100%{opacity:1;transform:none}
-}
-@keyframes sectionLineReveal{
-  from{transform:translateX(-50%) scaleX(0);opacity:0}
-  to{transform:translateX(-50%) scaleX(1);opacity:1}
-}
-@keyframes sectionAuraReveal{
-  0%{opacity:0;transform:translate(-50%,-50%) scale(.35)}
-  35%{opacity:.7}
-  100%{opacity:0;transform:translate(-50%,-50%) scale(1.75)}
+@keyframes sectionLineSmooth{
+  from{opacity:0;transform:translateX(-50%) scaleX(0)}
+  to{opacity:1;transform:translateX(-50%) scaleX(1)}
 }
 @media(prefers-reduced-motion:reduce){
-  main section.section-reveal-ready,
-  header.hero.section-reveal-ready,
-  footer.section-reveal-ready,
   main section.section-reveal-ready:not(.section-opening),
   header.hero.section-reveal-ready:not(.section-opening),
   footer.section-reveal-ready:not(.section-opening){
-    opacity:1!important;transform:none!important;filter:none!important;
+    opacity:1!important;transform:none!important;
   }
   main section.section-opening > *,
   header.hero.section-opening > *,
   footer.section-opening > *{animation:none!important}
   main section.section-opening::before,
-  main section.section-opening::after,
   header.hero.section-opening::before,
-  header.hero.section-opening::after,
-  footer.section-opening::before,
-  footer.section-opening::after{display:none}
+  footer.section-opening::before{display:none}
 }
 </style>
 
@@ -1427,35 +1385,32 @@ section > *,footer > *, .hero > div{position:relative;z-index:6}
 </style>
 
 <script>
-/* Premium opening animation for every public header/footer navigation section.
-   Replays when a section enters the viewport; navigation and flower layers remain untouched. */
+/* Smooth reveal for every navigable section; no content or flower animation is modified. */
 (function(){
   const ids=["home","about","gayatri","mantra","panchamukha","visit","reach","festivals","gallery","videos","temples-rega","contact"];
-  function initSectionOpening(){
+  function init(){
     const targets=ids.map(id=>document.getElementById(id)).filter(Boolean);
-    if(!targets.length)return;
     targets.forEach(el=>el.classList.add("section-reveal-ready"));
     if(!("IntersectionObserver" in window)){
       targets.forEach(el=>el.classList.add("section-opening"));
       return;
     }
-    const observer=new IntersectionObserver((entries)=>{
-      entries.forEach(entry=>{
-        if(entry.isIntersecting && entry.intersectionRatio>.06){
+    const observer=new IntersectionObserver(function(entries){
+      entries.forEach(function(entry){
+        if(entry.isIntersecting){
           entry.target.classList.remove("section-opening");
           void entry.target.offsetWidth;
           entry.target.classList.add("section-opening");
-        }else if(!entry.isIntersecting){
+        }else{
           entry.target.classList.remove("section-opening");
         }
       });
-    },{threshold:[.06],rootMargin:"-6% 0px -6% 0px"});
-    targets.forEach(el=>observer.observe(el));
+    },{threshold:0.02,rootMargin:"-12% 0px -12% 0px"});
+    targets.forEach(function(el){observer.observe(el);});
   }
-  if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",initSectionOpening);
-  else initSectionOpening();
-})();
-</script>
+  if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",init);
+  else init();
+})();</script>
 
 <script>
 /* Precision navigation for the sticky header */
