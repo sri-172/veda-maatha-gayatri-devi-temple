@@ -9,7 +9,7 @@
 <meta name="robots" content="index,follow">
 <meta name="theme-color" content="#35140e">
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cardo:wght@400;700&family=Cinzel:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap');
 :root{--maroon:#35140e;--brown:#5a2115;--gold:#d6a33a;--cream:#fff8e9;--paper:#fffdf7;--ink:#34231c;--muted:#756158}
 *{box-sizing:border-box;scroll-behavior:smooth}html{scroll-padding-top:105px}body{margin:0;background:#f8ecd5;color:var(--ink);font-family:Inter,Arial,sans-serif;line-height:1.7}section[id],header[id],footer[id]{scroll-margin-top:105px}
 nav{position:sticky;top:0;z-index:99;background:rgba(53,20,14,.97);padding:14px 5%;display:flex;justify-content:space-between;align-items:center;gap:20px;box-shadow:0 8px 30px #0003}
@@ -73,6 +73,21 @@ section:hover .divine-temple-symbol{transform:translateY(-3px) scale(1.045);filt
 @keyframes templeAura{0%,100%{opacity:.45;transform:translateX(-50%) scale(.88)}50%{opacity:.9;transform:translateX(-50%) scale(1.08)}}
 @media(max-width:700px){.divine-temple-symbol{width:72px;height:56px;margin:0 auto 9px}.divine-temple-symbol svg{width:72px;height:56px}}
 @media(prefers-reduced-motion:reduce){.divine-temple-symbol svg,.divine-temple-symbol span{animation:none}}
+/* Cardo typography: all English website text */
+html,body,button,input,textarea,select{
+  font-family:Cardo,Georgia,serif;
+}
+nav,.logo,.links,.links a,.hero,.hero h1,.hero p,.eyebrow,
+.btn,section,h2,h3,p,.lead,.card,.card *,
+footer,footer *,.gallery-category,.gallery-overlay,
+input,textarea,select,button{
+  font-family:Cardo,Georgia,serif;
+}
+/* Preserve the Gayatri Mantra Hindi typography exactly */
+.mantra,
+.mantra *{
+  font-family:Georgia,"Noto Serif Devanagari",serif !important;
+}
 </style>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"Place","name":"Veda Maatha Gayatri Devi Temple","address":{"@type":"PostalAddress","addressLocality":"Rega Village","addressRegion":"Andhra Pradesh","addressCountry":"IN"},"geo":{"@type":"GeoCoordinates","latitude":"17.95217","longitude":"83.125995"}}
