@@ -635,6 +635,145 @@ Andhra Pradesh, India</textarea></label>
 .temple-public-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:28px}.temple-public-card{background:linear-gradient(145deg,#fffdf7,#fff5df);border:1px solid #d6a33a66;border-radius:22px;overflow:hidden;box-shadow:0 18px 45px #4a1f0512}.temple-public-card .temple-body{padding:24px}.temple-public-card h3{font-family:Cinzel,serif;color:#6f2a13;font-size:25px;margin:0 0 7px}.temple-subtitle{color:#9a651b;font-weight:700;font-size:13px}.temple-text{line-height:1.75;color:#5f4a40;white-space:pre-wrap}.temple-block{margin-top:15px}.temple-block b{color:#7a351b}.temple-photo-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding:12px}.temple-photo-grid img{width:100%;height:115px;object-fit:cover;border-radius:10px;cursor:pointer}.temple-public-card iframe{width:100%;aspect-ratio:16/9;border:0}.temple-admin-row{display:grid;grid-template-columns:1fr auto;gap:12px;padding:14px;background:#fff;border:1px solid #e2d2b2;border-radius:12px;margin:10px 0}.temple-admin-row .actions{display:flex;gap:6px;align-items:start}.temple-photo-preview{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin:8px 0}.temple-photo-preview img{width:100%;height:70px;object-fit:cover;border-radius:8px}.temple-editing{outline:2px solid #d6a33a}.temple-public-empty{grid-column:1/-1;text-align:center}.temple-map-btn{display:inline-block;margin-top:12px}.temple-video-frame{width:100%;aspect-ratio:16/9;border:0}@media(max-width:800px){.temple-public-grid{grid-template-columns:1fr}}@media(max-width:700px){.temple-photo-preview{grid-template-columns:repeat(2,1fr)}.temple-admin-row{grid-template-columns:1fr}.temple-photo-grid{grid-template-columns:repeat(2,1fr)}}
 </style>
 
+<style>
+/* premium-section-opening-animation */
+:root{--section-glow:rgba(214,163,58,.24);--section-glow-soft:rgba(214,163,58,.10)}
+main section,
+header.hero,
+footer{
+  --reveal-y:34px;
+  --reveal-scale:.985;
+  position:relative;
+  isolation:isolate;
+}
+main section::before,
+header.hero::before,
+footer::before{
+  content:"";
+  position:absolute;
+  left:50%;
+  top:0;
+  width:min(760px,88%);
+  height:1px;
+  transform:translateX(-50%) scaleX(0);
+  transform-origin:center;
+  background:linear-gradient(90deg,transparent,rgba(214,163,58,.55),rgba(255,244,203,.75),rgba(214,163,58,.55),transparent);
+  box-shadow:0 0 18px rgba(214,163,58,.22);
+  opacity:0;
+  transition:transform 1.15s cubic-bezier(.22,1,.36,1),opacity .65s ease;
+  z-index:5;
+  pointer-events:none;
+}
+main section.section-opening,
+header.hero.section-opening,
+footer.section-opening{
+  --reveal-y:0px;
+  --reveal-scale:1;
+}
+main section:not(.section-opening) > .section-title,
+main section:not(.section-opening) > .card,
+main section:not(.section-opening) > .lead,
+main section:not(.section-opening) > .grid,
+main section:not(.section-opening) > .timings,
+main section:not(.section-opening) > .routes,
+main section:not(.section-opening) > .distance,
+main section:not(.section-opening) > .gallery-filters,
+main section:not(.section-opening) > .real-gallery-grid,
+main section:not(.section-opening) > .video-grid,
+main section:not(.section-opening) > .temple-public-grid,
+main section:not(.section-opening) > .address,
+main section:not(.section-opening) > .cms-audio-public,
+main section:not(.section-opening) > p,
+main section:not(.section-opening) > h2,
+main section:not(.section-opening) > h3{
+  opacity:0;
+  transform:translate3d(0,var(--reveal-y),0) scale(var(--reveal-scale));
+}
+main section.section-opening > *,
+header.hero.section-opening > *,
+footer.section-opening > *{
+  animation:sectionContentOpen .9s cubic-bezier(.22,1,.36,1) both;
+}
+main section.section-opening > *:nth-child(2){animation-delay:.08s}
+main section.section-opening > *:nth-child(3){animation-delay:.16s}
+main section.section-opening > *:nth-child(4){animation-delay:.24s}
+main section.section-opening > *:nth-child(5){animation-delay:.32s}
+main section.section-opening > *:nth-child(6){animation-delay:.40s}
+main section.section-opening > *:nth-child(7){animation-delay:.48s}
+main section.section-opening::after,
+header.hero.section-opening::after,
+footer.section-opening::after{
+  content:"";
+  position:absolute;
+  width:180px;
+  height:180px;
+  left:50%;
+  top:10%;
+  transform:translate(-50%,-50%) scale(.3);
+  border-radius:50%;
+  background:radial-gradient(circle,rgba(255,242,190,.16),rgba(214,163,58,.07) 32%,transparent 70%);
+  filter:blur(5px);
+  opacity:0;
+  pointer-events:none;
+  z-index:0;
+  animation:sectionAura .95s ease-out both;
+}
+main section.section-opening::before,
+header.hero.section-opening::before,
+footer.section-opening::before{
+  transform:translateX(-50%) scaleX(1);
+  opacity:1;
+}
+main section.section-opening .divine-temple-symbol{
+  animation:sectionSymbolOpen 1.05s cubic-bezier(.22,1,.36,1) both;
+}
+main section.section-opening .card{
+  transition:transform .35s ease,box-shadow .35s ease;
+}
+main section.section-opening .card:hover{
+  transform:translateY(-6px) scale(1.012);
+  box-shadow:0 18px 42px rgba(53,20,14,.15),0 0 0 1px rgba(214,163,58,.12);
+}
+header.hero.section-opening > div{
+  animation:heroContentOpen 1.1s cubic-bezier(.16,1,.3,1) both;
+}
+footer.section-opening h2{
+  animation:footerTitleOpen 1s cubic-bezier(.22,1,.36,1) both;
+}
+@keyframes sectionContentOpen{
+  from{opacity:0;transform:translate3d(0,34px,0) scale(.985);filter:blur(3px)}
+  to{opacity:1;transform:none;filter:blur(0)}
+}
+@keyframes sectionSymbolOpen{
+  0%{opacity:0;transform:translateY(22px) scale(.72) rotate(-7deg)}
+  65%{opacity:1;transform:translateY(-4px) scale(1.05) rotate(2deg)}
+  100%{opacity:1;transform:translateY(0) scale(1) rotate(0)}
+}
+@keyframes sectionAura{
+  0%{opacity:0;transform:translate(-50%,-50%) scale(.3)}
+  35%{opacity:.75}
+  100%{opacity:0;transform:translate(-50%,-50%) scale(1.8)}
+}
+@keyframes heroContentOpen{
+  from{opacity:0;transform:translateY(42px) scale(.97);filter:blur(6px)}
+  to{opacity:1;transform:none;filter:blur(0)}
+}
+@keyframes footerTitleOpen{
+  from{opacity:0;transform:translateY(24px);letter-spacing:0}
+  to{opacity:1;transform:none;letter-spacing:normal}
+}
+@media(prefers-reduced-motion:reduce){
+  main section:not(.section-opening) > *,
+  header.hero:not(.section-opening) > *,
+  footer:not(.section-opening) > *{opacity:1!important;transform:none!important;filter:none!important}
+  main section.section-opening > *,
+  header.hero.section-opening > *,
+  footer.section-opening > *{animation:none!important}
+  main section::before,header.hero::before,footer::before,
+  main section.section-opening::after,header.hero.section-opening::after,footer.section-opening::after{display:none}
+}
+</style>
+
 <script>
 (function(){
   const ADMIN_PASSWORD = "admin123";
@@ -1294,6 +1433,36 @@ section > *,footer > *, .hero > div{position:relative;z-index:6}
   .water-wave,.water-wave::after{animation:none}
 }
 </style>
+
+<script>
+/* Premium opening animation for every public header/footer navigation section.
+   Replays when a section enters the viewport; navigation and flower layers remain untouched. */
+(function(){
+  const ids=["home","about","gayatri","mantra","panchamukha","visit","reach","festivals","gallery","videos","temples-rega","contact"];
+  function initSectionOpening(){
+    const targets=ids.map(id=>document.getElementById(id)).filter(Boolean);
+    if(!targets.length)return;
+    if(!("IntersectionObserver" in window)){
+      targets.forEach(el=>el.classList.add("section-opening"));
+      return;
+    }
+    const observer=new IntersectionObserver((entries)=>{
+      entries.forEach(entry=>{
+        if(entry.isIntersecting && entry.intersectionRatio>.08){
+          entry.target.classList.remove("section-opening");
+          void entry.target.offsetWidth;
+          entry.target.classList.add("section-opening");
+        }else if(!entry.isIntersecting){
+          entry.target.classList.remove("section-opening");
+        }
+      });
+    },{threshold:[.08],rootMargin:"-8% 0px -8% 0px"});
+    targets.forEach(el=>observer.observe(el));
+  }
+  if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",initSectionOpening);
+  else initSectionOpening();
+})();
+</script>
 
 <script>
 /* Precision navigation for the sticky header */
