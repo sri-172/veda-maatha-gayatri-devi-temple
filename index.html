@@ -1683,4 +1683,56 @@ document.addEventListener("click", function(e) {
 });
 </script>
 
+
+<style id="gentle-box-shake-hover">
+/* Gentle interactive shake for website boxes/cards when the cursor enters. */
+@keyframes gentleBoxShake{
+  0%{transform:translate3d(0,0,0) rotate(0deg)}
+  20%{transform:translate3d(-1.5px,0,0) rotate(-.35deg)}
+  40%{transform:translate3d(1.5px,0,0) rotate(.35deg)}
+  60%{transform:translate3d(-1px,0,0) rotate(-.22deg)}
+  80%{transform:translate3d(1px,0,0) rotate(.18deg)}
+  100%{transform:translate3d(0,0,0) rotate(0deg)}
+}
+
+/* Covers the site's visual content boxes without affecting navigation or buttons. */
+.card:hover,
+.time:hover,
+.route:hover,
+.distance > div:hover,
+.real-gallery-card:hover,
+.public-video-card:hover,
+.address:hover,
+.note:hover,
+.mantra:hover,
+.temple-public-card:hover,
+.temple-admin-row:hover,
+.gallery-admin-row:hover,
+.temple-photo-admin-item:hover,
+.cms-audio-public:hover,
+.cms-audio-tools:hover,
+.nav-admin-row:hover,
+.deepam-card:hover{
+  animation:gentleBoxShake .62s ease-in-out;
+  transform-origin:center center;
+}
+
+/* Keep the interaction comfortable on touch devices and for reduced-motion users. */
+@media(hover:none){
+  .card:hover,.time:hover,.route:hover,.distance > div:hover,.real-gallery-card:hover,
+  .public-video-card:hover,.address:hover,.note:hover,.mantra:hover,.temple-public-card:hover,
+  .temple-admin-row:hover,.gallery-admin-row:hover,.temple-photo-admin-item:hover,
+  .cms-audio-public:hover,.cms-audio-tools:hover,.nav-admin-row:hover,.deepam-card:hover{
+    animation:none;
+  }
+}
+@media(prefers-reduced-motion:reduce){
+  .card:hover,.time:hover,.route:hover,.distance > div:hover,.real-gallery-card:hover,
+  .public-video-card:hover,.address:hover,.note:hover,.mantra:hover,.temple-public-card:hover,
+  .temple-admin-row:hover,.gallery-admin-row:hover,.temple-photo-admin-item:hover,
+  .cms-audio-public:hover,.cms-audio-tools:hover,.nav-admin-row:hover,.deepam-card:hover{
+    animation:none!important;
+  }
+}
+</style>
 </body></html>
