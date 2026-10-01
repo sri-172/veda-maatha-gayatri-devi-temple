@@ -1384,33 +1384,220 @@ section > *,footer > *, .hero > div{position:relative;z-index:6}
 }
 </style>
 
-<script>
-/* Smooth reveal for every navigable section; no content or flower animation is modified. */
-(function(){
-  const ids=["home","about","gayatri","mantra","panchamukha","visit","reach","festivals","gallery","videos","temples-rega","contact"];
-  function init(){
-    const targets=ids.map(id=>document.getElementById(id)).filter(Boolean);
-    targets.forEach(el=>el.classList.add("section-reveal-ready"));
-    if(!("IntersectionObserver" in window)){
-      targets.forEach(el=>el.classList.add("section-opening"));
-      return;
-    }
-    const observer=new IntersectionObserver(function(entries){
-      entries.forEach(function(entry){
-        if(entry.isIntersecting){
-          entry.target.classList.remove("section-opening");
-          void entry.target.offsetWidth;
-          entry.target.classList.add("section-opening");
-        }else{
-          entry.target.classList.remove("section-opening");
-        }
-      });
-    },{threshold:0.02,rootMargin:"-12% 0px -12% 0px"});
-    targets.forEach(function(el){observer.observe(el);});
+
+<style id="premium-section-opening">
+/* Premium interactive opening animation — preserves existing Deepam, wheel and flower animations */
+.section-reveal-target{
+  --reveal-y:34px;
+  position:relative;
+  overflow:hidden;
+  opacity:0;
+  transform:translate3d(0,var(--reveal-y),0) scale(.985);
+  filter:saturate(.92);
+  transition:
+    opacity .72s cubic-bezier(.22,1,.36,1),
+    transform .82s cubic-bezier(.22,1,.36,1),
+    filter .72s ease;
+}
+.section-reveal-target.is-opening{
+  opacity:1;
+  transform:none;
+  filter:none;
+}
+.section-reveal-target::before{
+  content:"";
+  position:absolute;
+  left:50%;
+  top:0;
+  width:0;
+  height:2px;
+  transform:translateX(-50%);
+  background:linear-gradient(90deg,transparent,#efc45f,#fff0a3,#efc45f,transparent);
+  box-shadow:0 0 18px rgba(239,196,95,.55);
+  z-index:7;
+  pointer-events:none;
+}
+.section-reveal-target.is-opening::before{
+  width:min(72%,760px);
+  transition:width .9s cubic-bezier(.22,1,.36,1) .08s;
+}
+.section-reveal-target::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  z-index:5;
+  background:radial-gradient(circle at 50% 0,rgba(239,196,95,.13),transparent 34%);
+  opacity:0;
+  transform:scale(.92);
+}
+.section-reveal-target.is-opening::after{
+  opacity:1;
+  transform:scale(1);
+  transition:opacity .8s ease .12s,transform 1.1s cubic-bezier(.22,1,.36,1);
+}
+.section-reveal-item{
+  opacity:0;
+  transform:translate3d(0,22px,0);
+  filter:blur(2px);
+  transition:
+    opacity .62s cubic-bezier(.22,1,.36,1),
+    transform .72s cubic-bezier(.22,1,.36,1),
+    filter .72s ease;
+}
+.section-reveal-target.is-opening .section-reveal-item{
+  opacity:1;
+  transform:none;
+  filter:none;
+}
+.section-reveal-target.is-opening .section-reveal-item:nth-child(1){transition-delay:.08s}
+.section-reveal-target.is-opening .section-reveal-item:nth-child(2){transition-delay:.15s}
+.section-reveal-target.is-opening .section-reveal-item:nth-child(3){transition-delay:.22s}
+.section-reveal-target.is-opening .section-reveal-item:nth-child(4){transition-delay:.29s}
+.section-reveal-target.is-opening .section-reveal-item:nth-child(5){transition-delay:.36s}
+.section-reveal-target.is-opening .section-reveal-item:nth-child(6){transition-delay:.43s}
+.section-reveal-target.is-opening .section-reveal-item:nth-child(7){transition-delay:.50s}
+.section-reveal-target.is-opening .section-reveal-item:nth-child(8){transition-delay:.57s}
+.section-reveal-target.is-opening .divine-temple-symbol{
+  animation:premiumSymbolArrival .9s cubic-bezier(.22,1,.36,1) .04s both;
+}
+.section-reveal-target.is-opening .card,
+.section-reveal-target.is-opening .time,
+.section-reveal-target.is-opening .route,
+.section-reveal-target.is-opening .distance > div,
+.section-reveal-target.is-opening .real-gallery-card,
+.section-reveal-target.is-opening .public-video-card{
+  animation:premiumCardArrival .72s cubic-bezier(.22,1,.36,1) both;
+}
+.section-reveal-target.is-opening .grid > :nth-child(1),
+.section-reveal-target.is-opening .timings > :nth-child(1),
+.section-reveal-target.is-opening .routes > :nth-child(1),
+.section-reveal-target.is-opening .distance > :nth-child(1),
+.section-reveal-target.is-opening .real-gallery-grid > :nth-child(1),
+.section-reveal-target.is-opening .video-grid > :nth-child(1){animation-delay:.12s}
+.section-reveal-target.is-opening .grid > :nth-child(2),
+.section-reveal-target.is-opening .timings > :nth-child(2),
+.section-reveal-target.is-opening .routes > :nth-child(2),
+.section-reveal-target.is-opening .distance > :nth-child(2),
+.section-reveal-target.is-opening .real-gallery-grid > :nth-child(2),
+.section-reveal-target.is-opening .video-grid > :nth-child(2){animation-delay:.20s}
+.section-reveal-target.is-opening .grid > :nth-child(3),
+.section-reveal-target.is-opening .timings > :nth-child(3),
+.section-reveal-target.is-opening .routes > :nth-child(3),
+.section-reveal-target.is-opening .distance > :nth-child(3),
+.section-reveal-target.is-opening .real-gallery-grid > :nth-child(3),
+.section-reveal-target.is-opening .video-grid > :nth-child(3){animation-delay:.28s}
+.section-reveal-target.is-opening .grid > :nth-child(4),
+.section-reveal-target.is-opening .timings > :nth-child(4),
+.section-reveal-target.is-opening .routes > :nth-child(4),
+.section-reveal-target.is-opening .distance > :nth-child(4),
+.section-reveal-target.is-opening .real-gallery-grid > :nth-child(4),
+.section-reveal-target.is-opening .video-grid > :nth-child(4){animation-delay:.36s}
+.section-reveal-target.is-opening .grid > :nth-child(5),
+.section-reveal-target.is-opening .timings > :nth-child(5),
+.section-reveal-target.is-opening .routes > :nth-child(5),
+.section-reveal-target.is-opening .distance > :nth-child(5),
+.section-reveal-target.is-opening .real-gallery-grid > :nth-child(5),
+.section-reveal-target.is-opening .video-grid > :nth-child(5){animation-delay:.44s}
+@keyframes premiumSymbolArrival{
+  0%{opacity:0;transform:translateY(20px) scale(.72) rotate(-7deg)}
+  55%{opacity:1;transform:translateY(-4px) scale(1.08) rotate(2deg)}
+  100%{opacity:1;transform:none}
+}
+@keyframes premiumCardArrival{
+  0%{opacity:0;transform:translate3d(0,24px,0) scale(.94)}
+  70%{opacity:1;transform:translate3d(0,-3px,0) scale(1.015)}
+  100%{opacity:1;transform:none}
+}
+@media(prefers-reduced-motion:reduce){
+  .section-reveal-target,.section-reveal-item{
+    opacity:1!important;transform:none!important;filter:none!important;
+    transition:none!important;
   }
+  .section-reveal-target::before,.section-reveal-target::after{display:none}
+  .section-reveal-target.is-opening .divine-temple-symbol,
+  .section-reveal-target.is-opening .card,
+  .section-reveal-target.is-opening .time,
+  .section-reveal-target.is-opening .route,
+  .section-reveal-target.is-opening .distance > div,
+  .section-reveal-target.is-opening .real-gallery-card,
+  .section-reveal-target.is-opening .public-video-card{animation:none!important}
+}
+</style>
+<script>
+/* Premium opening animation for EVERY header/footer navigation target, including CMS-added targets. */
+(function(){
+  const fallbackIds=["home","about","gayatri","mantra","panchamukha","visit","reach","festivals","gallery","videos","temples-rega","contact"];
+
+  function getTargets(){
+    const set=new Set();
+    fallbackIds.forEach(id=>{const el=document.getElementById(id);if(el)set.add(el);});
+    document.querySelectorAll("nav a[href^='#'], footer a[href^='#']").forEach(a=>{
+      const id=(a.getAttribute("href")||"").slice(1);
+      const el=id&&document.getElementById(id);
+      if(el)set.add(el);
+    });
+    const footer=document.querySelector("footer");
+    if(footer)set.add(footer);
+    return [...set];
+  }
+
+  function prepare(el){
+    if(!el || el.dataset.premiumRevealReady==="1")return;
+    el.dataset.premiumRevealReady="1";
+    el.classList.add("section-reveal-target");
+
+    const items=[...el.children].filter(child=>{
+      if(child.classList.contains("divine-temple-symbol"))return false;
+      if(child.classList.contains("deepam-animation"))return false;
+      return true;
+    });
+    items.forEach(child=>child.classList.add("section-reveal-item"));
+  }
+
+  function open(el){
+    prepare(el);
+    el.classList.remove("is-opening");
+    void el.offsetWidth;
+    el.classList.add("is-opening");
+  }
+
+  function init(){
+    const targets=getTargets();
+    targets.forEach(prepare);
+
+    if(!("IntersectionObserver" in window)){
+      targets.forEach(open);
+    }else{
+      const observer=new IntersectionObserver(entries=>{
+        entries.forEach(entry=>{
+          if(entry.isIntersecting) open(entry.target);
+        });
+      },{threshold:.08,rootMargin:"-8% 0px -8% 0px"});
+      targets.forEach(el=>observer.observe(el));
+    }
+
+    document.addEventListener("click",e=>{
+      const link=e.target.closest("nav a[href^='#'], footer a[href^='#']");
+      if(!link)return;
+      const id=(link.getAttribute("href")||"").slice(1);
+      const target=id&&document.getElementById(id);
+      if(target){
+        window.setTimeout(()=>open(target),120);
+      }
+    });
+
+    /* CMS can add/update sections after page load. */
+    const mo=new MutationObserver(()=>{
+      getTargets().forEach(el=>prepare(el));
+    });
+    mo.observe(document.body,{childList:true,subtree:true});
+  }
+
   if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",init);
   else init();
-})();</script>
+})();
+</script>
 
 <script>
 /* Precision navigation for the sticky header */
