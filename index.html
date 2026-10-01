@@ -1685,54 +1685,97 @@ document.addEventListener("click", function(e) {
 
 
 <style id="gentle-box-shake-hover">
-/* Gentle interactive shake for website boxes/cards when the cursor enters. */
-@keyframes gentleBoxShake{
-  0%{transform:translate3d(0,0,0) rotate(0deg)}
-  20%{transform:translate3d(-1.5px,0,0) rotate(-.35deg)}
-  40%{transform:translate3d(1.5px,0,0) rotate(.35deg)}
-  60%{transform:translate3d(-1px,0,0) rotate(-.22deg)}
-  80%{transform:translate3d(1px,0,0) rotate(.18deg)}
-  100%{transform:translate3d(0,0,0) rotate(0deg)}
+/* Universal gentle hover-shake system — automatically covers current and CMS-created boxes. */
+.gentle-hover-box{
+  --gentle-box-transform:none;
+  will-change:transform;
 }
-
-/* Covers the site's visual content boxes without affecting navigation or buttons. */
-.card:hover,
-.time:hover,
-.route:hover,
-.distance > div:hover,
-.real-gallery-card:hover,
-.public-video-card:hover,
-.address:hover,
-.note:hover,
-.mantra:hover,
-.temple-public-card:hover,
-.temple-admin-row:hover,
-.gallery-admin-row:hover,
-.temple-photo-admin-item:hover,
-.cms-audio-public:hover,
-.cms-audio-tools:hover,
-.nav-admin-row:hover,
-.deepam-card:hover{
+.gentle-hover-box:hover{
   animation:gentleBoxShake .62s ease-in-out;
   transform-origin:center center;
 }
 
-/* Keep the interaction comfortable on touch devices and for reduced-motion users. */
+@keyframes gentleBoxShake{
+  0%{transform:var(--gentle-box-transform) translate3d(0,0,0) rotate(0deg)}
+  20%{transform:var(--gentle-box-transform) translate3d(-1.4px,0,0) rotate(-.32deg)}
+  40%{transform:var(--gentle-box-transform) translate3d(1.4px,0,0) rotate(.32deg)}
+  60%{transform:var(--gentle-box-transform) translate3d(-.9px,0,0) rotate(-.20deg)}
+  80%{transform:var(--gentle-box-transform) translate3d(.9px,0,0) rotate(.16deg)}
+  100%{transform:var(--gentle-box-transform) translate3d(0,0,0) rotate(0deg)}
+}
+
 @media(hover:none){
-  .card:hover,.time:hover,.route:hover,.distance > div:hover,.real-gallery-card:hover,
-  .public-video-card:hover,.address:hover,.note:hover,.mantra:hover,.temple-public-card:hover,
-  .temple-admin-row:hover,.gallery-admin-row:hover,.temple-photo-admin-item:hover,
-  .cms-audio-public:hover,.cms-audio-tools:hover,.nav-admin-row:hover,.deepam-card:hover{
-    animation:none;
-  }
+  .gentle-hover-box:hover{animation:none}
 }
 @media(prefers-reduced-motion:reduce){
-  .card:hover,.time:hover,.route:hover,.distance > div:hover,.real-gallery-card:hover,
-  .public-video-card:hover,.address:hover,.note:hover,.mantra:hover,.temple-public-card:hover,
-  .temple-admin-row:hover,.gallery-admin-row:hover,.temple-photo-admin-item:hover,
-  .cms-audio-public:hover,.cms-audio-tools:hover,.nav-admin-row:hover,.deepam-card:hover{
-    animation:none!important;
-  }
+  .gentle-hover-box:hover{animation:none!important}
 }
 </style>
+<script id="universal-gentle-box-shake">
+(function(){
+  const ignored=new Set([
+    "HTML","BODY","MAIN","NAV","HEADER","FOOTER","SECTION","SCRIPT","STYLE",
+    "SVG","PATH","G","DEFS","STOP","P","H1","H2","H3","H4","H5","H6",
+    "SPAN","B","STRONG","SMALL","BR","AUDIO","VIDEO","IMG"
+  ]);
+  const selector=[
+    ".card",".time",".route",".distance > div",".real-gallery-card",".public-video-card",
+    ".address",".note",".mantra",".temple-public-card",".temple-admin-row",
+    ".gallery-admin-row",".temple-photo-admin-item",".cms-audio-public",
+    ".cms-audio-tools",".nav-admin-row",".deepam-card"
+  ].join(",");
+
+  function isBox(el){
+    if(!(el instanceof HTMLElement) || ignored.has(el.tagName)) return false;
+    if(el.closest("nav,footer") && !el.matches(".nav-admin-row")) return false;
+    if(el.matches(selector)) return true;
+
+    const cs=getComputedStyle(el);
+    const rect=el.getBoundingClientRect();
+    if(rect.width<28 || rect.height<20) return false;
+
+    const hasBorder=cs.borderTopWidth!=="0px" || cs.borderRightWidth!=="0px" ||
+                     cs.borderBottomWidth!=="0px" || cs.borderLeftWidth!=="0px";
+    const hasRadius=parseFloat(cs.borderTopLeftRadius||"0")>0;
+    const hasShadow=cs.boxShadow!=="none";
+    const bg=cs.backgroundColor;
+    const hasBackground=bg && bg!=="rgba(0, 0, 0, 0)" && bg!=="transparent";
+    const isControl=/^(BUTTON|INPUT|TEXTAREA|SELECT|OPTION)$/.test(el.tagName);
+
+    return hasBorder || hasRadius || hasShadow || hasBackground || isControl;
+  }
+
+  function prepare(root=document){
+    if(root.nodeType!==1 && root!==document) return;
+    const candidates=root===document
+      ? document.querySelectorAll("*")
+      : [root,...root.querySelectorAll("*")];
+
+    candidates.forEach(el=>{
+      if(!isBox(el)) return;
+      el.classList.add("gentle-hover-box");
+      const current=getComputedStyle(el).transform;
+      if(current && current!=="none") el.style.setProperty("--gentle-box-transform",current);
+    });
+  }
+
+  function init(){
+    prepare(document);
+    const mo=new MutationObserver(mutations=>{
+      mutations.forEach(m=>{
+        m.addedNodes.forEach(node=>{
+          if(node.nodeType===1) prepare(node);
+        });
+      });
+    });
+    mo.observe(document.body,{childList:true,subtree:true});
+  }
+
+  if(document.readyState==="loading"){
+    document.addEventListener("DOMContentLoaded",init,{once:true});
+  }else{
+    init();
+  }
+})();
+</script>
 </body></html>
