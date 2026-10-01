@@ -151,6 +151,12 @@ window.supabaseClient = window.supabase.createClient(
 </head>
 <body><div class="divine-flower-rain" aria-hidden="true">
 <span class="flower lotus f1">🪷</span><span class="flower cherry f2">🌸</span><span class="flower lily f3">❀</span><span class="flower lotus f4">🪷</span><span class="flower cherry f5">🌸</span><span class="flower lily f6">✿</span><span class="flower cherry f7">🌸</span><span class="flower lotus f8">🪷</span><span class="flower lily f9">❁</span><span class="flower cherry f10">🌸</span><span class="flower lotus f11">🪷</span><span class="flower lily f12">❀</span><span class="flower cherry f13">🌸</span><span class="flower lotus f14">🪷</span><span class="flower lily f15">✿</span><span class="flower cherry f16">🌸</span><span class="flower lotus f17">🪷</span><span class="flower lily f18">❁</span><span class="flower cherry f19">🌸</span><span class="flower lotus f20">🪷</span><span class="flower lily f21">❀</span><span class="flower cherry f22">🌸</span><span class="flower lotus f23">🪷</span><span class="flower lily f24">✿</span></div>
+<div class="natural-water-waves" aria-hidden="true">
+  <div class="water-wave wave-a"></div>
+  <div class="water-wave wave-b"></div>
+  <div class="water-wave wave-c"></div>
+  <div class="water-wave wave-d"></div>
+</div>
 <nav><a class="logo" href="#home">ॐ GAYATRI DEVI</a><div class="links">
 <a href="#home">HOME</a><a href="#about">ABOUT</a><a href="#gayatri">GAYATRI</a><a href="#mantra">MANTRA</a><a href="#panchamukha">PANCHAMUKHA</a><a href="#visit">VISIT</a><a href="#reach">REACH</a><a href="#gallery">GALLERY</a><a href="#videos">VIDEOS</a><a href="#contact">CONTACT</a><span id="customNavLinks" style="display:contents"></span></div></nav>
 
@@ -1245,6 +1251,22 @@ main section .gallery-filters { justify-content: center; }
   .hero:before{animation:none}
 }
 
+/* Premium natural transparent water-wave atmosphere — behind flowers and text */
+.natural-water-waves{position:fixed;inset:0;z-index:2;pointer-events:none;overflow:hidden;opacity:.72;isolation:isolate}
+.water-wave{position:absolute;left:-15%;width:130%;height:38vh;min-height:260px;border-radius:50% 50% 0 0 / 34% 34% 0 0;background:linear-gradient(180deg,rgba(255,255,255,.26) 0%,rgba(170,218,218,.13) 24%,rgba(106,177,184,.08) 52%,rgba(255,255,255,0) 100%);border-top:1px solid rgba(255,255,255,.28);box-shadow:0 -10px 28px rgba(255,255,255,.08),inset 0 8px 18px rgba(255,255,255,.12);filter:blur(.2px);will-change:transform}
+.water-wave::before{content:"";position:absolute;inset:8% -4% 0;border-radius:50%;border-top:1px solid rgba(255,255,255,.25);box-shadow:0 -8px 18px rgba(255,255,255,.10)}
+.water-wave::after{content:"";position:absolute;left:5%;right:5%;top:20%;height:28%;border-radius:50%;background:linear-gradient(90deg,transparent 0%,rgba(255,255,255,.12) 18%,rgba(210,242,242,.18) 38%,rgba(255,255,255,.08) 58%,transparent 82%);filter:blur(7px);animation:waterShimmer 9s ease-in-out infinite alternate}
+.water-wave.wave-a{top:4%;opacity:.48;transform:rotate(-2deg);animation:waterWaveA 22s ease-in-out infinite alternate}
+.water-wave.wave-b{top:25%;opacity:.38;transform:rotate(2deg);animation:waterWaveB 27s ease-in-out infinite alternate}
+.water-wave.wave-c{top:49%;opacity:.34;transform:rotate(-1.5deg);animation:waterWaveC 31s ease-in-out infinite alternate}
+.water-wave.wave-d{top:73%;opacity:.30;transform:rotate(2deg);animation:waterWaveD 35s ease-in-out infinite alternate}
+@keyframes waterWaveA{from{transform:translate3d(-2%,0,0) rotate(-2deg) scaleY(.96)}to{transform:translate3d(3%,2.5vh,0) rotate(1deg) scaleY(1.05)}}
+@keyframes waterWaveB{from{transform:translate3d(3%,0,0) rotate(2deg) scaleY(1.02)}to{transform:translate3d(-4%,3vh,0) rotate(-1.5deg) scaleY(.94)}}
+@keyframes waterWaveC{from{transform:translate3d(-4%,0,0) rotate(-1.5deg) scaleY(.94)}to{transform:translate3d(4%,2vh,0) rotate(2deg) scaleY(1.06)}}
+@keyframes waterWaveD{from{transform:translate3d(4%,0,0) rotate(2deg) scaleY(1.04)}to{transform:translate3d(-3%,2.5vh,0) rotate(-1deg) scaleY(.95)}}
+@keyframes waterShimmer{from{transform:translateX(-10%) scaleX(.88);opacity:.55}to{transform:translateX(12%) scaleX(1.12);opacity:1}}
+@media(max-width:700px){.natural-water-waves{opacity:.58}.water-wave{height:30vh;min-height:190px}}
+
 /* Divine translucent falling lotus, cherry-blossom and lily flowers */
 .divine-flower-rain{
   position:fixed;
@@ -1289,6 +1311,8 @@ section > *,footer > *, .hero > div{position:relative;z-index:6}
 }
 @media(prefers-reduced-motion:reduce){
   .flower{animation:none;opacity:.10;top:22%}
+  .natural-water-waves{opacity:.38}
+  .water-wave,.water-wave::after{animation:none}
 }
 </style>
 
