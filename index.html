@@ -1685,90 +1685,106 @@ document.addEventListener("click", function(e) {
 
 
 <style id="gentle-box-shake-hover">
-/* Universal gentle hover-shake system — automatically covers current and CMS-created boxes. */
-.gentle-hover-box{
-  --gentle-box-transform:none;
+/* Universal gentle hover shake — applies to every visible boxed/card element. */
+@keyframes universalGentleBoxShake{
+  0%,100%{transform:translate3d(0,0,0) rotate(0deg)}
+  18%{transform:translate3d(-2px,0,0) rotate(-.35deg)}
+  36%{transform:translate3d(2px,0,0) rotate(.35deg)}
+  54%{transform:translate3d(-1.6px,0,0) rotate(-.28deg)}
+  72%{transform:translate3d(1.6px,0,0) rotate(.24deg)}
+  88%{transform:translate3d(-.7px,0,0) rotate(-.12deg)}
+}
+.gentle-hover-box.gentle-shaking{
+  animation:universalGentleBoxShake .68s ease-in-out 1 !important;
+  transform-origin:center center !important;
   will-change:transform;
 }
-.gentle-hover-box:hover{
-  animation:gentleBoxShake .62s ease-in-out;
-  transform-origin:center center;
-}
-
-@keyframes gentleBoxShake{
-  0%{transform:var(--gentle-box-transform) translate3d(0,0,0) rotate(0deg)}
-  20%{transform:var(--gentle-box-transform) translate3d(-1.4px,0,0) rotate(-.32deg)}
-  40%{transform:var(--gentle-box-transform) translate3d(1.4px,0,0) rotate(.32deg)}
-  60%{transform:var(--gentle-box-transform) translate3d(-.9px,0,0) rotate(-.20deg)}
-  80%{transform:var(--gentle-box-transform) translate3d(.9px,0,0) rotate(.16deg)}
-  100%{transform:var(--gentle-box-transform) translate3d(0,0,0) rotate(0deg)}
-}
-
-@media(hover:none){
-  .gentle-hover-box:hover{animation:none}
-}
 @media(prefers-reduced-motion:reduce){
-  .gentle-hover-box:hover{animation:none!important}
+  .gentle-hover-box.gentle-shaking{animation:none!important}
 }
 </style>
 <script id="universal-gentle-box-shake">
 (function(){
-  const ignored=new Set([
-    "HTML","BODY","MAIN","NAV","HEADER","FOOTER","SECTION","SCRIPT","STYLE",
-    "SVG","PATH","G","DEFS","STOP","P","H1","H2","H3","H4","H5","H6",
-    "SPAN","B","STRONG","SMALL","BR","AUDIO","VIDEO","IMG"
+  const skipTags=new Set([
+    "HTML","BODY","SCRIPT","STYLE","SVG","PATH","G","DEFS","STOP",
+    "P","SPAN","B","STRONG","SMALL","BR","H1","H2","H3","H4","H5","H6",
+    "AUDIO","VIDEO","IMG","BR","LI","UL","OL"
   ]);
-  const selector=[
-    ".card",".time",".route",".distance > div",".real-gallery-card",".public-video-card",
-    ".address",".note",".mantra",".temple-public-card",".temple-admin-row",
-    ".gallery-admin-row",".temple-photo-admin-item",".cms-audio-public",
-    ".cms-audio-tools",".nav-admin-row",".deepam-card"
-  ].join(",");
+  const skipSelectors=[
+    "nav","footer","header","section",
+    ".divine-temple-symbol",".deepam-animation"
+  ];
 
-  function isBox(el){
-    if(!(el instanceof HTMLElement) || ignored.has(el.tagName)) return false;
-    if(el.closest("nav,footer") && !el.matches(".nav-admin-row")) return false;
-    if(el.matches(selector)) return true;
-
-    const cs=getComputedStyle(el);
-    const rect=el.getBoundingClientRect();
-    if(rect.width<28 || rect.height<20) return false;
-
-    const hasBorder=cs.borderTopWidth!=="0px" || cs.borderRightWidth!=="0px" ||
-                     cs.borderBottomWidth!=="0px" || cs.borderLeftWidth!=="0px";
-    const hasRadius=parseFloat(cs.borderTopLeftRadius||"0")>0;
-    const hasShadow=cs.boxShadow!=="none";
-    const bg=cs.backgroundColor;
-    const hasBackground=bg && bg!=="rgba(0, 0, 0, 0)" && bg!=="transparent";
-    const isControl=/^(BUTTON|INPUT|TEXTAREA|SELECT|OPTION)$/.test(el.tagName);
-
-    return hasBorder || hasRadius || hasShadow || hasBackground || isControl;
+  function isVisible(el){
+    const r=el.getBoundingClientRect(), s=getComputedStyle(el);
+    return r.width>=30 && r.height>=25 && s.display!=="none" &&
+           s.visibility!=="hidden" && s.opacity!=="0";
   }
 
-  function prepare(root=document){
-    if(root.nodeType!==1 && root!==document) return;
-    const candidates=root===document
-      ? document.querySelectorAll("*")
-      : [root,...root.querySelectorAll("*")];
+  function looksLikeBox(el){
+    if(!(el instanceof HTMLElement) || skipTags.has(el.tagName)) return false;
+    if(skipSelectors.some(sel=>el.matches(sel))) return false;
+    if(el.closest("nav,footer,header")) return false;
+    if(!isVisible(el)) return false;
 
-    candidates.forEach(el=>{
-      if(!isBox(el)) return;
-      el.classList.add("gentle-hover-box");
-      const current=getComputedStyle(el).transform;
-      if(current && current!=="none") el.style.setProperty("--gentle-box-transform",current);
+    const s=getComputedStyle(el);
+    const r=el.getBoundingClientRect();
+    const border=["Top","Right","Bottom","Left"].some(side=>s["border"+side+"Width"]!=="0px");
+    const radius=parseFloat(s.borderTopLeftRadius)||0;
+    const shadow=s.boxShadow && s.boxShadow!=="none";
+    const bg=s.backgroundColor &&
+      s.backgroundColor!=="transparent" &&
+      s.backgroundColor!=="rgba(0, 0, 0, 0)";
+    const outline=s.outlineStyle!=="none" && s.outlineWidth!=="0px";
+
+    /* The screenshots' cards/rows are all detected by one of these box traits. */
+    return border || radius>2 || shadow || bg || outline;
+  }
+
+  function prepare(root){
+    const list=[];
+    if(root instanceof HTMLElement) list.push(root,...root.querySelectorAll("*"));
+    else list.push(...document.querySelectorAll("*"));
+
+    list.forEach(el=>{
+      if(looksLikeBox(el)) el.classList.add("gentle-hover-box");
     });
+  }
+
+  function bind(){
+    document.querySelectorAll(".gentle-hover-box").forEach(el=>{
+      if(el.dataset.gentleShakeBound==="1") return;
+      el.dataset.gentleShakeBound="1";
+
+      el.addEventListener("mouseenter",function(){
+        this.classList.remove("gentle-shaking");
+        void this.offsetWidth;
+        this.classList.add("gentle-shaking");
+      },{passive:true});
+
+      el.addEventListener("animationend",function(e){
+        if(e.animationName==="universalGentleBoxShake"){
+          this.classList.remove("gentle-shaking");
+        }
+      },{passive:true});
+    });
+  }
+
+  function scan(root=document){
+    prepare(root);
+    bind();
   }
 
   function init(){
-    prepare(document);
-    const mo=new MutationObserver(mutations=>{
-      mutations.forEach(m=>{
+    scan(document);
+    const observer=new MutationObserver(mutations=>{
+      for(const m of mutations){
         m.addedNodes.forEach(node=>{
-          if(node.nodeType===1) prepare(node);
+          if(node.nodeType===1) scan(node);
         });
-      });
+      }
     });
-    mo.observe(document.body,{childList:true,subtree:true});
+    observer.observe(document.body,{childList:true,subtree:true});
   }
 
   if(document.readyState==="loading"){
