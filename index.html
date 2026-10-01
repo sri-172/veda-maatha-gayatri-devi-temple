@@ -1685,113 +1685,112 @@ document.addEventListener("click", function(e) {
 
 
 <style id="gentle-box-shake-hover">
-/* Universal gentle hover shake — applies to every visible boxed/card element. */
-@keyframes universalGentleBoxShake{
+/* Reliable hover shake: explicit box selectors + event delegation for dynamically created CMS boxes. */
+@keyframes gentleBoxShakeFinal{
   0%,100%{transform:translate3d(0,0,0) rotate(0deg)}
-  18%{transform:translate3d(-2px,0,0) rotate(-.35deg)}
-  36%{transform:translate3d(2px,0,0) rotate(.35deg)}
-  54%{transform:translate3d(-1.6px,0,0) rotate(-.28deg)}
-  72%{transform:translate3d(1.6px,0,0) rotate(.24deg)}
-  88%{transform:translate3d(-.7px,0,0) rotate(-.12deg)}
+  15%{transform:translate3d(-2px,0,0) rotate(-.38deg)}
+  30%{transform:translate3d(2px,0,0) rotate(.38deg)}
+  45%{transform:translate3d(-1.6px,0,0) rotate(-.28deg)}
+  60%{transform:translate3d(1.6px,0,0) rotate(.25deg)}
+  75%{transform:translate3d(-.9px,0,0) rotate(-.15deg)}
+  90%{transform:translate3d(.6px,0,0) rotate(.08deg)}
 }
-.gentle-hover-box.gentle-shaking{
-  animation:universalGentleBoxShake .68s ease-in-out 1 !important;
+.gentle-shake-active{
+  animation:gentleBoxShakeFinal .72s ease-in-out 1 !important;
   transform-origin:center center !important;
   will-change:transform;
 }
 @media(prefers-reduced-motion:reduce){
-  .gentle-hover-box.gentle-shaking{animation:none!important}
+  .gentle-shake-active{animation:none!important}
 }
 </style>
 <script id="universal-gentle-box-shake">
 (function(){
-  const skipTags=new Set([
-    "HTML","BODY","SCRIPT","STYLE","SVG","PATH","G","DEFS","STOP",
-    "P","SPAN","B","STRONG","SMALL","BR","H1","H2","H3","H4","H5","H6",
-    "AUDIO","VIDEO","IMG","BR","LI","UL","OL"
-  ]);
-  const skipSelectors=[
-    "nav","footer","header","section",
-    ".divine-temple-symbol",".deepam-animation"
-  ];
+  const BOX_SELECTOR=[
+    ".card",
+    ".time",
+    ".note",
+    ".mantra",
+    ".route",
+    ".distance > div",
+    ".address",
+    ".real-gallery-card",
+    ".video-grid > *",
+    ".temple-public-card",
+    ".temple-admin-row",
+    ".gallery-admin-row",
+    ".temple-photo-admin-item",
+    ".cms-manager-box",
+    ".cms-admin-block",
+    ".cms-admin-audio-preview",
+    ".cms-photo-gallery",
+    ".cms-gallery-item",
+    ".deepam-card",
+    ".public-video-card",
+    ".public-video-frame",
+    ".admin-section",
+    ".admin-two",
+    ".admin-actions",
+    ".gallery-filters",
+    ".routes > *",
+    ".timings > *",
+    ".grid > .card",
+    ".grid > article",
+    ".grid > figure",
+    ".grid > div"
+  ].join(",");
 
-  function isVisible(el){
-    const r=el.getBoundingClientRect(), s=getComputedStyle(el);
-    return r.width>=30 && r.height>=25 && s.display!=="none" &&
-           s.visibility!=="hidden" && s.opacity!=="0";
-  }
-
-  function looksLikeBox(el){
-    if(!(el instanceof HTMLElement) || skipTags.has(el.tagName)) return false;
-    if(skipSelectors.some(sel=>el.matches(sel))) return false;
-    if(el.closest("nav,footer,header")) return false;
-    if(!isVisible(el)) return false;
-
-    const s=getComputedStyle(el);
+  function validBox(el){
+    if(!(el instanceof HTMLElement)) return false;
+    if(el.matches("html,body,nav,header,footer,section,.divine-temple-symbol,.deepam-animation")) return false;
+    if(el.closest("nav,header,footer")) return false;
     const r=el.getBoundingClientRect();
-    const border=["Top","Right","Bottom","Left"].some(side=>s["border"+side+"Width"]!=="0px");
-    const radius=parseFloat(s.borderTopLeftRadius)||0;
-    const shadow=s.boxShadow && s.boxShadow!=="none";
-    const bg=s.backgroundColor &&
-      s.backgroundColor!=="transparent" &&
-      s.backgroundColor!=="rgba(0, 0, 0, 0)";
-    const outline=s.outlineStyle!=="none" && s.outlineWidth!=="0px";
-
-    /* The screenshots' cards/rows are all detected by one of these box traits. */
-    return border || radius>2 || shadow || bg || outline;
+    const s=getComputedStyle(el);
+    return r.width>25 && r.height>20 && s.display!=="none" && s.visibility!=="hidden";
   }
 
-  function prepare(root){
-    const list=[];
-    if(root instanceof HTMLElement) list.push(root,...root.querySelectorAll("*"));
-    else list.push(...document.querySelectorAll("*"));
+  function getBox(target){
+    if(!(target instanceof Element)) return null;
+    let el=target.closest(BOX_SELECTOR);
+    if(el && validBox(el)) return el;
 
-    list.forEach(el=>{
-      if(looksLikeBox(el)) el.classList.add("gentle-hover-box");
-    });
-  }
-
-  function bind(){
-    document.querySelectorAll(".gentle-hover-box").forEach(el=>{
-      if(el.dataset.gentleShakeBound==="1") return;
-      el.dataset.gentleShakeBound="1";
-
-      el.addEventListener("mouseenter",function(){
-        this.classList.remove("gentle-shaking");
-        void this.offsetWidth;
-        this.classList.add("gentle-shaking");
-      },{passive:true});
-
-      el.addEventListener("animationend",function(e){
-        if(e.animationName==="universalGentleBoxShake"){
-          this.classList.remove("gentle-shaking");
-        }
-      },{passive:true});
-    });
-  }
-
-  function scan(root=document){
-    prepare(root);
-    bind();
-  }
-
-  function init(){
-    scan(document);
-    const observer=new MutationObserver(mutations=>{
-      for(const m of mutations){
-        m.addedNodes.forEach(node=>{
-          if(node.nodeType===1) scan(node);
-        });
+    /* Catch any future boxed CMS element not covered by a class. */
+    for(let node=target; node && node instanceof HTMLElement && node.tagName!=="SECTION"; node=node.parentElement){
+      if(validBox(node)){
+        const s=getComputedStyle(node);
+        const boxed=
+          s.borderStyle!=="none" ||
+          parseFloat(s.borderRadius)>3 ||
+          s.boxShadow!=="none";
+        if(boxed) return node;
       }
-    });
-    observer.observe(document.body,{childList:true,subtree:true});
+    }
+    return null;
   }
 
-  if(document.readyState==="loading"){
-    document.addEventListener("DOMContentLoaded",init,{once:true});
-  }else{
-    init();
-  }
+  let current=null;
+
+  document.addEventListener("pointerover",function(e){
+    const box=getBox(e.target);
+    if(!box || box===current) return;
+    current=box;
+    box.classList.remove("gentle-shake-active");
+    void box.offsetWidth;
+    box.classList.add("gentle-shake-active");
+  },true);
+
+  document.addEventListener("pointerout",function(e){
+    if(!current) return;
+    const to=e.relatedTarget;
+    if(to && current.contains(to)) return;
+    current=null;
+  },true);
+
+  document.addEventListener("animationend",function(e){
+    if(e.animationName==="gentleBoxShakeFinal"){
+      e.target.classList.remove("gentle-shake-active");
+    }
+  },true);
 })();
 </script>
 </body></html>
