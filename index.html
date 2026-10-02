@@ -313,16 +313,6 @@ window.supabaseClient = window.supabase.createClient(
       </figcaption>
     </figure>
     <figure class="real-gallery-card" data-category="Festivals">
-      <a href="https://avhcpkrh.manus.space/images/gallery/govu%20puja.jpg" target="_blank" rel="noopener">
-        <img src="https://avhcpkrh.manus.space/images/gallery/govu%20puja.jpg" alt="Govu Pooja" loading="lazy" decoding="async">
-        <span class="gallery-overlay">View Photo ↗</span>
-      </a>
-      <figcaption>
-        <span class="gallery-category">Festivals</span>
-        <strong>Govu Pooja</strong>
-      </figcaption>
-    </figure>
-    <figure class="real-gallery-card" data-category="Festivals">
       <a href="https://avhcpkrh.manus.space/images/gallery/Gayatri%20devi%20govu%20pooja.jpg" target="_blank" rel="noopener">
         <img src="https://avhcpkrh.manus.space/images/gallery/Gayatri%20devi%20govu%20pooja.jpg" alt="Gayatri Devi — Govu Pooja" loading="lazy" decoding="async">
         <span class="gallery-overlay">View Photo ↗</span>
@@ -1009,7 +999,8 @@ footer.section-opening::before{
   function staticGalleryCards(){return [...document.querySelectorAll('.real-gallery-grid .real-gallery-card')].map(card=>({card,url:card.querySelector('a')?.getAttribute('href')||card.querySelector('img')?.getAttribute('src')||'',title:card.querySelector('figcaption strong')?.textContent||'Website Photo',category:card.dataset.category||'Temple'})).filter(x=>x.url);}
   function normalizeGalleryUrl(url){try{const u=new URL(url,window.location.href);u.hash="";return decodeURIComponent(u.href).replace(/\\/+$/,"").toLowerCase();}catch(e){return String(url||"").trim().toLowerCase();}}
   function galleryDuplicateKey(item){return normalizeGalleryUrl(item?.image_url||item?.url||"");}
-  const permanentlyHiddenGalleryUrls=["https://avhcpkrh.manus.space/images/gallery/Gayatri%20devi%20deepam%20pooja.jpg"];
+  const permanentlyHiddenGalleryUrls=["https://avhcpkrh.manus.space/images/gallery/Gayatri%20devi%20deepam%20pooja.jpg"
+    "https://avhcpkrh.manus.space/images/gallery/govu%20puja.jpg",];
   window.templeCloudGalleryLoad = async function(){
     const grid=document.querySelector(".real-gallery-grid");
     const staticItems=staticGalleryCards();
