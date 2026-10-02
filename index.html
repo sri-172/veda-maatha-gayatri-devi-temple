@@ -1961,7 +1961,8 @@ document.addEventListener("click", function(e) {
 .admin-website-photo img{width:90px;height:65px;object-fit:cover;border-radius:9px;border:1px solid #d6a33a55;background:#f4ead5}
 .admin-website-photo-title{font-weight:700;color:#35140e}
 .admin-website-photo-category{font-size:12px;color:#806b59;margin-top:3px}
-.admin-website-photo button{border:0;background:#8d3020;color:#fff;border-radius:8px;padding:8px 12px;cursor:pointer;font:inherit}
+.admin-website-photo button{border:0;background:#8d3020;color:#fff;border-radius:8px;padding:8px 14px;cursor:pointer;font:inherit}
+.admin-website-photo button:disabled{opacity:.65;cursor:wait}
 @media(max-width:700px){
   .admin-website-photo{grid-template-columns:70px 1fr}
   .admin-website-photo img{width:70px;height:55px}
@@ -1970,6 +1971,10 @@ document.addEventListener("click", function(e) {
 </style>
 <script id="admin-gallery-static-repair">
 (function(){
+  const HIDDEN_URLS = [
+    "https://avhcpkrh.manus.space/images/gallery/Gayatri%20devi%20deepam%20pooja.jpg"
+  ];
+
   function norm(url){
     try{
       const u=new URL(url,location.href);
@@ -1989,18 +1994,51 @@ document.addEventListener("click", function(e) {
         const title=card.querySelector("figcaption strong");
         const category=card.querySelector(".gallery-category");
         return {
-          card:card,
+          card,
           url:(a&&a.getAttribute("href"))||(img&&img.getAttribute("src"))||"",
           title:(title&&title.textContent.trim())||(img&&img.alt)||"Website Photo",
           category:(category&&category.textContent.trim())||card.dataset.category||"Temple"
         };
       })
-      .filter(item=>item.url);
+      .filter(x=>x.url);
+  }
+
+  async function getDeleted(){
+    const sb=window.supabaseClient;
+    if(!sb) return [];
+    const result=await sb.from("temple_content").select("content").eq("id",1).maybeSingle();
+    if(result.error) throw result.error;
+    return Array.isArray(result.data?.content?.galleryDeletedUrls)
+      ? result.data.content.galleryDeletedUrls : [];
+  }
+
+  async function saveDeleted(urls){
+    const sb=window.supabaseClient;
+    if(!sb) throw new Error("Supabase is not available. Please refresh and sign in again.");
+
+    const auth=await sb.auth.getUser();
+    if(!auth.data?.user) throw new Error("Please sign in as an administrator.");
+
+    const current=await sb.from("temple_content").select("content").eq("id",1).maybeSingle();
+    if(current.error) throw current.error;
+
+    const content={...(current.data?.content||{})};
+    content.galleryDeletedUrls=[...new Set(urls.map(String))];
+
+    const saved=await sb.from("temple_content").upsert({
+      id:1,
+      content,
+      updated_at:new Date().toISOString(),
+      updated_by:auth.data.user.id
+    });
+
+    if(saved.error) throw saved.error;
   }
 
   function ensureBox(){
     const list=document.getElementById("galleryAdminList");
     if(!list) return null;
+
     let box=document.getElementById("adminWebsitePhotoList");
     if(!box){
       box=document.createElement("div");
@@ -2010,36 +2048,43 @@ document.addEventListener("click", function(e) {
     return box;
   }
 
-  async function getDeleted(){
-    try{
-      if(!window.supabaseClient) return [];
-      const result=await window.supabaseClient
-        .from("temple_content")
-        .select("content")
-        .eq("id",1)
-        .maybeSingle();
-      if(result.error) return [];
-      return result.data&&result.data.content&&Array.isArray(result.data.content.galleryDeletedUrls)
-        ? result.data.content.galleryDeletedUrls : [];
-    }catch(e){
-      return [];
-    }
+  function cleanupOldStaticRows(){
+    const list=document.getElementById("galleryAdminList");
+    if(!list) return;
+    list.querySelectorAll(".gallery-admin-row").forEach(row=>{
+      if(row.querySelector("[data-static-delete]")) row.remove();
+    });
+    list.querySelectorAll(".gallery-admin-static-head").forEach(head=>{
+      if(/existing website photos/i.test(head.textContent||"")) head.remove();
+    });
   }
 
   async function render(){
     const box=ensureBox();
     if(!box) return;
 
-    const photos=staticPhotos();
-    if(!photos.length){
+    cleanupOldStaticRows();
+
+    let deleted=[];
+    try{
+      deleted=await getDeleted();
+    }catch(error){
       box.innerHTML="";
+      const msg=document.createElement("p");
+      msg.className="admin-gallery-help";
+      msg.textContent="Gallery delete status could not be loaded: "+(error.message||String(error));
+      box.appendChild(msg);
       return;
     }
 
-    const deleted=await getDeleted();
-    const deletedSet=new Set(deleted.map(norm));
+    const deletedSet=new Set(
+      [...deleted,...HIDDEN_URLS].map(norm).filter(Boolean)
+    );
+
+    const photos=staticPhotos().filter(item=>!deletedSet.has(norm(item.url)));
 
     box.innerHTML="";
+
     const heading=document.createElement("h4");
     heading.className="admin-gallery-heading";
     heading.textContent="Existing Website Photos";
@@ -2047,12 +2092,15 @@ document.addEventListener("click", function(e) {
 
     const help=document.createElement("p");
     help.className="admin-gallery-help";
-    help.textContent=photos.length+" original website photos available";
+    help.textContent=photos.length
+      ? photos.length+" website photos available. Delete removes the photo from the public Gallery."
+      : "No undeleted original website photos remain.";
     box.appendChild(help);
 
     photos.forEach(item=>{
       const row=document.createElement("div");
       row.className="admin-website-photo";
+      row.dataset.url=item.url;
 
       const img=document.createElement("img");
       img.src=item.url;
@@ -2066,77 +2114,107 @@ document.addEventListener("click", function(e) {
       const category=document.createElement("div");
       category.className="admin-website-photo-category";
       category.textContent=item.category;
-      info.appendChild(title);
-      info.appendChild(category);
+      info.append(title,category);
 
       const button=document.createElement("button");
       button.type="button";
-      button.textContent=deletedSet.has(norm(item.url))?"Deleted":"Delete";
-      button.disabled=deletedSet.has(norm(item.url));
+      button.textContent="Delete";
 
       button.addEventListener("click",async function(){
         if(!confirm("Delete this website photo from the public gallery?")) return;
-        const msg=document.getElementById("galleryMsg");
-        if(msg) msg.textContent="Deleting website photo…";
+
         button.disabled=true;
+        button.textContent="Deleting…";
+
+        const msg=document.getElementById("galleryMsg");
+        if(msg) msg.textContent="Deleting "+item.title+"…";
 
         try{
-          if(!window.supabaseClient) throw new Error("Supabase is not available.");
-          const auth=await window.supabaseClient.auth.getUser();
-          if(!auth.data||!auth.data.user) throw new Error("Please sign in as an administrator.");
+          const currentDeleted=await getDeleted();
+          if(!currentDeleted.some(x=>norm(x)===norm(item.url))){
+            currentDeleted.push(item.url);
+          }
 
-          const current=await window.supabaseClient
-            .from("temple_content")
-            .select("content")
-            .eq("id",1)
-            .maybeSingle();
-          if(current.error) throw current.error;
+          await saveDeleted(currentDeleted);
 
-          const content=Object.assign({},current.data&&current.data.content||{});
-          const urls=Array.isArray(content.galleryDeletedUrls)?content.galleryDeletedUrls.slice():[];
-          if(!urls.some(x=>norm(x)===norm(item.url))) urls.push(item.url);
-
-          const saved=await window.supabaseClient
-            .from("temple_content")
-            .upsert({
-              id:1,
-              content:Object.assign({},content,{galleryDeletedUrls:urls}),
-              updated_at:new Date().toISOString(),
-              updated_by:auth.data.user.id
-            });
-          if(saved.error) throw saved.error;
-
+          /* Immediately remove it from the public gallery DOM. */
           item.card.style.display="none";
-          if(msg) msg.textContent="✓ Website photo deleted.";
-          await render();
+          row.remove();
+
+          if(msg) msg.textContent="✓ "+item.title+" deleted from the public Gallery.";
+
+          /* Refresh cloud/static gallery state without reloading the page. */
+          if(typeof window.templeCloudGalleryLoad==="function"){
+            try{ await window.templeCloudGalleryLoad(); }catch(_){}
+          }
+
+          /* Re-render our manager after the existing loader finishes. */
+          setTimeout(render,120);
         }catch(error){
           button.disabled=false;
+          button.textContent="Delete";
           if(msg) msg.textContent="Delete failed: "+(error.message||String(error));
         }
       });
 
-      row.appendChild(img);
-      row.appendChild(info);
-      row.appendChild(button);
+      row.append(img,info,button);
       box.appendChild(row);
     });
   }
+
+  /* Also repair the original static Delete buttons if the older renderer creates them. */
+  document.addEventListener("click",async function(event){
+    const oldButton=event.target.closest("#galleryAdminList [data-static-delete]");
+    if(!oldButton) return;
+
+    event.preventDefault();
+    event.stopPropagation();
+    if(typeof event.stopImmediatePropagation==="function") event.stopImmediatePropagation();
+
+    const row=oldButton.closest(".gallery-admin-row");
+    const img=row?.querySelector("img");
+    if(!img) return;
+
+    const photos=staticPhotos();
+    const item=photos.find(x=>norm(x.url)===norm(img.getAttribute("src")||""));
+    if(!item) return;
+
+    if(!confirm("Delete this website photo from the public gallery?")) return;
+
+    oldButton.disabled=true;
+    oldButton.textContent="Deleting…";
+
+    const msg=document.getElementById("galleryMsg");
+    if(msg) msg.textContent="Deleting "+item.title+"…";
+
+    try{
+      const currentDeleted=await getDeleted();
+      if(!currentDeleted.some(x=>norm(x)===norm(item.url))) currentDeleted.push(item.url);
+      await saveDeleted(currentDeleted);
+      item.card.style.display="none";
+      row.remove();
+      if(msg) msg.textContent="✓ "+item.title+" deleted from the public Gallery.";
+      setTimeout(render,120);
+    }catch(error){
+      oldButton.disabled=false;
+      oldButton.textContent="Delete";
+      if(msg) msg.textContent="Delete failed: "+(error.message||String(error));
+    }
+  },true);
 
   function init(){
     render();
 
     document.addEventListener("click",function(event){
       if(event.target.closest(".admin-tab[data-tab='gallery']")){
-        setTimeout(render,100);
+        setTimeout(render,120);
       }
       if(event.target.closest("#refreshGallery")){
-        setTimeout(render,500);
+        setTimeout(render,600);
       }
     },true);
 
-    [500,1200,2500,5000].forEach(function(delay){
-      setTimeout(render,delay);
-    });
+    [500,1200,2500,5000].forEach(delay=>setTimeout(render,delay));
   }
 
   if(document.readyState==="loading"){
@@ -2147,6 +2225,6 @@ document.addEventListener("click", function(e) {
 
   window.renderAdminWebsiteGallery=render;
 })();
-</script>
+</script></script>
 
 </body></html>
