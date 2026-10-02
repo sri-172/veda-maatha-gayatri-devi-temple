@@ -1971,11 +1971,34 @@ document.addEventListener("click", function(e) {
 <script id="admin-gallery-static-repair">
 (function(){
   function norm(url){
-    try{const u=new URL(url,location.href);u.hash="";return decodeURIComponent(u.href).replace(/\\/+$/,"").toLowerCase();}
-    catch(e){return String(url||"").trim().toLowerCase();}
+    try{
+      const u=new URL(url,location.href);
+      u.hash="";
+      return decodeURIComponent(u.href).replace(/\/+$/,"").toLowerCase();
+    }catch(e){
+      return String(url||"").trim().toLowerCase();
+    }
   }
 
-  function ensureContainer(){
+  function staticPhotos(){
+    return Array.from(document.querySelectorAll(".real-gallery-grid .real-gallery-card"))
+      .filter(card=>!card.classList.contains("cloud-gallery-card"))
+      .map(card=>{
+        const a=card.querySelector("a");
+        const img=card.querySelector("img");
+        const title=card.querySelector("figcaption strong");
+        const category=card.querySelector(".gallery-category");
+        return {
+          card:card,
+          url:(a&&a.getAttribute("href"))||(img&&img.getAttribute("src"))||"",
+          title:(title&&title.textContent.trim())||(img&&img.alt)||"Website Photo",
+          category:(category&&category.textContent.trim())||card.dataset.category||"Temple"
+        };
+      })
+      .filter(item=>item.url);
+  }
+
+  function ensureBox(){
     const list=document.getElementById("galleryAdminList");
     if(!list) return null;
     let box=document.getElementById("adminWebsitePhotoList");
@@ -1987,54 +2010,26 @@ document.addEventListener("click", function(e) {
     return box;
   }
 
-  function staticPhotos(){
-    return [...document.querySelectorAll(".real-gallery-grid .real-gallery-card:not(.cloud-gallery-card)")].map(card=>{
-      const a=card.querySelector("a");
-      const img=card.querySelector("img");
-      const strong=card.querySelector("figcaption strong");
-      const cat=card.querySelector(".gallery-category");
-      return {
-        card,
-        url:a?.getAttribute("href")||img?.getAttribute("src")||"",
-        title:strong?.textContent?.trim()||img?.alt||"Website Photo",
-        category:cat?.textContent?.trim()||card.dataset.category||"Temple"
-      };
-    }).filter(x=>x.url);
-  }
-
   async function getDeleted(){
     try{
-      const sb=window.supabaseClient;
-      if(!sb) return [];
-      const {data,error}=await sb.from("temple_content").select("content").eq("id",1).maybeSingle();
-      if(error) return [];
-      return data?.content?.galleryDeletedUrls||[];
-    }catch(e){return [];}
+      if(!window.supabaseClient) return [];
+      const result=await window.supabaseClient
+        .from("temple_content")
+        .select("content")
+        .eq("id",1)
+        .maybeSingle();
+      if(result.error) return [];
+      return result.data&&result.data.content&&Array.isArray(result.data.content.galleryDeletedUrls)
+        ? result.data.content.galleryDeletedUrls : [];
+    }catch(e){
+      return [];
+    }
   }
 
-  async function deleteStaticPhoto(item){
-    const sb=window.supabaseClient;
-    if(!sb) throw new Error("Supabase is not available.");
-    const {data:userData}=await sb.auth.getUser();
-    if(!userData?.user) throw new Error("Please sign in as an administrator.");
-    const {data:row,error:readError}=await sb.from("temple_content").select("content").eq("id",1).maybeSingle();
-    if(readError) throw readError;
-    const content={...(row?.content||{})};
-    const urls=[...(content.galleryDeletedUrls||[])];
-    if(!urls.some(x=>norm(x)===norm(item.url))) urls.push(item.url);
-    const {error}=await sb.from("temple_content").upsert({
-      id:1,
-      content:{...content,galleryDeletedUrls:urls},
-      updated_at:new Date().toISOString(),
-      updated_by:userData.user.id
-    });
-    if(error) throw error;
-    item.card.style.display="none";
-  }
-
-  async function renderStaticAdminGallery(){
-    const box=ensureContainer();
+  async function render(){
+    const box=ensureBox();
     if(!box) return;
+
     const photos=staticPhotos();
     if(!photos.length){
       box.innerHTML="";
@@ -2052,7 +2047,7 @@ document.addEventListener("click", function(e) {
 
     const help=document.createElement("p");
     help.className="admin-gallery-help";
-    help.textContent=photos.length+" original website photos are available here.";
+    help.textContent=photos.length+" original website photos available";
     box.appendChild(help);
 
     photos.forEach(item=>{
@@ -2071,54 +2066,86 @@ document.addEventListener("click", function(e) {
       const category=document.createElement("div");
       category.className="admin-website-photo-category";
       category.textContent=item.category;
-      info.append(title,category);
+      info.appendChild(title);
+      info.appendChild(category);
 
       const button=document.createElement("button");
       button.type="button";
-      button.textContent="Delete";
-      button.addEventListener("click",async()=>{
+      button.textContent=deletedSet.has(norm(item.url))?"Deleted":"Delete";
+      button.disabled=deletedSet.has(norm(item.url));
+
+      button.addEventListener("click",async function(){
         if(!confirm("Delete this website photo from the public gallery?")) return;
         const msg=document.getElementById("galleryMsg");
         if(msg) msg.textContent="Deleting website photo…";
         button.disabled=true;
+
         try{
-          await deleteStaticPhoto(item);
+          if(!window.supabaseClient) throw new Error("Supabase is not available.");
+          const auth=await window.supabaseClient.auth.getUser();
+          if(!auth.data||!auth.data.user) throw new Error("Please sign in as an administrator.");
+
+          const current=await window.supabaseClient
+            .from("temple_content")
+            .select("content")
+            .eq("id",1)
+            .maybeSingle();
+          if(current.error) throw current.error;
+
+          const content=Object.assign({},current.data&&current.data.content||{});
+          const urls=Array.isArray(content.galleryDeletedUrls)?content.galleryDeletedUrls.slice():[];
+          if(!urls.some(x=>norm(x)===norm(item.url))) urls.push(item.url);
+
+          const saved=await window.supabaseClient
+            .from("temple_content")
+            .upsert({
+              id:1,
+              content:Object.assign({},content,{galleryDeletedUrls:urls}),
+              updated_at:new Date().toISOString(),
+              updated_by:auth.data.user.id
+            });
+          if(saved.error) throw saved.error;
+
+          item.card.style.display="none";
           if(msg) msg.textContent="✓ Website photo deleted.";
-          await renderStaticAdminGallery();
-          if(typeof window.templeCloudGalleryLoad==="function"){
-            try{await window.templeCloudGalleryLoad();}catch(_){}
-          }
-        }catch(e){
+          await render();
+        }catch(error){
           button.disabled=false;
-          if(msg) msg.textContent="Delete failed: "+(e?.message||String(e));
+          if(msg) msg.textContent="Delete failed: "+(error.message||String(error));
         }
       });
 
-      if(deletedSet.has(norm(item.url))){
-        row.style.opacity=".55";
-        button.textContent="Deleted";
-        button.disabled=true;
-      }
-
-      row.append(img,info,button);
+      row.appendChild(img);
+      row.appendChild(info);
+      row.appendChild(button);
       box.appendChild(row);
     });
   }
 
   function init(){
-    renderStaticAdminGallery();
-    document.addEventListener("click",function(e){
-      const tab=e.target.closest(".admin-tab[data-tab='gallery']");
-      if(tab) setTimeout(renderStaticAdminGallery,80);
-      const refresh=e.target.closest("#refreshGallery");
-      if(refresh) setTimeout(renderStaticAdminGallery,300);
+    render();
+
+    document.addEventListener("click",function(event){
+      if(event.target.closest(".admin-tab[data-tab='gallery']")){
+        setTimeout(render,100);
+      }
+      if(event.target.closest("#refreshGallery")){
+        setTimeout(render,500);
+      }
     },true);
-    /* Re-render after login/editor opening and after cloud scripts finish. */
-    [250,800,1600,3000].forEach(ms=>setTimeout(renderStaticAdminGallery,ms));
+
+    [500,1200,2500,5000].forEach(function(delay){
+      setTimeout(render,delay);
+    });
   }
 
-  if(document.readyState==="loading") document.addEventListener("DOMContentLoaded",init,{once:true});
-  else init();
+  if(document.readyState==="loading"){
+    document.addEventListener("DOMContentLoaded",init,{once:true});
+  }else{
+    init();
+  }
+
+  window.renderAdminWebsiteGallery=render;
 })();
 </script>
 
