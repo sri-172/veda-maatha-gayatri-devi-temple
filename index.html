@@ -910,16 +910,77 @@ footer.section-opening::before{
   async function galleryDelete(id){
     const {data:userData}=await sb.auth.getUser();
     if(!userData || !userData.user) throw new Error("Please sign in as an administrator.");
-    const {data:item}=await sb.from("gallery_items").select("image_url").eq("id",id).maybeSingle();
-    const {error}=await sb.from("gallery_items").delete().eq("id",id);
-    if(error) throw error;
-    if(item && item.image_url){
-      const marker="/storage/v1/object/public/temple-gallery/";
-      const idx=item.image_url.indexOf(marker);
-      if(idx>=0){
-        const path=decodeURIComponent(item.image_url.slice(idx+marker.length));
-        await sb.storage.from("temple-gallery").remove([path]);
+
+    /* Read the selected photo first. */
+    const {data:item,error:readError}=await sb
+      .from("gallery_items")
+      .select("image_url")
+      .eq("id",id)
+      .maybeSingle();
+    if(readError) throw readError;
+    if(!item || !item.image_url) throw new Error("The selected gallery photo could not be found.");
+
+    /*
+      Delete ALL gallery rows using this same image URL.
+      This prevents duplicate cloud records from making a deleted photo
+      reappear in the public Gallery or Admin Gallery.
+    */
+    const {error:deleteError}=await sb
+      .from("gallery_items")
+      .delete()
+      .eq("image_url",item.image_url);
+    if(deleteError) throw deleteError;
+
+    /*
+      Also write the image URL to the central deletion registry.
+      This is important when the same photo exists as an original/static
+      website image and/or as a cloud gallery record.
+    */
+    const current=await sb
+      .from("temple_content")
+      .select("content")
+      .eq("id",1)
+      .maybeSingle();
+    if(current.error) throw current.error;
+
+    const content={...(current.data?.content||{})};
+    const existing=Array.isArray(content.galleryDeletedUrls)
+      ? content.galleryDeletedUrls : [];
+
+    const normalize=url=>{
+      try{
+        const u=new URL(url,window.location.href);
+        u.hash="";
+        return decodeURIComponent(u.href).replace(/\\/+$/,"").toLowerCase();
+      }catch(e){
+        return String(url||"").trim().toLowerCase();
       }
+    };
+
+    const key=normalize(item.image_url);
+    const merged=[...existing];
+    if(!merged.some(url=>normalize(url)===key)) merged.push(item.image_url);
+
+    const {error:saveError}=await sb
+      .from("temple_content")
+      .upsert({
+        id:1,
+        content:{
+          ...content,
+          galleryDeletedUrls:merged,
+          galleryDeletionRepairV3Done:true
+        },
+        updated_at:new Date().toISOString(),
+        updated_by:userData.user.id
+      });
+    if(saveError) throw saveError;
+
+    /* Remove the physical uploaded object when it belongs to our bucket. */
+    const marker="/storage/v1/object/public/temple-gallery/";
+    const idx=item.image_url.indexOf(marker);
+    if(idx>=0){
+      const path=decodeURIComponent(item.image_url.slice(idx+marker.length));
+      try{ await sb.storage.from("temple-gallery").remove([path]); }catch(_){}
     }
   }
 
