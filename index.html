@@ -1073,6 +1073,59 @@ footer.section-opening::before{
       console.warn("Gallery deletion-state V2 repair:",e.message);
     }
 
+    /*
+      Gallery deletion-state V3 repair.
+      Previous repair versions could leave stale static-photo URLs in
+      galleryDeletedUrls. Reset only the original static-photo deletions,
+      while preserving the one explicitly hidden photo. After this migration,
+      future Admin deletes continue to use galleryDeletedUrls normally.
+    */
+    try{
+      const stateV3=await window.supabaseClient
+        .from("temple_content")
+        .select("content")
+        .eq("id",1)
+        .maybeSingle();
+
+      const contentV3=stateV3.data?.content||{};
+      const v3Done=contentV3.galleryDeletionRepairV3Done===true;
+
+      if(!v3Done){
+        const staticKeysV3=new Set(staticItems.map(x=>normalizeGalleryUrl(x.url)).filter(Boolean));
+        const preservedCloudDeletes=[...(deleted||[])].filter(url=>{
+          return !staticKeysV3.has(normalizeGalleryUrl(url));
+        });
+
+        permanentlyHiddenGalleryUrls.forEach(url=>{
+          if(!preservedCloudDeletes.some(x=>normalizeGalleryUrl(x)===normalizeGalleryUrl(url))){
+            preservedCloudDeletes.push(url);
+          }
+        });
+
+        const migratedContent={
+          ...contentV3,
+          galleryDeletedUrls:preservedCloudDeletes,
+          galleryDeletionRepairV3Done:true
+        };
+
+        const authV3=await window.supabaseClient.auth.getUser();
+        if(authV3.data?.user){
+          const savedV3=await window.supabaseClient.from("temple_content").upsert({
+            id:1,
+            content:migratedContent,
+            updated_at:new Date().toISOString(),
+            updated_by:authV3.data.user.id
+          });
+          if(!savedV3.error) deleted=preservedCloudDeletes;
+        }else{
+          /* Before Admin login, display the original static gallery normally. */
+          deleted=preservedCloudDeletes;
+        }
+      }
+    }catch(e){
+      console.warn("Gallery deletion-state V3 repair:",e.message);
+    }
+
     const deletedKeys=new Set([...deleted,...permanentlyHiddenGalleryUrls].map(normalizeGalleryUrl).filter(Boolean));
 
     if(grid){
@@ -2339,10 +2392,19 @@ document.addEventListener("click", function(e) {
         .maybeSingle();
       if(result.error) throw result.error;
 
-      const urls=Array.isArray(result.data?.content?.galleryDeletedUrls)
-        ? result.data.content.galleryDeletedUrls : [];
+      const content=result.data?.content||{};
+      const v3Done=content.galleryDeletionRepairV3Done===true;
+      const urls=Array.isArray(content.galleryDeletedUrls)
+        ? content.galleryDeletedUrls : [];
 
-      deletedKeys=new Set([...urls,...HIDDEN_URLS].map(norm).filter(Boolean));
+      /*
+        If V3 has not run yet, stale deletion data from the old broken
+        implementation must not hide the original static gallery photos.
+      */
+      deletedKeys=new Set([
+        ...(v3Done ? urls : []),
+        ...HIDDEN_URLS
+      ].map(norm).filter(Boolean));
       enforce();
     }catch(error){
       console.warn("Final gallery deletion sync:",error.message||error);
