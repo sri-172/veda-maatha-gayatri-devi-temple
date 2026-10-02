@@ -1793,4 +1793,105 @@ document.addEventListener("click", function(e) {
   },true);
 })();
 </script>
+
+<script id="admin-login-repair">
+/* Final Admin Login reliability layer.
+   Uses capture-phase handling so the Unlock Editor button still works
+   even if another page script has failed or registered a conflicting handler. */
+(function(){
+  function bindAdminLogin(){
+    const btn=document.getElementById("adminLoginBtn");
+    const emailEl=document.getElementById("adminEmail");
+    const passwordEl=document.getElementById("adminPassword");
+    const loginEl=document.getElementById("adminLogin");
+    const editorEl=document.getElementById("adminEditor");
+    const msgEl=document.getElementById("adminLoginMsg");
+    if(!btn||!emailEl||!passwordEl||!loginEl||!editorEl||!msgEl) return;
+    if(btn.dataset.reliableAuthBound==="1") return;
+    btn.dataset.reliableAuthBound="1";
+
+    async function unlock(event){
+      if(event){
+        event.preventDefault();
+        event.stopPropagation();
+        if(typeof event.stopImmediatePropagation==="function") event.stopImmediatePropagation();
+      }
+
+      const email=emailEl.value.trim();
+      const password=passwordEl.value;
+      if(!email||!password){
+        msgEl.textContent="Enter your administrator email and password.";
+        return;
+      }
+
+      btn.disabled=true;
+      const oldText=btn.textContent;
+      btn.textContent="Signing in…";
+      msgEl.textContent="Connecting to Supabase Authentication…";
+
+      try{
+        let sb=window.supabaseClient;
+
+        /* Fallback: recreate the client if an earlier script failed. */
+        if(!sb && window.supabase && window.SUPABASE_URL && window.SUPABASE_PUBLISHABLE_KEY){
+          sb=window.supabase.createClient(
+            window.SUPABASE_URL,
+            window.SUPABASE_PUBLISHABLE_KEY
+          );
+          window.supabaseClient=sb;
+        }
+
+        if(!sb || !sb.auth){
+          throw new Error("Supabase Authentication is not available. Please refresh the page and try again.");
+        }
+
+        const result=await sb.auth.signInWithPassword({email,password});
+        if(result.error) throw result.error;
+
+        msgEl.textContent="✓ Login successful. Opening editor…";
+        loginEl.hidden=true;
+        editorEl.hidden=false;
+
+        const panel=document.getElementById("adminPanel");
+        if(panel){
+          panel.classList.add("open");
+          panel.setAttribute("aria-hidden","false");
+        }
+
+        if(typeof window.fillEditor==="function") window.fillEditor();
+        else if(typeof fillEditor==="function") fillEditor();
+
+        if(typeof window.templeCloudGalleryLoad==="function"){
+          try{ await window.templeCloudGalleryLoad(); }catch(_){}
+        }
+
+        btn.textContent="Editor Unlocked";
+        window.setTimeout(()=>{btn.textContent=oldText;},1200);
+      }catch(error){
+        console.error("Admin login error:",error);
+        msgEl.textContent="Login failed: "+(error?.message||String(error));
+      }finally{
+        btn.disabled=false;
+      }
+    }
+
+    /* Capture phase prevents older/conflicting click handlers from swallowing the action. */
+    btn.addEventListener("click",unlock,true);
+
+    passwordEl.addEventListener("keydown",function(e){
+      if(e.key==="Enter"){
+        e.preventDefault();
+        btn.click();
+      }
+    },true);
+  }
+
+  if(document.readyState==="loading"){
+    document.addEventListener("DOMContentLoaded",bindAdminLogin,{once:true});
+  }else{
+    bindAdminLogin();
+  }
+})();
+</script>
+
 </body></html>
