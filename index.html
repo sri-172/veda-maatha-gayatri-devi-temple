@@ -2131,11 +2131,15 @@ document.addEventListener("click", function(e) {
       return;
     }
 
-    const deletedSet=new Set(
-      [...deleted,...HIDDEN_URLS].map(norm).filter(Boolean)
+    /*
+      Admin must always display the original website photos.
+      Public-gallery deletion state is handled separately by the public
+      gallery loader. The Admin Gallery is the control surface, so a photo
+      remains visible here even if an earlier broken handler marked it deleted.
+    */
+    const photos=staticPhotos().filter(item=>
+      !HIDDEN_URLS.some(url=>norm(url)===norm(item.url))
     );
-
-    const photos=staticPhotos().filter(item=>!deletedSet.has(norm(item.url)));
 
     box.innerHTML="";
 
@@ -2147,8 +2151,8 @@ document.addEventListener("click", function(e) {
     const help=document.createElement("p");
     help.className="admin-gallery-help";
     help.textContent=photos.length
-      ? photos.length+" website photos available. Delete removes the photo from the public Gallery."
-      : "No undeleted original website photos remain.";
+      ? photos.length+" original website photos. Delete removes a photo from the public Gallery."
+      : "No original website photos are available.";
     box.appendChild(help);
 
     photos.forEach(item=>{
