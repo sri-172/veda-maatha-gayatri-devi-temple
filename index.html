@@ -2285,4 +2285,116 @@ document.addEventListener("click", function(e) {
 })();
 </script>
 
+
+<!-- FINAL GALLERY DELETE HARDENING -->
+<script id="final-gallery-delete-hardening">
+(function(){
+  const HIDDEN_URLS=[
+    "https://avhcpkrh.manus.space/images/gallery/Gayatri%20devi%20deepam%20pooja.jpg"
+  ];
+  let deletedKeys=new Set();
+  let refreshTimer=0;
+  let observerStarted=false;
+
+  function norm(url){
+    try{
+      const u=new URL(url,location.href);
+      u.hash="";
+      return decodeURIComponent(u.href).replace(/\/+$/,"").toLowerCase();
+    }catch(e){
+      return String(url||"").trim().toLowerCase();
+    }
+  }
+
+  function cardUrl(card){
+    return card?.querySelector("a")?.getAttribute("href")
+      || card?.querySelector("img")?.getAttribute("src")
+      || "";
+  }
+
+  function enforce(){
+    const grid=document.querySelector(".real-gallery-grid");
+    if(!grid) return;
+    grid.querySelectorAll(".real-gallery-card").forEach(card=>{
+      const key=norm(cardUrl(card));
+      if(!key) return;
+      const hidden=deletedKeys.has(key);
+      card.classList.toggle("is-hidden",hidden);
+      card.style.display=hidden ? "none" : "";
+    });
+  }
+
+  async function readDeletionState(){
+    const sb=window.supabaseClient;
+    if(!sb) return;
+    try{
+      const result=await sb.from("temple_content")
+        .select("content")
+        .eq("id",1)
+        .maybeSingle();
+      if(result.error) throw result.error;
+
+      const urls=Array.isArray(result.data?.content?.galleryDeletedUrls)
+        ? result.data.content.galleryDeletedUrls : [];
+
+      deletedKeys=new Set([...urls,...HIDDEN_URLS].map(norm).filter(Boolean));
+      enforce();
+    }catch(error){
+      console.warn("Final gallery deletion sync:",error.message||error);
+    }
+  }
+
+  function startObserver(){
+    if(observerStarted) return;
+    observerStarted=true;
+
+    const start=()=>{
+      const grid=document.querySelector(".real-gallery-grid");
+      if(!grid){
+        setTimeout(start,300);
+        return;
+      }
+
+      new MutationObserver(()=>{
+        window.clearTimeout(refreshTimer);
+        refreshTimer=window.setTimeout(enforce,0);
+      }).observe(grid,{childList:true,subtree:true});
+
+      enforce();
+      readDeletionState();
+    };
+
+    start();
+  }
+
+  document.addEventListener("click",function(event){
+    const button=event.target.closest(
+      "#adminWebsitePhotoList button, #galleryAdminList [data-static-delete]"
+    );
+    if(!button) return;
+
+    window.setTimeout(async()=>{
+      await readDeletionState();
+      enforce();
+    },700);
+
+    window.setTimeout(async()=>{
+      await readDeletionState();
+      enforce();
+    },1800);
+  },true);
+
+  startObserver();
+
+  [500,1500,3000,6000].forEach(ms=>{
+    setTimeout(()=>{
+      readDeletionState();
+      enforce();
+    },ms);
+  });
+
+  window.forceGalleryDeletionSync=readDeletionState;
+})();
+</script>
+
 </body></html>
