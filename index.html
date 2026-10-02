@@ -1010,7 +1010,65 @@ footer.section-opening::before{
   function normalizeGalleryUrl(url){try{const u=new URL(url,window.location.href);u.hash="";return decodeURIComponent(u.href).replace(/\\/+$/,"").toLowerCase();}catch(e){return String(url||"").trim().toLowerCase();}}
   function galleryDuplicateKey(item){return normalizeGalleryUrl(item?.image_url||item?.url||"");}
   const permanentlyHiddenGalleryUrls=["https://avhcpkrh.manus.space/images/gallery/Gayatri%20devi%20deepam%20pooja.jpg"];
-  window.templeCloudGalleryLoad = async function(){try{const grid=document.querySelector(".real-gallery-grid");const deleted=[...(await galleryDeletedUrls()),...permanentlyHiddenGalleryUrls];const staticItems=staticGalleryCards();const seen=new Set(staticItems.map(x=>normalizeGalleryUrl(x.url)).filter(Boolean));if(grid)staticItems.forEach(x=>x.card.style.display=deleted.includes(x.url)?'none':'');const rows=await window.templeCloud.cloudGallery();const uniqueRows=[];for(const x of rows){const key=galleryDuplicateKey(x);if(!key||seen.has(key))continue;seen.add(key);uniqueRows.push(x);}if(grid){grid.querySelectorAll('.cloud-gallery-card').forEach(x=>x.remove());uniqueRows.forEach(x=>{const fig=document.createElement('figure');fig.className='real-gallery-card cloud-gallery-card';fig.dataset.category=x.category||'Temple';fig.innerHTML=`<a href="${safe(x.image_url)}" target="_blank" rel="noopener"><img src="${safe(x.image_url)}" alt="${safe(x.title||"Temple Photo")}" loading="lazy" decoding="async"><span class="gallery-overlay">View Photo ↗</span></a><figcaption><span class="gallery-category">${safe(x.category||"Temple")}</span><strong>${safe(x.title||"Temple Photo")}</strong>${x.description?`<p style="margin:7px 0 0;color:#6d5148;font-size:12px;line-height:1.5">${safe(x.description)}</p>`:""}</figcaption></figure>`;grid.appendChild(fig);});bindGalleryFilters();}renderCloudGalleryAdmin(uniqueRows,deleted);}catch(e){console.warn("Gallery cloud load:",e.message);}};
+  window.templeCloudGalleryLoad = async function(){
+    const grid=document.querySelector(".real-gallery-grid");
+    const staticItems=staticGalleryCards();
+
+    /* Always render the original website photos in the Admin Gallery first.
+       This must not depend on the Supabase gallery query succeeding. */
+    let deleted=[];
+    try{ deleted=await galleryDeletedUrls(); }catch(e){ console.warn("Gallery deletion list:",e.message); }
+
+    const deletedKeys=new Set([...deleted,...permanentlyHiddenGalleryUrls].map(normalizeGalleryUrl).filter(Boolean));
+
+    if(grid){
+      staticItems.forEach(x=>{
+        x.card.style.display=deletedKeys.has(normalizeGalleryUrl(x.url)) ? "none" : "";
+      });
+      grid.querySelectorAll(".cloud-gallery-card").forEach(x=>x.remove());
+    }
+
+    /* Show static photos in Admin immediately, then append cloud photos if available. */
+    renderCloudGalleryAdmin([],deleted);
+
+    let rows=[];
+    try{
+      rows=await window.templeCloud.cloudGallery();
+    }catch(e){
+      console.warn("Cloud gallery load:",e.message);
+      const list=document.getElementById("galleryAdminList");
+      if(list){
+        const note=document.createElement("p");
+        note.className="admin-help";
+        note.style.marginTop="10px";
+        note.textContent="Cloud gallery photos could not be loaded right now. Existing website photos are still available above.";
+        list.appendChild(note);
+      }
+      return;
+    }
+
+    const seen=new Set(staticItems.map(x=>normalizeGalleryUrl(x.url)).filter(Boolean));
+    const uniqueRows=[];
+    for(const x of rows){
+      const key=galleryDuplicateKey(x);
+      if(!key || seen.has(key) || deletedKeys.has(key)) continue;
+      seen.add(key);
+      uniqueRows.push(x);
+    }
+
+    if(grid){
+      uniqueRows.forEach(x=>{
+        const fig=document.createElement("figure");
+        fig.className="real-gallery-card cloud-gallery-card";
+        fig.dataset.category=x.category||"Temple";
+        fig.innerHTML=`<a href="${safe(x.image_url)}" target="_blank" rel="noopener"><img src="${safe(x.image_url)}" alt="${safe(x.title||"Temple Photo")}" loading="lazy" decoding="async"><span class="gallery-overlay">View Photo ↗</span></a><figcaption><span class="gallery-category">${safe(x.category||"Temple")}</span><strong>${safe(x.title||"Temple Photo")}</strong>${x.description?`<p style="margin:7px 0 0;color:#6d5148;font-size:12px;line-height:1.5">${safe(x.description)}</p>`:""}</figcaption></figure>`;
+        grid.appendChild(fig);
+      });
+      bindGalleryFilters();
+    }
+
+    renderCloudGalleryAdmin(uniqueRows,deleted);
+  };
 
   function bindGalleryFilters(){
     document.querySelectorAll('.gallery-filter').forEach(b=>b.onclick=function(){
