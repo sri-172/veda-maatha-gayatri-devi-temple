@@ -1060,8 +1060,10 @@ footer.section-opening::before{
   function staticGalleryCards(){return [...document.querySelectorAll('.real-gallery-grid .real-gallery-card')].map(card=>({card,url:card.querySelector('a')?.getAttribute('href')||card.querySelector('img')?.getAttribute('src')||'',title:card.querySelector('figcaption strong')?.textContent||'Website Photo',category:card.dataset.category||'Temple'})).filter(x=>x.url);}
   function normalizeGalleryUrl(url){try{const u=new URL(url,window.location.href);u.hash="";return decodeURIComponent(u.href).replace(/\\/+$/,"").toLowerCase();}catch(e){return String(url||"").trim().toLowerCase();}}
   function galleryDuplicateKey(item){return normalizeGalleryUrl(item?.image_url||item?.url||"");}
-  const permanentlyHiddenGalleryUrls=["https://avhcpkrh.manus.space/images/gallery/Gayatri%20devi%20deepam%20pooja.jpg"
-    "https://avhcpkrh.manus.space/images/gallery/govu%20puja.jpg",];
+  const permanentlyHiddenGalleryUrls=[
+    "https://avhcpkrh.manus.space/images/gallery/Gayatri%20devi%20deepam%20pooja.jpg",
+    "https://avhcpkrh.manus.space/images/gallery/govu%20puja.jpg"
+  ];
   window.templeCloudGalleryLoad = async function(){
     const grid=document.querySelector(".real-gallery-grid");
     const staticItems=staticGalleryCards();
@@ -1210,7 +1212,11 @@ footer.section-opening::before{
     const uniqueRows=[];
     for(const x of rows){
       const key=galleryDuplicateKey(x);
-      if(!key || seen.has(key) || deletedKeys.has(key)) continue;
+      const titleKey=String(x?.title||"").trim().toLowerCase();
+      const permanentlyHidden =
+        permanentlyHiddenGalleryUrls.some(url=>normalizeGalleryUrl(url)===key) ||
+        titleKey==="govu pooja";
+      if(!key || seen.has(key) || deletedKeys.has(key) || permanentlyHidden) continue;
       seen.add(key);
       uniqueRows.push(x);
     }
@@ -1243,6 +1249,13 @@ footer.section-opening::before{
     const h2=document.createElement('div');h2.className='gallery-admin-static-head';h2.innerHTML='<h4>Cloud Photos</h4>';list.appendChild(h2);
     if(!rows.length){const p=document.createElement('p');p.className='admin-help';p.textContent='No cloud gallery photos yet. Add your first photo above.';list.appendChild(p);return;}
     rows.forEach(x=>{
+      const key=galleryDuplicateKey(x);
+      const titleKey=String(x?.title||"").trim().toLowerCase();
+      const permanentlyHidden =
+        permanentlyHiddenGalleryUrls.some(url=>normalizeGalleryUrl(url)===key) ||
+        titleKey==="govu pooja";
+      if(permanentlyHidden) return;
+
       const row=document.createElement('div'); row.className='gallery-admin-row'; row.dataset.id=x.id;
       row.innerHTML=`<div style="display:grid;grid-template-columns:90px 1fr;gap:12px;align-items:center;width:100%"><img src="${safe(x.image_url)}" alt="" style="width:90px;height:65px;object-fit:cover;border-radius:10px;border:1px solid #d6a33a55"><div><input data-k="title" value="${safe(x.title)}" placeholder="Photo title"><input data-k="category" value="${safe(x.category||'Temple')}" placeholder="Category"><input data-k="description" value="${safe(x.description||'')}" placeholder="Description"></div></div><button type="button" class="admin-btn danger" data-action="delete">Delete</button>`;
       row.querySelector('[data-action="delete"]').onclick=async()=>{if(!confirm('Delete this gallery photo permanently?'))return; const m=document.getElementById('galleryMsg');m.textContent='Deleting…';try{await window.templeCloud.galleryDelete(x.id);await window.templeCloudGalleryLoad();m.textContent='✓ Photo deleted.';}catch(e){m.textContent='Delete failed: '+e.message;}};
