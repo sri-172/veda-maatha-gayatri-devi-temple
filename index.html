@@ -1019,6 +1019,63 @@ footer.section-opening::before{
     let deleted=[];
     try{ deleted=await galleryDeletedUrls(); }catch(e){ console.warn("Gallery deletion list:",e.message); }
 
+    /*
+      One-time repair for the previous broken Admin Gallery delete handler.
+      The old handler could accidentally mark every original static photo as
+      deleted. Restore the original website photos in that case, while keeping
+      the explicitly removed Deepa Pooja photo hidden.
+    */
+    try{
+      const state=await window.supabaseClient
+        .from("temple_content")
+        .select("content")
+        .eq("id",1)
+        .maybeSingle();
+
+      const content=state.data?.content||{};
+      const activeStatic=staticItems.filter(x=>
+        !permanentlyHiddenGalleryUrls.some(h=>normalizeGalleryUrl(h)===normalizeGalleryUrl(x.url))
+      );
+      const deletedSetForRepair=new Set((deleted||[]).map(normalizeGalleryUrl).filter(Boolean));
+      const allStaticAccidentallyDeleted=
+        !content.galleryDeletionRepairV1Done &&
+        activeStatic.length>0 &&
+        activeStatic.every(x=>deletedSetForRepair.has(normalizeGalleryUrl(x.url)));
+
+      if(allStaticAccidentallyDeleted){
+        deleted=[...permanentlyHiddenGalleryUrls];
+
+        const repairedContent={
+          ...content,
+          galleryDeletedUrls:deleted,
+          galleryDeletionRepairV1Done:true
+        };
+
+        const auth=await window.supabaseClient.auth.getUser();
+        if(auth.data?.user){
+          await window.supabaseClient.from("temple_content").upsert({
+            id:1,
+            content:repairedContent,
+            updated_at:new Date().toISOString(),
+            updated_by:auth.data.user.id
+          });
+        }
+      }else if(!content.galleryDeletionRepairV1Done && content.galleryDeletedUrls===undefined){
+        /* Mark clean installations so this recovery never changes future intentional deletions. */
+        const auth=await window.supabaseClient.auth.getUser();
+        if(auth.data?.user){
+          await window.supabaseClient.from("temple_content").upsert({
+            id:1,
+            content:{...content,galleryDeletionRepairV1Done:true},
+            updated_at:new Date().toISOString(),
+            updated_by:auth.data.user.id
+          });
+        }
+      }
+    }catch(e){
+      console.warn("Gallery deletion-state repair:",e.message);
+    }
+
     const deletedKeys=new Set([...deleted,...permanentlyHiddenGalleryUrls].map(normalizeGalleryUrl).filter(Boolean));
 
     if(grid){
