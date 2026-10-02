@@ -2319,8 +2319,13 @@ document.addEventListener("click", function(e) {
       const key=norm(cardUrl(card));
       if(!key) return;
       const hidden=deletedKeys.has(key);
-      card.classList.toggle("is-hidden",hidden);
-      card.style.display=hidden ? "none" : "";
+      if(hidden){
+        card.classList.add("gallery-deleted-by-admin");
+        card.style.display="none";
+      }else if(card.classList.contains("gallery-deleted-by-admin")){
+        card.classList.remove("gallery-deleted-by-admin");
+        card.style.display="";
+      }
     });
   }
 
