@@ -1020,10 +1020,10 @@ footer.section-opening::before{
     try{ deleted=await galleryDeletedUrls(); }catch(e){ console.warn("Gallery deletion list:",e.message); }
 
     /*
-      One-time repair for the previous broken Admin Gallery delete handler.
-      The old handler could accidentally mark every original static photo as
-      deleted. Restore the original website photos in that case, while keeping
-      the explicitly removed Deepa Pooja photo hidden.
+      Gallery deletion-state V2 repair.
+      The earlier repair could leave the Admin Gallery with all original
+      website photos hidden. Restore all current static website photos once,
+      while preserving the one photo explicitly removed by the owner.
     */
     try{
       const state=await window.supabaseClient
@@ -1033,47 +1033,44 @@ footer.section-opening::before{
         .maybeSingle();
 
       const content=state.data?.content||{};
-      const activeStatic=staticItems.filter(x=>
-        !permanentlyHiddenGalleryUrls.some(h=>normalizeGalleryUrl(h)===normalizeGalleryUrl(x.url))
-      );
-      const deletedSetForRepair=new Set((deleted||[]).map(normalizeGalleryUrl).filter(Boolean));
-      const allStaticAccidentallyDeleted=
-        !content.galleryDeletionRepairV1Done &&
-        activeStatic.length>0 &&
-        activeStatic.every(x=>deletedSetForRepair.has(normalizeGalleryUrl(x.url)));
+      const alreadyRepaired=content.galleryDeletionRepairV2Done===true;
 
-      if(allStaticAccidentallyDeleted){
-        deleted=[...permanentlyHiddenGalleryUrls];
+      if(!alreadyRepaired){
+        const staticKeys=new Set(staticItems.map(x=>normalizeGalleryUrl(x.url)).filter(Boolean));
+
+        /* Keep deletions for cloud photos, but restore all static website photos. */
+        const repairedDeleted=[...(deleted||[])].filter(url=>{
+          return !staticKeys.has(normalizeGalleryUrl(url));
+        });
+
+        /* Preserve the single photo explicitly requested to stay deleted. */
+        permanentlyHiddenGalleryUrls.forEach(url=>{
+          if(!repairedDeleted.some(x=>normalizeGalleryUrl(x)===normalizeGalleryUrl(url))){
+            repairedDeleted.push(url);
+          }
+        });
 
         const repairedContent={
           ...content,
-          galleryDeletedUrls:deleted,
-          galleryDeletionRepairV1Done:true
+          galleryDeletedUrls:repairedDeleted,
+          galleryDeletionRepairV2Done:true
         };
 
         const auth=await window.supabaseClient.auth.getUser();
         if(auth.data?.user){
-          await window.supabaseClient.from("temple_content").upsert({
+          const saved=await window.supabaseClient.from("temple_content").upsert({
             id:1,
             content:repairedContent,
             updated_at:new Date().toISOString(),
             updated_by:auth.data.user.id
           });
-        }
-      }else if(!content.galleryDeletionRepairV1Done && content.galleryDeletedUrls===undefined){
-        /* Mark clean installations so this recovery never changes future intentional deletions. */
-        const auth=await window.supabaseClient.auth.getUser();
-        if(auth.data?.user){
-          await window.supabaseClient.from("temple_content").upsert({
-            id:1,
-            content:{...content,galleryDeletionRepairV1Done:true},
-            updated_at:new Date().toISOString(),
-            updated_by:auth.data.user.id
-          });
+          if(!saved.error) deleted=repairedDeleted;
+        }else{
+          deleted=repairedDeleted;
         }
       }
     }catch(e){
-      console.warn("Gallery deletion-state repair:",e.message);
+      console.warn("Gallery deletion-state V2 repair:",e.message);
     }
 
     const deletedKeys=new Set([...deleted,...permanentlyHiddenGalleryUrls].map(normalizeGalleryUrl).filter(Boolean));
