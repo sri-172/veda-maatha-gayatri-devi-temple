@@ -13,7 +13,7 @@
 :root{--maroon:#35140e;--brown:#5a2115;--gold:#d6a33a;--cream:#fff8e9;--paper:#fffdf7;--ink:#34231c;--muted:#756158}
 *{box-sizing:border-box;scroll-behavior:smooth}html{scroll-padding-top:105px}body{margin:0;background:#f8ecd5;color:var(--ink);font-family:Inter,Arial,sans-serif;line-height:1.7}section[id],header[id],footer[id]{scroll-margin-top:105px}
 nav{position:sticky;top:0;z-index:99;background:rgba(53,20,14,.97);padding:14px 5%;display:flex;justify-content:space-between;align-items:center;gap:20px;box-shadow:0 8px 30px #0003}
-.logo{font-family:Cinzel,serif;color:#f2cb71;text-decoration:none;font-weight:700;letter-spacing:1px;white-space:nowrap}.links{display:flex;gap:16px;flex-wrap:wrap;justify-content:flex-end}.links a{color:#fff7e5;text-decoration:none;font-size:11px}.links a:hover{color:#f2cb71}
+.logo{font-family:Cinzel,serif;color:#f2cb71;text-decoration:none;font-weight:700;letter-spacing:1px;white-space:nowrap}.links{display:flex;gap:16px;flex-wrap:wrap;justify-content:flex-end}.links a{color:#fff7e5;text-decoration:none;font-size:11px}
 .hero{min-height:92vh;display:grid;place-items:center;text-align:center;padding:80px 6%;background:radial-gradient(circle at center,#b7772540,transparent 32%),linear-gradient(135deg,#24100b,#642515,#28100b);color:#fff8e9;position:relative;overflow:hidden}
 .hero:before,.hero:after{content:"";position:absolute;border:1px solid #d6a33a55;border-radius:50%;width:560px;height:560px;transform:rotate(45deg)}.hero:after{width:410px;height:410px;transform:rotate(22deg)}
 .om{font-size:64px;color:#efc45f;position:relative;z-index:1}.eyebrow{font-size:12px;letter-spacing:3px;color:#b98220;font-weight:700}.hero .eyebrow{color:#f0ca70}.hero h1{font-family:Cinzel,serif;font-size:clamp(38px,6vw,76px);line-height:1.08;margin:18px 0;position:relative;z-index:1}.hero p{max-width:850px;margin:auto;position:relative;z-index:1;color:#f9ead1}.buttons{margin-top:30px;position:relative;z-index:1}.btn{display:inline-block;padding:12px 22px;border:1px solid #d6a33a;border-radius:30px;text-decoration:none;color:#fff;margin:6px;font-size:13px}.btn.primary{background:#d6a33a;color:#35140e;font-weight:700}
@@ -67,7 +67,6 @@ section .section-title > .divine-temple-symbol{
   margin-left:auto;
   margin-right:auto;
 }
-section:hover .divine-temple-symbol{transform:translateY(-3px) scale(1.045);filter:drop-shadow(0 0 13px rgba(239,196,95,.42))}
 .divine-temple-symbol svg{animation:templeSymbolFloat 4.8s ease-in-out infinite}
 @keyframes templeSymbolFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}
 @keyframes templeAura{0%,100%{opacity:.45;transform:translateX(-50%) scale(.88)}50%{opacity:.9;transform:translateX(-50%) scale(1.08)}}
@@ -96,13 +95,11 @@ input,textarea,select,button{
 <style>
 .gallery-filters{display:flex;gap:10px;flex-wrap:wrap;margin:28px 0 25px}
 .gallery-filter{border:1px solid #d6a33a;border-radius:999px;background:#fffaf0;color:#5a2115;padding:9px 16px;cursor:pointer;font-weight:600;font-size:12px}
-.gallery-filter.active,.gallery-filter:hover{background:#d6a33a;color:#35140e}
+.gallery-filter.active{background:#d6a33a;color:#35140e}
 .real-gallery-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:22px}
-.real-gallery-card{margin:0;background:#fffdf7;border:1px solid #d6a33a55;border-radius:18px;overflow:hidden;box-shadow:0 12px 35px #35140e12;transition:transform .25s ease,box-shadow .25s ease}
-.real-gallery-card:hover{transform:translateY(-5px);box-shadow:0 18px 45px #35140e22}
+ .real-gallery-card{margin:0;background:#fffdf7;border:1px solid #d6a33a55;border-radius:18px;overflow:hidden;box-shadow:0 12px 35px #35140e12}
 .real-gallery-card a{display:block;position:relative;overflow:hidden;background:#eee}
-.real-gallery-card img{display:block;width:100%;height:220px;object-fit:cover;transition:transform .35s ease}
-.real-gallery-card:hover img{transform:scale(1.04)}
+.real-gallery-card img{display:block;width:100%;height:220px;object-fit:cover}
 .gallery-overlay{position:absolute;right:12px;bottom:12px;background:#35140edd;color:#fff8e9;border:1px solid #d6a33a;padding:6px 10px;border-radius:999px;font-size:11px}
 .real-gallery-card figcaption{padding:15px}
 .real-gallery-card strong{display:block;color:#35140e;font-family:Cinzel,serif;font-size:14px;line-height:1.4;margin-top:5px}
@@ -138,8 +135,7 @@ window.supabaseClient = window.supabase.createClient(
 
 <style>
 .video-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px}
-.public-video-card{background:linear-gradient(145deg,rgba(255,255,255,.94),rgba(255,248,225,.82));border:1px solid rgba(190,146,57,.38);border-radius:22px;padding:14px;box-shadow:0 18px 45px rgba(74,31,5,.10);transition:.35s;overflow:hidden}
-.public-video-card:hover{transform:translateY(-5px);box-shadow:0 25px 60px rgba(74,31,5,.16)}
+.public-video-card{background:linear-gradient(145deg,rgba(255,255,255,.94),rgba(255,248,225,.82));border:1px solid rgba(190,146,57,.38);border-radius:22px;padding:14px;box-shadow:0 18px 45px rgba(74,31,5,.10);overflow:hidden}
 .public-video-frame{width:100%;aspect-ratio:16/9;border:0;border-radius:15px;display:block;background:#2b160d}
 .public-video-title{font-family:"Playfair Display",serif;color:#792c0d;font-size:20px;margin:15px 6px 7px}
 .public-video-description{color:#6d5148;font-size:14px;line-height:1.65;margin:0 6px 8px}
@@ -1913,116 +1909,6 @@ document.addEventListener("click", function(e) {
 });
 </script>
 
-
-<style id="gentle-box-shake-hover">
-/* Reliable hover shake: explicit box selectors + event delegation for dynamically created CMS boxes. */
-@keyframes gentleBoxShakeFinal{
-  0%,100%{transform:translate3d(0,0,0) rotate(0deg)}
-  15%{transform:translate3d(-2px,0,0) rotate(-.38deg)}
-  30%{transform:translate3d(2px,0,0) rotate(.38deg)}
-  45%{transform:translate3d(-1.6px,0,0) rotate(-.28deg)}
-  60%{transform:translate3d(1.6px,0,0) rotate(.25deg)}
-  75%{transform:translate3d(-.9px,0,0) rotate(-.15deg)}
-  90%{transform:translate3d(.6px,0,0) rotate(.08deg)}
-}
-.gentle-shake-active{
-  animation:gentleBoxShakeFinal .72s ease-in-out 1 !important;
-  transform-origin:center center !important;
-  will-change:transform;
-}
-@media(prefers-reduced-motion:reduce){
-  .gentle-shake-active{animation:none!important}
-}
-</style>
-<script id="universal-gentle-box-shake">
-(function(){
-  const BOX_SELECTOR=[
-    ".card",
-    ".time",
-    ".note",
-    ".mantra",
-    ".route",
-    ".distance > div",
-    ".address",
-    ".real-gallery-card",
-    ".video-grid > *",
-    ".temple-public-card",
-    ".temple-admin-row",
-    ".gallery-admin-row",
-    ".temple-photo-admin-item",
-    ".cms-manager-box",
-    ".cms-admin-block",
-    ".cms-admin-audio-preview",
-    ".cms-photo-gallery",
-    ".cms-gallery-item",
-    ".deepam-card",
-    ".public-video-card",
-    ".public-video-frame",
-    ".admin-section",
-    ".admin-two",
-    ".admin-actions",
-    ".gallery-filters",
-    ".routes > *",
-    ".timings > *",
-    ".grid > .card",
-    ".grid > article",
-    ".grid > figure",
-    ".grid > div"
-  ].join(",");
-
-  function validBox(el){
-    if(!(el instanceof HTMLElement)) return false;
-    if(el.matches("html,body,nav,header,footer,section,.divine-temple-symbol,.deepam-animation")) return false;
-    if(el.closest("nav,header,footer")) return false;
-    const r=el.getBoundingClientRect();
-    const s=getComputedStyle(el);
-    return r.width>25 && r.height>20 && s.display!=="none" && s.visibility!=="hidden";
-  }
-
-  function getBox(target){
-    if(!(target instanceof Element)) return null;
-    let el=target.closest(BOX_SELECTOR);
-    if(el && validBox(el)) return el;
-
-    /* Catch any future boxed CMS element not covered by a class. */
-    for(let node=target; node && node instanceof HTMLElement && node.tagName!=="SECTION"; node=node.parentElement){
-      if(validBox(node)){
-        const s=getComputedStyle(node);
-        const boxed=
-          s.borderStyle!=="none" ||
-          parseFloat(s.borderRadius)>3 ||
-          s.boxShadow!=="none";
-        if(boxed) return node;
-      }
-    }
-    return null;
-  }
-
-  let current=null;
-
-  document.addEventListener("pointerover",function(e){
-    const box=getBox(e.target);
-    if(!box || box===current) return;
-    current=box;
-    box.classList.remove("gentle-shake-active");
-    void box.offsetWidth;
-    box.classList.add("gentle-shake-active");
-  },true);
-
-  document.addEventListener("pointerout",function(e){
-    if(!current) return;
-    const to=e.relatedTarget;
-    if(to && current.contains(to)) return;
-    current=null;
-  },true);
-
-  document.addEventListener("animationend",function(e){
-    if(e.animationName==="gentleBoxShakeFinal"){
-      e.target.classList.remove("gentle-shake-active");
-    }
-  },true);
-})();
-</script>
 
 <script id="admin-login-repair">
 /* Final Admin Login reliability layer.
