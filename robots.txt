@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://sri-172.github.io/veda-maatha-gayatri-devi-temple/sitemap.xml
